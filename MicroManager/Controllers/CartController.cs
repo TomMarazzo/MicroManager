@@ -10,22 +10,23 @@ using MicroManager.Models;
 
 namespace MicroManager.Controllers
 {
-    public class CustomerTypeController : Controller
+    public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CustomerTypeController(ApplicationDbContext context)
+        public CartController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: CustomerType
-        public async Task<IActionResult> CusTypeIndex()
+        // GET: Cart
+        public async Task<IActionResult> Index()
         {
-            return View(await _context.CustomerTypes.ToListAsync());
+            var applicationDbContext = _context.Carts.Include(c => c.Product);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: CustomerType/Details/5
+        // GET: Cart/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -33,40 +34,43 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customerType = await _context.CustomerTypes
-                .FirstOrDefaultAsync(m => m.CustomerTypeId == id);
-            if (customerType == null)
+            var cart = await _context.Carts
+                .Include(c => c.Product)
+                .FirstOrDefaultAsync(m => m.CartId == id);
+            if (cart == null)
             {
                 return NotFound();
             }
 
-            return View(customerType);
+            return View(cart);
         }
 
-        // GET: CustomerType/Create
+        // GET: Cart/Create
         public IActionResult Create()
         {
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId");
             return View();
         }
 
-        // POST: CustomerType/Create
+        // POST: Cart/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerTypeId,CustomerTypeId")] CustomerType customerType)
+        public async Task<IActionResult> Create([Bind("CartId,ProductId,DateCreated,CustomerId,Quantity,Price")] Cart cart)
         {
             if (ModelState.IsValid)
             {
-                customerType.CustomerTypeId = Guid.NewGuid();
-                _context.Add(customerType);
+                cart.CartId = Guid.NewGuid();
+                _context.Add(cart);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(CusTypeIndex));
+                return RedirectToAction(nameof(Index));
             }
-            return View(customerType);
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.ProductId);
+            return View(cart);
         }
 
-        // GET: CustomerType/Edit/5
+        // GET: Cart/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -74,22 +78,23 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customerType = await _context.CustomerTypes.FindAsync(id);
-            if (customerType == null)
+            var cart = await _context.Carts.FindAsync(id);
+            if (cart == null)
             {
                 return NotFound();
             }
-            return View(customerType);
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.ProductId);
+            return View(cart);
         }
 
-        // POST: CustomerType/Edit/5
+        // POST: Cart/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CustomerTypeId,CustomerTypeId")] CustomerType customerType)
+        public async Task<IActionResult> Edit(Guid id, [Bind("CartId,ProductId,DateCreated,CustomerId,Quantity,Price")] Cart cart)
         {
-            if (id != customerType.CustomerTypeId)
+            if (id != cart.CartId)
             {
                 return NotFound();
             }
@@ -98,12 +103,12 @@ namespace MicroManager.Controllers
             {
                 try
                 {
-                    _context.Update(customerType);
+                    _context.Update(cart);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerTypeExists(customerType.CustomerTypeId))
+                    if (!CartExists(cart.CartId))
                     {
                         return NotFound();
                     }
@@ -112,12 +117,13 @@ namespace MicroManager.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(CusTypeIndex));
+                return RedirectToAction(nameof(Index));
             }
-            return View(customerType);
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.ProductId);
+            return View(cart);
         }
 
-        // GET: CustomerType/Delete/5
+        // GET: Cart/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -125,34 +131,35 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customerType = await _context.CustomerTypes
-                .FirstOrDefaultAsync(m => m.CustomerTypeId == id);
-            if (customerType == null)
+            var cart = await _context.Carts
+                .Include(c => c.Product)
+                .FirstOrDefaultAsync(m => m.CartId == id);
+            if (cart == null)
             {
                 return NotFound();
             }
 
-            return View(customerType);
+            return View(cart);
         }
 
-        // POST: CustomerType/Delete/5
+        // POST: Cart/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var customerType = await _context.CustomerTypes.FindAsync(id);
-            if (customerType != null)
+            var cart = await _context.Carts.FindAsync(id);
+            if (cart != null)
             {
-                _context.CustomerTypes.Remove(customerType);
+                _context.Carts.Remove(cart);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(CusTypeIndex));
+            return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerTypeExists(Guid id)
+        private bool CartExists(Guid id)
         {
-            return _context.CustomerTypes.Any(e => e.CustomerTypeId == id);
+            return _context.Carts.Any(e => e.CartId == id);
         }
     }
 }

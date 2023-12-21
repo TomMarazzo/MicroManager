@@ -9,7 +9,8 @@ namespace MicroManager.Models
         public Guid LightId { get; set; } //PK
         public Guid SupplierId { get; set; } //FK
         [Display(Name = "Date Y-M-D")]
-        public DateOnly Date { get; set; }
+        public DateTime DateCreated { get; set; }
+
         public string Type { get; set; }
 
         [Display(Name = "Qty (g)")]

@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Customer List</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create"class="btn btn-primary">Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -71,7 +71,7 @@
                 @Html.DisplayFor(modelItem => item.Country)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CustomerType.Type)
+                @Html.DisplayFor(modelItem => item.CustomerType.CustomerTypeId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |

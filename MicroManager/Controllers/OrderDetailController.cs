@@ -10,22 +10,22 @@ using MicroManager.Models;
 
 namespace MicroManager.Controllers
 {
-    public class CustomerTypeController : Controller
+    public class OrderDetailController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CustomerTypeController(ApplicationDbContext context)
+        public OrderDetailController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: CustomerType
-        public async Task<IActionResult> CusTypeIndex()
+        // GET: OrderDetail
+        public async Task<IActionResult> Index()
         {
-            return View(await _context.CustomerTypes.ToListAsync());
+            return View(await _context.OrderDetails.ToListAsync());
         }
 
-        // GET: CustomerType/Details/5
+        // GET: OrderDetail/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -33,40 +33,40 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customerType = await _context.CustomerTypes
-                .FirstOrDefaultAsync(m => m.CustomerTypeId == id);
-            if (customerType == null)
+            var orderDetail = await _context.OrderDetails
+                .FirstOrDefaultAsync(m => m.OrderDetailId == id);
+            if (orderDetail == null)
             {
                 return NotFound();
             }
 
-            return View(customerType);
+            return View(orderDetail);
         }
 
-        // GET: CustomerType/Create
+        // GET: OrderDetail/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: CustomerType/Create
+        // POST: OrderDetail/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerTypeId,CustomerTypeId")] CustomerType customerType)
+        public async Task<IActionResult> Create([Bind("OrderDetailId,ProductId,OrderId,Quantity,Price")] OrderDetail orderDetail)
         {
             if (ModelState.IsValid)
             {
-                customerType.CustomerTypeId = Guid.NewGuid();
-                _context.Add(customerType);
+                orderDetail.OrderDetailId = Guid.NewGuid();
+                _context.Add(orderDetail);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(CusTypeIndex));
+                return RedirectToAction(nameof(Index));
             }
-            return View(customerType);
+            return View(orderDetail);
         }
 
-        // GET: CustomerType/Edit/5
+        // GET: OrderDetail/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -74,22 +74,22 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customerType = await _context.CustomerTypes.FindAsync(id);
-            if (customerType == null)
+            var orderDetail = await _context.OrderDetails.FindAsync(id);
+            if (orderDetail == null)
             {
                 return NotFound();
             }
-            return View(customerType);
+            return View(orderDetail);
         }
 
-        // POST: CustomerType/Edit/5
+        // POST: OrderDetail/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CustomerTypeId,CustomerTypeId")] CustomerType customerType)
+        public async Task<IActionResult> Edit(Guid id, [Bind("OrderDetailId,ProductId,OrderId,Quantity,Price")] OrderDetail orderDetail)
         {
-            if (id != customerType.CustomerTypeId)
+            if (id != orderDetail.OrderDetailId)
             {
                 return NotFound();
             }
@@ -98,12 +98,12 @@ namespace MicroManager.Controllers
             {
                 try
                 {
-                    _context.Update(customerType);
+                    _context.Update(orderDetail);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerTypeExists(customerType.CustomerTypeId))
+                    if (!OrderDetailExists(orderDetail.OrderDetailId))
                     {
                         return NotFound();
                     }
@@ -112,12 +112,12 @@ namespace MicroManager.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(CusTypeIndex));
+                return RedirectToAction(nameof(Index));
             }
-            return View(customerType);
+            return View(orderDetail);
         }
 
-        // GET: CustomerType/Delete/5
+        // GET: OrderDetail/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -125,34 +125,34 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customerType = await _context.CustomerTypes
-                .FirstOrDefaultAsync(m => m.CustomerTypeId == id);
-            if (customerType == null)
+            var orderDetail = await _context.OrderDetails
+                .FirstOrDefaultAsync(m => m.OrderDetailId == id);
+            if (orderDetail == null)
             {
                 return NotFound();
             }
 
-            return View(customerType);
+            return View(orderDetail);
         }
 
-        // POST: CustomerType/Delete/5
+        // POST: OrderDetail/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var customerType = await _context.CustomerTypes.FindAsync(id);
-            if (customerType != null)
+            var orderDetail = await _context.OrderDetails.FindAsync(id);
+            if (orderDetail != null)
             {
-                _context.CustomerTypes.Remove(customerType);
+                _context.OrderDetails.Remove(orderDetail);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(CusTypeIndex));
+            return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerTypeExists(Guid id)
+        private bool OrderDetailExists(Guid id)
         {
-            return _context.CustomerTypes.Any(e => e.CustomerTypeId == id);
+            return _context.OrderDetails.Any(e => e.OrderDetailId == id);
         }
     }
 }

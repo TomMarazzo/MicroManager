@@ -22,7 +22,7 @@ namespace MicroManager.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Crop);
+            var applicationDbContext = _context.Products.Include(p => p.Crops).Include(p => p.ProductSize);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,7 +35,8 @@ namespace MicroManager.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.Crop)
+                .Include(p => p.Crops)
+                .Include(p => p.ProductSize)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
             {
@@ -48,7 +49,8 @@ namespace MicroManager.Controllers
         // GET: Product/Create
         public IActionResult Create()
         {
-            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Crop");
+            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Name");
+            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size");
             return View();
         }
 
@@ -57,7 +59,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,CropId,Description,Price")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,CropId,ProductSizeId,Weight,Price")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +68,8 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Crop", product.CropId);
+            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Name", product.CropId);
+            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSizeId);
             return View(product);
         }
 
@@ -83,7 +86,8 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Crop", product.CropId);
+            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Name", product.CropId);
+            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSizeId);
             return View(product);
         }
 
@@ -92,7 +96,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ProductId,CropId,Description,Price")] Product product)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ProductId,CropId,ProductSizeId,Weight,Price")] Product product)
         {
             if (id != product.ProductId)
             {
@@ -119,7 +123,8 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Crop", product.CropId);
+            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Name", product.CropId);
+            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSizeId);
             return View(product);
         }
 
@@ -132,7 +137,8 @@ namespace MicroManager.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.Crop)
+                .Include(p => p.Crops)
+                .Include(p => p.ProductSize)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
             {

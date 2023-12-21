@@ -10,22 +10,22 @@ using MicroManager.Models;
 
 namespace MicroManager.Controllers
 {
-    public class CustomerTypeController : Controller
+    public class ProductSizeController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CustomerTypeController(ApplicationDbContext context)
+        public ProductSizeController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: CustomerType
-        public async Task<IActionResult> CusTypeIndex()
+        // GET: ProductSize
+        public async Task<IActionResult> Index()
         {
-            return View(await _context.CustomerTypes.ToListAsync());
+            return View(await _context.ProductSize_1.ToListAsync());
         }
 
-        // GET: CustomerType/Details/5
+        // GET: ProductSize/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -33,40 +33,40 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customerType = await _context.CustomerTypes
-                .FirstOrDefaultAsync(m => m.CustomerTypeId == id);
-            if (customerType == null)
+            var productSize = await _context.ProductSize_1
+                .FirstOrDefaultAsync(m => m.ProductSizeId == id);
+            if (productSize == null)
             {
                 return NotFound();
             }
 
-            return View(customerType);
+            return View(productSize);
         }
 
-        // GET: CustomerType/Create
+        // GET: ProductSize/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: CustomerType/Create
+        // POST: ProductSize/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerTypeId,CustomerTypeId")] CustomerType customerType)
+        public async Task<IActionResult> Create([Bind("ProductSizeId,Size")] ProductSize productSize)
         {
             if (ModelState.IsValid)
             {
-                customerType.CustomerTypeId = Guid.NewGuid();
-                _context.Add(customerType);
+                productSize.ProductSizeId = Guid.NewGuid();
+                _context.Add(productSize);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(CusTypeIndex));
+                return RedirectToAction(nameof(Index));
             }
-            return View(customerType);
+            return View(productSize);
         }
 
-        // GET: CustomerType/Edit/5
+        // GET: ProductSize/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -74,22 +74,22 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customerType = await _context.CustomerTypes.FindAsync(id);
-            if (customerType == null)
+            var productSize = await _context.ProductSize_1.FindAsync(id);
+            if (productSize == null)
             {
                 return NotFound();
             }
-            return View(customerType);
+            return View(productSize);
         }
 
-        // POST: CustomerType/Edit/5
+        // POST: ProductSize/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CustomerTypeId,CustomerTypeId")] CustomerType customerType)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ProductSizeId,Size")] ProductSize productSize)
         {
-            if (id != customerType.CustomerTypeId)
+            if (id != productSize.ProductSizeId)
             {
                 return NotFound();
             }
@@ -98,12 +98,12 @@ namespace MicroManager.Controllers
             {
                 try
                 {
-                    _context.Update(customerType);
+                    _context.Update(productSize);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerTypeExists(customerType.CustomerTypeId))
+                    if (!ProductSizeExists(productSize.ProductSizeId))
                     {
                         return NotFound();
                     }
@@ -112,12 +112,12 @@ namespace MicroManager.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(CusTypeIndex));
+                return RedirectToAction(nameof(Index));
             }
-            return View(customerType);
+            return View(productSize);
         }
 
-        // GET: CustomerType/Delete/5
+        // GET: ProductSize/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -125,34 +125,34 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customerType = await _context.CustomerTypes
-                .FirstOrDefaultAsync(m => m.CustomerTypeId == id);
-            if (customerType == null)
+            var productSize = await _context.ProductSize_1
+                .FirstOrDefaultAsync(m => m.ProductSizeId == id);
+            if (productSize == null)
             {
                 return NotFound();
             }
 
-            return View(customerType);
+            return View(productSize);
         }
 
-        // POST: CustomerType/Delete/5
+        // POST: ProductSize/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var customerType = await _context.CustomerTypes.FindAsync(id);
-            if (customerType != null)
+            var productSize = await _context.ProductSize_1.FindAsync(id);
+            if (productSize != null)
             {
-                _context.CustomerTypes.Remove(customerType);
+                _context.ProductSize_1.Remove(productSize);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(CusTypeIndex));
+            return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerTypeExists(Guid id)
+        private bool ProductSizeExists(Guid id)
         {
-            return _context.CustomerTypes.Any(e => e.CustomerTypeId == id);
+            return _context.ProductSize_1.Any(e => e.ProductSizeId == id);
         }
     }
 }

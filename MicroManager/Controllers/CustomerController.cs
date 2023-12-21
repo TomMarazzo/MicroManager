@@ -20,7 +20,7 @@ namespace MicroManager.Controllers
         }
 
         // GET: Customer
-        public async Task<IActionResult> CustomerIndex()
+        public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Customers.Include(c => c.CustomerType);
             return View(await applicationDbContext.ToListAsync());
@@ -64,7 +64,7 @@ namespace MicroManager.Controllers
                 customer.CustomerId = Guid.NewGuid();
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(CustomerIndex));
+                return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "CustomerTypeId", "Type", customer.CustomerTypeId);
             return View(customer);
@@ -117,7 +117,7 @@ namespace MicroManager.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(CustomerIndex));
+                return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "CustomerTypeId", "Type", customer.CustomerTypeId);
             return View(customer);
@@ -154,7 +154,7 @@ namespace MicroManager.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(CustomerIndex));
+            return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(Guid id)

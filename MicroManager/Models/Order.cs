@@ -7,7 +7,7 @@ namespace MicroManager.Models
     public class Order
     {
         public Guid OrderId { get; set; } //PK
-        public DateOnly OrderDate { get; set; }
+        public DateTime OrderDate { get; set; }
         public Guid CustomerId { get; set; }//FK
         public Guid ProductId { get; set; } //FK
 
@@ -25,5 +25,21 @@ namespace MicroManager.Models
         public virtual Customer? Customer { get; set; }
         //Child reference 
         public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public double Total
+        {
+            get
+            {
+                if (Quantity >= 0 && Price >= 0)
+                {
+                    return Quantity * Price;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
     }
 }

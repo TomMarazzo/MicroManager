@@ -18,7 +18,7 @@ namespace MicroManager.Models
         [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
         public string Country { get; set; }
-        //public virtual List<Package>? Packages { get; set; }
+        public virtual List<Shelving>? Shelvings { get; set; }
         public virtual List<Seed>? Seeds { get; set; }
         public virtual List<Tray>? Trays { get; set; }
         public virtual List<Light>? Lights { get; set; }

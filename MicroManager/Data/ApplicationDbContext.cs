@@ -6,7 +6,7 @@ namespace MicroManager.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -15,10 +15,10 @@ namespace MicroManager.Data
         //*******************MUST ADD THIS SECTION TO FILE************************
         protected override void OnModelCreating(ModelBuilder modelBuilder) //Model Relationships
         {
-            base.OnModelCreating(modelBuilder);                                 
-            
-            
-            
+            base.OnModelCreating(modelBuilder);
+
+
+
         }
 
         //***************MUST ADD DbSets HERE **************************
@@ -32,8 +32,12 @@ namespace MicroManager.Data
         public DbSet<Light> Lights { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Product> ProductSize { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Shelving> Shelvings { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<MicroManager.Models.ProductSize> ProductSize_1 { get; set; } = default!;
     }
 }
+

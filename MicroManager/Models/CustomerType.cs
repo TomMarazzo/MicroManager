@@ -12,9 +12,7 @@ namespace MicroManager.Models
         [Display(Name = "Customer Type")]
         public string Type { get; set; }
 
-        public virtual List<CustomerType>? CustomerTypes { get; set; } //Need this to make the dropdown list in Customers for Types
-
-
+        public virtual List<Customer>? Customers { get; set; } //Need this to make the dropdown list in Customers for Types
 
     }
 }

@@ -7,8 +7,9 @@ namespace MicroManager.Models
     public class Customer //ONE Customer
     {
         [Key]
-        public Guid CustomerId { get; set; }
+        public Guid CustomerId { get; set; } //PK
         public Guid CustomerTypeId { get; set; } //FK
+        public Guid CartId { get; set; } //FK
 
         [Display(Name = "Company Name")]
         public string CompanyName { get; set; }

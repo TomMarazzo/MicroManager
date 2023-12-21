@@ -9,10 +9,10 @@ namespace MicroManager.Models
         public Guid CartId { get; set; } //PK
 
         public Guid ProductId { get; set; } //FK
+        public Guid CustomerId { get; set; } //FK
 
         public DateTime DateCreated { get; set; }
 
-        public string CustomerId { get; set; }
 
         public int Quantity { get; set; }
 
@@ -20,6 +20,7 @@ namespace MicroManager.Models
         public double Price { get; set; }
 
         public virtual Product? Product { get; set; }
+        public virtual Customer? Customer { get; set; }
 
         public double Total
         {

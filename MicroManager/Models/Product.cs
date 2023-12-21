@@ -9,16 +9,23 @@ namespace MicroManager.Models
         public Guid ProductId { get; set; } //PK
         [Required]
         public Guid CropId{ get; set; } //FK
-        [Required]
-        public string Description { get; set; }
+        public Guid ProductSizeId {  get; set; } //FK
+        
+        public virtual Crop? Crop { get; set; }
+        [Display(Name = "Weight (oz)")]
+        
+        public double? Weight { get; set; }
 
         [Column(TypeName = "decimal(10, 2)")]
         public decimal Price { get; set; }
 
+        
+        [ForeignKey(nameof(ProductSizeId))]
+        [ValidateNever]
+        public virtual ProductSize? ProductSize { get; set; }
+
         [ForeignKey(nameof(CropId))]
         [ValidateNever]
-        public virtual Crop? Crop { get; set; }
-
-
+        public virtual Crop? Crops { get; set; }
     }
 }
