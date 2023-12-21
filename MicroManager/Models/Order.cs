@@ -5,7 +5,7 @@ namespace MicroManager.Models
     public class Order
     {
         public Guid OrderId { get; set; } //PK
-        public DateTime OrderDate { get; set; }
+        public DateOnly OrderDate { get; set; }
         public string CustomerId { get; set; }
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -20,6 +20,6 @@ namespace MicroManager.Models
         public string email { get; set; }
         public double Total { get; set; }
         //Child reference 
-        public List<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
     }
 }

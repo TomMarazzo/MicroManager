@@ -1,4 +1,6 @@
-﻿namespace MicroManager.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MicroManager.Models
 {
     public class OrderDetail
     {
@@ -6,11 +8,7 @@
         public Guid ProductId { get; set; } //FK
         public Guid OrderId { get; set; } //FK
         public int Quantity { get; set; }
-        public decimal Price { get; set; }
-
-        public virtual Order? Order { get; set; }
-
-        public virtual Product? Product { get; set; }
-
+        public float Price { get; set; }              
+       
     }
 }

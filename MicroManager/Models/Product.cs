@@ -13,7 +13,7 @@ namespace MicroManager.Models
 
         [Column(TypeName = "decimal(10, 2)")]
         public decimal Price { get; set; }
-        public List<OrderDetail> OrderDetails { get; set; }
-        public List<Cart> Carts { get; set; }
+        
+        
     }
 }

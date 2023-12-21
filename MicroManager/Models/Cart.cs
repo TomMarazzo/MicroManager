@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MicroManager.Models
 {
@@ -14,10 +16,24 @@ namespace MicroManager.Models
 
         public int Quantity { get; set; }
 
-        [Column(TypeName = "decimal(10, 2)")]
-        public decimal Price { get; set; }
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public double Price { get; set; }
 
         public virtual Product? Product { get; set; }
 
+        public double Total
+        {
+            get
+            {
+                if (Quantity >= 0 && Price >= 0)
+                {
+                    return Quantity * Price;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
     }
 }
