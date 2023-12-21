@@ -2,7 +2,7 @@
 {
     public class Schedule
     {
-        public int ScheduleId { get; set; }
+        public Guid ScheduleId { get; set; }
         public bool Soak  { get; set; }
         public bool Sow { get; set; }
         public bool Blackout { get; set; }

@@ -46,6 +46,7 @@ namespace MicroManager.Data
         public DbSet<Package> Packages { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
     }
 }

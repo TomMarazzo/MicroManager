@@ -4,7 +4,7 @@ namespace MicroManager.Models
 {
     public class Order
     {
-        public int OrderId { get; set; } //PK
+        public Guid OrderId { get; set; } //PK
         public DateTime OrderDate { get; set; }
         public string CustomerId { get; set; }
         [Display(Name = "First Name")]

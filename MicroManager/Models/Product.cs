@@ -5,9 +5,9 @@ namespace MicroManager.Models
 {
     public class Product
     {
-        public int ProductId { get; set; } //PK
+        public Guid ProductId { get; set; } //PK
         [Required]
-        public int CropId{ get; set; }
+        public Guid CropId{ get; set; }
         [Required]
         public string Description { get; set; }
 
