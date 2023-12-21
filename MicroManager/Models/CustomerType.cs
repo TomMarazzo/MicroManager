@@ -7,13 +7,12 @@ namespace MicroManager.Models
     {
         [Key]
         public Guid CustomerTypeId { get; set; } //PK
-        public Guid CustomerId { get; set; } //FK
+        
 
         [Display(Name = "Customer Type")]
         public string Type { get; set; }
 
-        [ForeignKey(nameof(CustomerId))]
-        public virtual Customer? Customers { get; set; }
+       
 
     }
 }
