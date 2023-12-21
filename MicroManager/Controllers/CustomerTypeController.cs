@@ -20,7 +20,7 @@ namespace MicroManager.Controllers
         }
 
         // GET: CustomerType
-        public async Task<IActionResult> CusTypeIndex()
+        public async Task<IActionResult> Index()
         {
             return View(await _context.CustomerTypes.ToListAsync());
         }
@@ -34,7 +34,7 @@ namespace MicroManager.Controllers
             }
 
             var customerType = await _context.CustomerTypes
-                .FirstOrDefaultAsync(m => m.CustomerTypeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (customerType == null)
             {
                 return NotFound();
@@ -54,14 +54,14 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerTypeId,CustomerTypeId")] CustomerType customerType)
+        public async Task<IActionResult> Create([Bind("Id,Type")] CustomerType customerType)
         {
             if (ModelState.IsValid)
             {
-                customerType.CustomerTypeId = Guid.NewGuid();
+                customerType.Id = Guid.NewGuid();
                 _context.Add(customerType);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(CusTypeIndex));
+                return RedirectToAction(nameof(Index));
             }
             return View(customerType);
         }
@@ -87,9 +87,9 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CustomerTypeId,CustomerTypeId")] CustomerType customerType)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Type")] CustomerType customerType)
         {
-            if (id != customerType.CustomerTypeId)
+            if (id != customerType.Id)
             {
                 return NotFound();
             }
@@ -103,7 +103,7 @@ namespace MicroManager.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerTypeExists(customerType.CustomerTypeId))
+                    if (!CustomerTypeExists(customerType.Id))
                     {
                         return NotFound();
                     }
@@ -112,7 +112,7 @@ namespace MicroManager.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(CusTypeIndex));
+                return RedirectToAction(nameof(Index));
             }
             return View(customerType);
         }
@@ -126,7 +126,7 @@ namespace MicroManager.Controllers
             }
 
             var customerType = await _context.CustomerTypes
-                .FirstOrDefaultAsync(m => m.CustomerTypeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (customerType == null)
             {
                 return NotFound();
@@ -147,12 +147,12 @@ namespace MicroManager.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(CusTypeIndex));
+            return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerTypeExists(Guid id)
         {
-            return _context.CustomerTypes.Any(e => e.CustomerTypeId == id);
+            return _context.CustomerTypes.Any(e => e.Id == id);
         }
     }
 }

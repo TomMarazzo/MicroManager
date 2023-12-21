@@ -4,7 +4,6 @@ using MicroManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,11 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231221171327_updateProductsandCrops")]
-    partial class updateProductsandCrops
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,9 +31,8 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -51,6 +47,8 @@ namespace MicroManager.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("CartId");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("ProductId");
 
@@ -151,20 +149,15 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.CustomerType", b =>
                 {
-                    b.Property<Guid>("CustomerTypeId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CustomerTypeId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CustomerTypeId");
-
-                    b.HasIndex("CustomerTypeId1");
+                    b.HasKey("Id");
 
                     b.ToTable("CustomerTypes");
                 });
@@ -175,8 +168,8 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
@@ -213,8 +206,8 @@ namespace MicroManager.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateOnly>("OrderDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -265,27 +258,27 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderQty")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PackSize")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PackageType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
-
-                    b.Property<float>("Qty")
-                        .HasColumnType("real");
 
                     b.Property<Guid>("SupplierId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Tax")
                         .HasColumnType("decimal(10, 2)");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(10, 2)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PackageId");
 
@@ -303,18 +296,47 @@ namespace MicroManager.Migrations
                     b.Property<Guid>("CropId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("CropId1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
+
+                    b.Property<Guid>("ProductSizeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double?>("Weight")
+                        .HasColumnType("float");
 
                     b.HasKey("ProductId");
 
                     b.HasIndex("CropId");
 
-                    b.ToTable("Products");
+                    b.HasIndex("CropId1");
+
+                    b.HasIndex("ProductSizeId");
+
+                    b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.ProductSize", b =>
+                {
+                    b.Property<Guid>("ProductSizeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProductSizeId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductSizeId");
+
+                    b.HasIndex("ProductSizeId1");
+
+                    b.ToTable("ProductSize_1");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Schedule", b =>
@@ -349,8 +371,8 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -376,6 +398,31 @@ namespace MicroManager.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Seeds");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.Shelving", b =>
+                {
+                    b.Property<Guid>("ShelvingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Column")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Row")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TotalGrowSpaces")
+                        .HasColumnType("int");
+
+                    b.HasKey("ShelvingId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("Shelvings");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Supplier", b =>
@@ -427,8 +474,8 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
@@ -660,11 +707,19 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.Cart", b =>
                 {
+                    b.HasOne("MicroManager.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MicroManager.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Customer");
 
                     b.Navigation("Product");
                 });
@@ -679,19 +734,12 @@ namespace MicroManager.Migrations
             modelBuilder.Entity("MicroManager.Models.Customer", b =>
                 {
                     b.HasOne("MicroManager.Models.CustomerType", "CustomerType")
-                        .WithMany()
+                        .WithMany("Customers")
                         .HasForeignKey("CustomerTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("CustomerType");
-                });
-
-            modelBuilder.Entity("MicroManager.Models.CustomerType", b =>
-                {
-                    b.HasOne("MicroManager.Models.CustomerType", null)
-                        .WithMany("CustomerTypes")
-                        .HasForeignKey("CustomerTypeId1");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Light", b =>
@@ -746,19 +794,51 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.Product", b =>
                 {
-                    b.HasOne("MicroManager.Models.Crop", "Crop")
+                    b.HasOne("MicroManager.Models.Crop", "Crops")
                         .WithMany()
                         .HasForeignKey("CropId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MicroManager.Models.Crop", "Crop")
+                        .WithMany()
+                        .HasForeignKey("CropId1");
+
+                    b.HasOne("MicroManager.Models.ProductSize", "ProductSize")
+                        .WithMany()
+                        .HasForeignKey("ProductSizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Crop");
+
+                    b.Navigation("Crops");
+
+                    b.Navigation("ProductSize");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.ProductSize", b =>
+                {
+                    b.HasOne("MicroManager.Models.ProductSize", null)
+                        .WithMany("ProductSizes")
+                        .HasForeignKey("ProductSizeId1");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Seed", b =>
                 {
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
                         .WithMany("Seeds")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.Shelving", b =>
+                {
+                    b.HasOne("MicroManager.Models.Supplier", "Supplier")
+                        .WithMany("Shelvings")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -835,12 +915,17 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.CustomerType", b =>
                 {
-                    b.Navigation("CustomerTypes");
+                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Order", b =>
                 {
                     b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.ProductSize", b =>
+                {
+                    b.Navigation("ProductSizes");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Supplier", b =>
@@ -850,6 +935,8 @@ namespace MicroManager.Migrations
                     b.Navigation("Packages");
 
                     b.Navigation("Seeds");
+
+                    b.Navigation("Shelvings");
 
                     b.Navigation("Trays");
                 });

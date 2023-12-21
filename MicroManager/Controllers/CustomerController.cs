@@ -48,7 +48,7 @@ namespace MicroManager.Controllers
         // GET: Customer/Create
         public IActionResult Create()
         {
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "CustomerTypeId", "Type");
+            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type");
             return View();
         }
 
@@ -66,7 +66,7 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "CustomerTypeId", "Type", customer.CustomerTypeId);
+            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type", customer.CustomerTypeId);
             return View(customer);
         }
 
@@ -83,7 +83,7 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "CustomerTypeId", "Type", customer.CustomerTypeId);
+            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type", customer.CustomerTypeId);
             return View(customer);
         }
 
@@ -119,7 +119,7 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "CustomerTypeId", "Type", customer.CustomerTypeId);
+            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type", customer.CustomerTypeId);
             return View(customer);
         }
 

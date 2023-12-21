@@ -1,0 +1,82 @@
+﻿@model MicroManager.Controllers.PackageController.PackageViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Package</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Package</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Date
+            </th>
+            <th>
+                Package Type
+            </th>
+            <th>
+                PackSize
+            </th>
+            <th>
+               OrderQty
+            </th>
+            <th>
+               Price
+            </th>
+            <th>
+               Tax
+            </th>
+            <th>
+               Total
+            </th>
+            <th>
+                Supplier
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Packages) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PackageType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PackSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderQty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tax)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PackageId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PackageId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PackageId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+            <div>
+                Plastic Total @string.Format("${0:0.##}", (double)Model.PlasticTotal)  Paper Total @string.Format("${0:0.##}", (double)Model.PaperTotal) All Total @string.Format("${0:0.##}", (double)Model.PlasticPaperTotal)
+            </div>

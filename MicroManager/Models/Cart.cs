@@ -13,13 +13,14 @@ namespace MicroManager.Models
 
         public DateTime DateCreated { get; set; }
 
-
         public int Quantity { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:c}")]
         public double Price { get; set; }
-
+        [ForeignKey (nameof(ProductId))]
         public virtual Product? Product { get; set; }
+
+        [ForeignKey(nameof(CustomerId))]
         public virtual Customer? Customer { get; set; }
 
         public double Total

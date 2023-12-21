@@ -22,7 +22,7 @@ namespace MicroManager.Controllers
         // GET: Cart
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Carts.Include(c => c.Product);
+            var applicationDbContext = _context.Carts.Include(c => c.Customer).Include(c => c.Product);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace MicroManager.Controllers
             }
 
             var cart = await _context.Carts
+                .Include(c => c.Customer)
                 .Include(c => c.Product)
                 .FirstOrDefaultAsync(m => m.CartId == id);
             if (cart == null)
@@ -48,6 +49,7 @@ namespace MicroManager.Controllers
         // GET: Cart/Create
         public IActionResult Create()
         {
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId");
             return View();
         }
@@ -57,7 +59,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CartId,ProductId,DateCreated,CustomerId,Quantity,Price")] Cart cart)
+        public async Task<IActionResult> Create([Bind("CartId,ProductId,CustomerId,DateCreated,Quantity,Price")] Cart cart)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +68,7 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", cart.CustomerId);
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.ProductId);
             return View(cart);
         }
@@ -83,6 +86,7 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", cart.CustomerId);
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.ProductId);
             return View(cart);
         }
@@ -92,7 +96,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CartId,ProductId,DateCreated,CustomerId,Quantity,Price")] Cart cart)
+        public async Task<IActionResult> Edit(Guid id, [Bind("CartId,ProductId,CustomerId,DateCreated,Quantity,Price")] Cart cart)
         {
             if (id != cart.CartId)
             {
@@ -119,6 +123,7 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", cart.CustomerId);
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.ProductId);
             return View(cart);
         }
@@ -132,6 +137,7 @@ namespace MicroManager.Controllers
             }
 
             var cart = await _context.Carts
+                .Include(c => c.Customer)
                 .Include(c => c.Product)
                 .FirstOrDefaultAsync(m => m.CartId == id);
             if (cart == null)

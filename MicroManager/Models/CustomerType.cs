@@ -6,7 +6,7 @@ namespace MicroManager.Models
     public class CustomerType //MANY Types
     {
         [Key]
-        public Guid CustomerTypeId { get; set; } //PK
+        public Guid Id { get; set; } //PK
         
 
         [Display(Name = "Customer Type")]
