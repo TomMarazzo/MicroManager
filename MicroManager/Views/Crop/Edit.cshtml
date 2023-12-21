@@ -1,0 +1,75 @@
+﻿@model MicroManager.Models.Crop
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Crop</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CropId" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SeedDensity" class="control-label"></label>
+                <input asp-for="SeedDensity" class="form-control" />
+                <span asp-validation-for="SeedDensity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoakHours" class="control-label"></label>
+                <input asp-for="SoakHours" class="form-control" />
+                <span asp-validation-for="SoakHours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GerminationDays" class="control-label"></label>
+                <input asp-for="GerminationDays" class="form-control" />
+                <span asp-validation-for="GerminationDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StackDays" class="control-label"></label>
+                <input asp-for="StackDays" class="form-control" />
+                <span asp-validation-for="StackDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BlackOutDays" class="control-label"></label>
+                <input asp-for="BlackOutDays" class="form-control" />
+                <span asp-validation-for="BlackOutDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WeightedDays" class="control-label"></label>
+                <input asp-for="WeightedDays" class="form-control" />
+                <span asp-validation-for="WeightedDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalGrowthDays" class="control-label"></label>
+                <input asp-for="TotalGrowthDays" class="form-control" />
+                <span asp-validation-for="TotalGrowthDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpectedYield" class="control-label"></label>
+                <input asp-for="ExpectedYield" class="form-control" />
+                <span asp-validation-for="ExpectedYield" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

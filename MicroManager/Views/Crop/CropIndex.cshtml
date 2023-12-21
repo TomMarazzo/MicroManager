@@ -1,0 +1,84 @@
+﻿@model IEnumerable<MicroManager.Models.Crop>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Crop - Basic Data</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SeedDensity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoakHours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GerminationDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StackDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BlackOutDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WeightedDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalGrowthDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpectedYield)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SeedDensity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoakHours)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GerminationDays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StackDays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BlackOutDays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WeightedDays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalGrowthDays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpectedYield)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CropId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CropId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CropId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
