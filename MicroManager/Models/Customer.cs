@@ -1,11 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MicroManager.Models
 {
     public class Customer //ONE Customer
     {
         [Key]
-        public Guid CustomerId { get; set; }        
+        public Guid CustomerId { get; set; }
+        public Guid CustomerTypeId { get; set; } //FK
 
         [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
@@ -21,6 +24,10 @@ namespace MicroManager.Models
         [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
         public string Country { get; set; }
-        public virtual List<CustomerType>? CustomerTypes { get; set; } //List of CustomerOrders in Customer
+
+        [Display(Name = "Customer Type")]
+        [ForeignKey(nameof(CustomerTypeId))]
+        [ValidateNever]
+        public virtual CustomerType? CustomerType { get; set; }
     }
 }

@@ -63,6 +63,9 @@ namespace MicroManager.Data.Migrations
                     b.Property<int>("BlackOutDays")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("CropId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("ExpectedYield")
                         .HasColumnType("int");
 
@@ -90,6 +93,8 @@ namespace MicroManager.Data.Migrations
 
                     b.HasKey("CropId");
 
+                    b.HasIndex("CropId1");
+
                     b.ToTable("Crops");
                 });
 
@@ -115,6 +120,9 @@ namespace MicroManager.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("CustomerTypeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -133,6 +141,8 @@ namespace MicroManager.Data.Migrations
 
                     b.HasKey("CustomerId");
 
+                    b.HasIndex("CustomerTypeId");
+
                     b.ToTable("Customers");
                 });
 
@@ -142,7 +152,7 @@ namespace MicroManager.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid?>("CustomerTypeId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Type")
@@ -151,7 +161,7 @@ namespace MicroManager.Data.Migrations
 
                     b.HasKey("CustomerTypeId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerTypeId1");
 
                     b.ToTable("CustomerTypes");
                 });
@@ -197,49 +207,26 @@ namespace MicroManager.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly>("OrderDate")
                         .HasColumnType("date");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Province")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Total")
+                    b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Orders");
                 });
@@ -321,6 +308,8 @@ namespace MicroManager.Data.Migrations
                         .HasColumnType("decimal(10, 2)");
 
                     b.HasKey("ProductId");
+
+                    b.HasIndex("CropId");
 
                     b.ToTable("Products");
                 });
@@ -677,11 +666,29 @@ namespace MicroManager.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("MicroManager.Models.Crop", b =>
+                {
+                    b.HasOne("MicroManager.Models.Crop", null)
+                        .WithMany("Crops")
+                        .HasForeignKey("CropId1");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.Customer", b =>
+                {
+                    b.HasOne("MicroManager.Models.CustomerType", "CustomerType")
+                        .WithMany()
+                        .HasForeignKey("CustomerTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomerType");
+                });
+
             modelBuilder.Entity("MicroManager.Models.CustomerType", b =>
                 {
-                    b.HasOne("MicroManager.Models.Customer", null)
+                    b.HasOne("MicroManager.Models.CustomerType", null)
                         .WithMany("CustomerTypes")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerTypeId1");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Light", b =>
@@ -693,6 +700,25 @@ namespace MicroManager.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.Order", b =>
+                {
+                    b.HasOne("MicroManager.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MicroManager.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MicroManager.Models.OrderDetail", b =>
@@ -713,6 +739,17 @@ namespace MicroManager.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.Product", b =>
+                {
+                    b.HasOne("MicroManager.Models.Crop", "Crop")
+                        .WithMany()
+                        .HasForeignKey("CropId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Crop");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Seed", b =>
@@ -788,7 +825,12 @@ namespace MicroManager.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MicroManager.Models.Customer", b =>
+            modelBuilder.Entity("MicroManager.Models.Crop", b =>
+                {
+                    b.Navigation("Crops");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.CustomerType", b =>
                 {
                     b.Navigation("CustomerTypes");
                 });

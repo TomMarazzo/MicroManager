@@ -25,7 +25,9 @@ namespace MicroManager.Models
         public int TotalGrowthDays { get; set; }
 
         [Display(Name = "Expected Yield")]
-        public int ExpectedYield { get; set; }       
-        
+        public int ExpectedYield { get; set; }
+
+        public virtual List<Crop>? Crops { get; set; } //Need this to make the dropdown list in Order for Crop
+
     }
 }
