@@ -31,10 +31,9 @@ namespace MicroManager.Controllers
                     double TotalPrice = 0;
                     foreach (var items in Shelving)
                     {
-                    return TotalPrice += items.TotalPrice;
+                        TotalPrice += items.TotalPrice;
                     }
                     return TotalPrice;
-
                 }
             }
             public double TotalSpaces
@@ -44,7 +43,7 @@ namespace MicroManager.Controllers
                     int TotalSpaces = 0;
                     foreach (var items in Shelving)
                     {
-                        return TotalSpaces += items.TotalGrowSpaces;
+                         TotalSpaces += items.TotalGrowSpaces;
                     }
                     return TotalSpaces;
                 }

@@ -314,10 +314,9 @@ namespace MicroManager.Migrations
                     SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Size = table.Column<float>(type: "real", nullable: false),
+                    OrderQty = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Tax = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Total = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                    Tax = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {

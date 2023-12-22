@@ -171,19 +171,16 @@ namespace MicroManager.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("OrderQty")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
-
-                    b.Property<float>("Size")
-                        .HasColumnType("real");
 
                     b.Property<Guid>("SupplierId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Tax")
-                        .HasColumnType("decimal(10, 2)");
-
-                    b.Property<decimal>("Total")
                         .HasColumnType("decimal(10, 2)");
 
                     b.Property<string>("Type")

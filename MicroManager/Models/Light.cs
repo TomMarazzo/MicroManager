@@ -13,15 +13,23 @@ namespace MicroManager.Models
 
         public string Type { get; set; }
 
-        [Display(Name = "Qty (g)")]
-        public float Size { get; set; }
+        [Display(Name = "Qty")]
+        public int OrderQty { get; set; }
 
         [Column(TypeName = "decimal(10, 2)")]
-        public decimal Price { get; set; }
+        public float Price { get; set; }
         [Column(TypeName = "decimal(10, 2)")]
-        public decimal Tax { get; set; }
+        public float Tax { get; set; }
         [Column(TypeName = "decimal(10, 2)")]
-        public decimal Total { get; set; }
+        public float Total
+        {
+            get
+            {
+                if (Price >= 0 && OrderQty >= 0 && Tax >= 0)
+                    return Price * Tax * OrderQty;
+                return (float)Price;
+            }
+        }
 
         [ForeignKey(nameof(SupplierId))]
         //[ValidateNever]
