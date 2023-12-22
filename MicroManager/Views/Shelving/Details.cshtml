@@ -1,0 +1,61 @@
+﻿@model MicroManager.Models.Shelving
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Shelving</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Qty)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Qty)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tax)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tax)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Row)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Row)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Column)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Column)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Supplier)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Supplier.SupplierId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ShelvingId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

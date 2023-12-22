@@ -30,7 +30,7 @@ namespace MicroManager.Controllers
                     double Total = 0;
                     foreach (var items in Packages)
                     {
-                        if (items.PackageType == "Plastic" )
+                        if (items.PackageType == "Plastic")
                         {
                             Total += items.Total;
                         }
@@ -45,7 +45,7 @@ namespace MicroManager.Controllers
                     double Total = 0;
                     foreach (var items in Packages)
                     {
-                        if ( items.PackageType == "Paper")
+                        if (items.PackageType == "Paper")
                         {
                             Total += items.Total;
                         }
@@ -55,156 +55,157 @@ namespace MicroManager.Controllers
             }
             public double PlasticPaperTotal
             {
-                get {
+                get
+                {
                     return PaperTotal + PlasticTotal;
                 }
             }
         }
 
-            // GET: Package
-            public async Task<IActionResult> Index()
-            {
-             PackageViewModel packageViewModel = new PackageViewModel();
+        // GET: Package  ****************Changes for Report*********
+        public async Task<IActionResult> PackageIndex()
+        {
+            PackageViewModel packageViewModel = new PackageViewModel();
 
             packageViewModel.Packages = await _context.Packages.Include(p => p.Supplier).ToListAsync();
 
-                return View(packageViewModel);
+            return View(packageViewModel);
+        }
+
+        // GET: Package/Details/5
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
             }
 
-            // GET: Package/Details/5
-            public async Task<IActionResult> Details(Guid? id)
+            var package = await _context.Packages
+                .Include(p => p.Supplier)
+                .FirstOrDefaultAsync(m => m.PackageId == id);
+            if (package == null)
             {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var package = await _context.Packages
-                    .Include(p => p.Supplier)
-                    .FirstOrDefaultAsync(m => m.PackageId == id);
-                if (package == null)
-                {
-                    return NotFound();
-                }
-
-                return View(package);
+                return NotFound();
             }
 
-            // GET: Package/Create
-            public IActionResult Create()
+            return View(package);
+        }
+
+        // GET: Package/Create
+        public IActionResult Create()
+        {
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId");
+            return View();
+        }
+
+        // POST: Package/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("PackageId,SupplierId,Date,PackageType,PackSize,OrderQty,Price,Tax")] Package package)
+        {
+            if (ModelState.IsValid)
             {
-                ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId");
-                return View();
-            }
-
-            // POST: Package/Create
-            // To protect from overposting attacks, enable the specific properties you want to bind to.
-            // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Create([Bind("PackageId,SupplierId,Date,PackageType,PackSize,OrderQty,Price,Tax")] Package package)
-            {
-                if (ModelState.IsValid)
-                {
-                    package.PackageId = Guid.NewGuid();
-                    _context.Add(package);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId", package.SupplierId);
-                return View(package);
-            }
-
-            // GET: Package/Edit/5
-            public async Task<IActionResult> Edit(Guid? id)
-            {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var package = await _context.Packages.FindAsync(id);
-                if (package == null)
-                {
-                    return NotFound();
-                }
-                ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId", package.SupplierId);
-                return View(package);
-            }
-
-            // POST: Package/Edit/5
-            // To protect from overposting attacks, enable the specific properties you want to bind to.
-            // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Edit(Guid id, [Bind("PackageId,SupplierId,Date,PackageType,PackSize,OrderQty,Price,Tax")] Package package)
-            {
-                if (id != package.PackageId)
-                {
-                    return NotFound();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    try
-                    {
-                        _context.Update(package);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!PackageExists(package.PackageId))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                    return RedirectToAction(nameof(Index));
-                }
-                ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId", package.SupplierId);
-                return View(package);
-            }
-
-            // GET: Package/Delete/5
-            public async Task<IActionResult> Delete(Guid? id)
-            {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var package = await _context.Packages
-                    .Include(p => p.Supplier)
-                    .FirstOrDefaultAsync(m => m.PackageId == id);
-                if (package == null)
-                {
-                    return NotFound();
-                }
-
-                return View(package);
-            }
-
-            // POST: Package/Delete/5
-            [HttpPost, ActionName("Delete")]
-            [ValidateAntiForgeryToken]
-            public async Task<IActionResult> DeleteConfirmed(Guid id)
-            {
-                var package = await _context.Packages.FindAsync(id);
-                if (package != null)
-                {
-                    _context.Packages.Remove(package);
-                }
-
+                package.PackageId = Guid.NewGuid();
+                _context.Add(package);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(PackageIndex));
+            }
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId", package.SupplierId);
+            return View(package);
+        }
+
+        // GET: Package/Edit/5
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
             }
 
-            private bool PackageExists(Guid id)
+            var package = await _context.Packages.FindAsync(id);
+            if (package == null)
             {
-                return _context.Packages.Any(e => e.PackageId == id);
+                return NotFound();
             }
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId", package.SupplierId);
+            return View(package);
+        }
+
+        // POST: Package/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, [Bind("PackageId,SupplierId,Date,PackageType,PackSize,OrderQty,Price,Tax")] Package package)
+        {
+            if (id != package.PackageId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(package);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PackageExists(package.PackageId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(PackageIndex));
+            }
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId", package.SupplierId);
+            return View(package);
+        }
+
+        // GET: Package/Delete/5
+        public async Task<IActionResult> Delete(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var package = await _context.Packages
+                .Include(p => p.Supplier)
+                .FirstOrDefaultAsync(m => m.PackageId == id);
+            if (package == null)
+            {
+                return NotFound();
+            }
+
+            return View(package);
+        }
+
+        // POST: Package/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            var package = await _context.Packages.FindAsync(id);
+            if (package != null)
+            {
+                _context.Packages.Remove(package);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(PackageIndex));
+        }
+
+        private bool PackageExists(Guid id)
+        {
+            return _context.Packages.Any(e => e.PackageId == id);
         }
     }
+}

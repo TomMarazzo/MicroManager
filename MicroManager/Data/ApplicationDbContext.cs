@@ -35,7 +35,7 @@ namespace MicroManager.Data
         public DbSet<Product> ProductSize { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Shelving> Shelvings { get; set; }
+        public DbSet<Shelving> Shelving { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<MicroManager.Models.ProductSize> ProductSize_1 { get; set; } = default!;
     }
