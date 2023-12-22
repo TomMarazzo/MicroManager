@@ -29,23 +29,30 @@ namespace MicroManager.Controllers
                 get
                 {
                     double TotalPrice = 0;
-
+                    foreach (var items in Shelving)
+                    {
+                    return TotalPrice += items.TotalPrice;
+                    }
                     return TotalPrice;
+
                 }
             }
-            public double TotalGrowSpaces
+            public double TotalSpaces
             {
                 get
                 {
-                    double TotalSpaces = 0;
-
+                    int TotalSpaces = 0;
+                    foreach (var items in Shelving)
+                    {
+                        return TotalSpaces += items.TotalGrowSpaces;
+                    }
                     return TotalSpaces;
                 }
             }
         }
 
         // GET: Shelving
-        public async Task<IActionResult> ShelvingIndex()
+        public async Task<IActionResult> Index()
         {
             ShelvingViewModel shelvingViewModel = new ShelvingViewModel();
 
@@ -93,7 +100,7 @@ namespace MicroManager.Controllers
                 shelving.ShelvingId = Guid.NewGuid();
                 _context.Add(shelving);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(ShelvingIndex));
+                return RedirectToAction(nameof(Index));
             }
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", shelving.SupplierId);
             return View(shelving);
@@ -146,7 +153,7 @@ namespace MicroManager.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(ShelvingIndex));
+                return RedirectToAction(nameof(Index));
             }
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", shelving.SupplierId);
             return View(shelving);
@@ -183,7 +190,7 @@ namespace MicroManager.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ShelvingIndex));
+            return RedirectToAction(nameof(Index));
         }
 
         private bool ShelvingExists(Guid id)

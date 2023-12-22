@@ -25,20 +25,21 @@
             <th>
                 Tax
             </th>
-            <th>
+            
             <th>
                 Total Price
             </th>
+            <th>
                 Row
             </th>
             <th>
                 Column
             </th>
             <th>
-               Supplier
+                Total Grow Spaces
             </th>
             <th>
-                Total Grow Spaces
+                Supplier
             </th>
             <th></th>
         </tr>
@@ -59,7 +60,7 @@
                 @Html.DisplayFor(modelItem => item.Tax)
             </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Total)
+                    @Html.DisplayFor(modelItem => item.TotalPrice)
                 </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Row)
@@ -82,5 +83,5 @@
 }
     </tbody>
 </table>
-Total Purchase Prices @string.Format("${0:0.##}", (double)Model.TotalPurchasePrice)
- Total Grow Spaces @string.Format("${0:0.##}",(double)Model.TotalGrowSpaces) 
+Total Purchase Prices: @string.Format("${0:0.##}", (double)Model.TotalPurchasePrice)
+ Total Grow Spaces: @string.Format("{0:0.##}",(double)Model.TotalSpaces) 

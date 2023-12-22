@@ -19,7 +19,7 @@ namespace MicroManager.Models
         [Column(TypeName = "decimal(10, 2)")]
         public float Tax { get; set; }
         [Column(TypeName = "decimal(10, 2)")]
-        public float Total
+        public float TotalPrice
         {
             get
             {
