@@ -89,18 +89,6 @@ namespace MicroManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GrowMediaTypes",
-                columns: table => new
-                {
-                    GMTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GrowMediaTypes", x => x.GMTypeId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductSize_1",
                 columns: table => new
                 {
@@ -324,23 +312,16 @@ namespace MicroManager.Migrations
                 {
                     GrowMediaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GMTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Volume = table.Column<float>(type: "real", nullable: false),
-                    OrderQty = table.Column<int>(type: "int", nullable: false),
+                    OrderQty = table.Column<float>(type: "real", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     Tax = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GrowMedias", x => x.GrowMediaId);
-                    table.ForeignKey(
-                        name: "FK_GrowMedias_GrowMediaTypes_SupplierId",
-                        column: x => x.SupplierId,
-                        principalTable: "GrowMediaTypes",
-                        principalColumn: "GMTypeId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_GrowMedias_Suppliers_SupplierId",
                         column: x => x.SupplierId,
@@ -720,9 +701,6 @@ namespace MicroManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "GrowMediaTypes");
 
             migrationBuilder.DropTable(
                 name: "Orders");

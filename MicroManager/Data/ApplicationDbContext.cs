@@ -1,4 +1,5 @@
-﻿using MicroManager.Models;
+﻿using MicroManager.Enums;
+using MicroManager.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,8 +39,12 @@ namespace MicroManager.Data
         public DbSet<Shelving> Shelving { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<GrowMedia> GrowMedias { get; set; }
-        public DbSet<GrowMediaType> GrowMediaTypes { get; set; }
+       
         public DbSet<MicroManager.Models.ProductSize> ProductSize_1 { get; set; } = default!;
+
+        //******Multi Modles on 1 View**************
+        //public DbSet<ReportsViewModel> ReportsViewModels { get; set; }
+       
     }
 }
 

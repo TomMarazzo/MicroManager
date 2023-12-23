@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231222155320_updates1")]
-    partial class updates1
+    [Migration("20231223155855_updates")]
+    partial class updates
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -174,11 +174,8 @@ namespace MicroManager.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("GMTypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("OrderQty")
-                        .HasColumnType("int");
+                    b.Property<float>("OrderQty")
+                        .HasColumnType("real");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
@@ -198,26 +195,9 @@ namespace MicroManager.Migrations
 
                     b.HasKey("GrowMediaId");
 
-                    b.HasIndex("GMTypeId");
-
                     b.HasIndex("SupplierId");
 
                     b.ToTable("GrowMedias");
-                });
-
-            modelBuilder.Entity("MicroManager.Models.GrowMediaType", b =>
-                {
-                    b.Property<Guid>("GMTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("GMTypeId");
-
-                    b.ToTable("GrowMediaTypes");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Light", b =>
@@ -808,19 +788,11 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.GrowMedia", b =>
                 {
-                    b.HasOne("MicroManager.Models.GrowMediaType", "GrowMediaType")
-                        .WithMany("GrowMedias")
-                        .HasForeignKey("GMTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
                         .WithMany("GrowMedias")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("GrowMediaType");
 
                     b.Navigation("Supplier");
                 });
@@ -999,11 +971,6 @@ namespace MicroManager.Migrations
             modelBuilder.Entity("MicroManager.Models.CustomerType", b =>
                 {
                     b.Navigation("Customers");
-                });
-
-            modelBuilder.Entity("MicroManager.Models.GrowMediaType", b =>
-                {
-                    b.Navigation("GrowMedias");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Order", b =>
