@@ -1,14 +1,15 @@
 ﻿@model MicroManager.Models.GrowMedia
 
+
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Grow Media Detail </h1>
 
 <div>
-    <h4>GrowMedia</h4>
+    <h4></h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -51,9 +52,22 @@
             @Html.DisplayNameFor(model => model.Supplier)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Supplier.SupplierId)
+            @Html.DisplayFor(model => model.Supplier.CompanyName)
         </dd>
     </dl>
+
+    <dt class="col-sm-2">
+        Total Inventory  Qty
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.TotalMediaQty)
+    </dd>
+    <dt class="col-sm-2">
+        Total Inventory Price
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.TotalPrice)
+    </dd>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.GrowMediaId">Edit</a> |

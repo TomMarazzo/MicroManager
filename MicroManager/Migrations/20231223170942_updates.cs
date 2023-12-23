@@ -312,6 +312,7 @@ namespace MicroManager.Migrations
                 {
                     GrowMediaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GrowMediaTypesEnums = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Volume = table.Column<float>(type: "real", nullable: false),

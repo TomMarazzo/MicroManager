@@ -11,7 +11,8 @@ namespace MicroManager.Models
         [Key]
         public Guid GrowMediaId { get; set; } //PK
         public Guid SupplierId { get; set; } //FK
-        
+        public GrowMediaTypesEnum GrowMediaTypesEnums { get; set; }
+
 
         [Display(Name = "Date Y-M-D")]
         public DateOnly Date { get; set; }
@@ -51,5 +52,8 @@ namespace MicroManager.Models
         [ForeignKey(nameof(SupplierId))]
         [ValidateNever]
         public virtual Supplier? Supplier { get; set; }
+
+        
+
     }
 }

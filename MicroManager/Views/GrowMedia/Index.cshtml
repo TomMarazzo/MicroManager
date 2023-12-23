@@ -51,7 +51,13 @@
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Type)
+                    @Html.DisplayFor(modelItem => item.GrowMediaTypesEnums)
+                   @* @Html.DropDownList("Type", new List<SelectListItem> {
+                       new SelectListItem{Text="Potting Soil", Value="1" },
+                       new SelectListItem{Text="Coca", Value="2" },
+                       new SelectListItem{Text="Sand", Value="3" },
+                        new SelectListItem{Text="Paper Towel", Value="4" }
+                   }, "Select Type" ) *@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Volume)
@@ -83,15 +89,3 @@
         }
     </tbody>
 </table>
-
-Potting Soil Total @string.Format("${0:0.##}", (double)Model.PottingSoilTotal)
-Potting Soil Total Qty @string.Format("{0:0.##}", (double)Model.TotalVolume)
-
-    Coca Total @string.Format("${0:0.##}", (double)Model.CocaTotal)
-    Coca Total Qty @string.Format("{0:0.##}", (double)Model.TotalVolume)
-
-    Sand Total @string.Format("${0:0.##}", (double)Model.SandTotal)
-    Sand Total Qty @string.Format("{0:0.##}", (double)Model.TotalVolume)
-
-    Paper Towel Total @string.Format("${0:0.##}", (double)Model.PaperTowelTotal)
-    Paper Towel Total Qty @string.Format("{0:0.##}", (double)Model.TotalVolume)

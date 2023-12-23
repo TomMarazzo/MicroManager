@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231223155855_updates")]
-    partial class updates
+    [Migration("20231223171824_updates1")]
+    partial class updates1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,6 +173,9 @@ namespace MicroManager.Migrations
 
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
+
+                    b.Property<int>("GrowMediaTypesEnums")
+                        .HasColumnType("int");
 
                     b.Property<float>("OrderQty")
                         .HasColumnType("real");
