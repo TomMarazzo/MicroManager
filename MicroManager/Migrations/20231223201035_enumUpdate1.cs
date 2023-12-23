@@ -5,7 +5,7 @@
 namespace MicroManager.Migrations
 {
     /// <inheritdoc />
-    public partial class updates1 : Migration
+    public partial class enumUpdate1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

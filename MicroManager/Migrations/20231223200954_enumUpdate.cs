@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MicroManager.Migrations
 {
     /// <inheritdoc />
-    public partial class updates : Migration
+    public partial class enumUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,7 +89,7 @@ namespace MicroManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductSize_1",
+                name: "ProductSize",
                 columns: table => new
                 {
                     ProductSizeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -98,11 +98,11 @@ namespace MicroManager.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductSize_1", x => x.ProductSizeId);
+                    table.PrimaryKey("PK_ProductSize", x => x.ProductSizeId);
                     table.ForeignKey(
-                        name: "FK_ProductSize_1_ProductSize_1_ProductSizeId1",
+                        name: "FK_ProductSize_ProductSize_ProductSizeId1",
                         column: x => x.ProductSizeId1,
-                        principalTable: "ProductSize_1",
+                        principalTable: "ProductSize",
                         principalColumn: "ProductSizeId");
                 });
 
@@ -299,9 +299,9 @@ namespace MicroManager.Migrations
                         principalTable: "Crops",
                         principalColumn: "CropId");
                     table.ForeignKey(
-                        name: "FK_Product_ProductSize_1_ProductSizeId",
+                        name: "FK_Product_ProductSize_ProductSizeId",
                         column: x => x.ProductSizeId,
-                        principalTable: "ProductSize_1",
+                        principalTable: "ProductSize",
                         principalColumn: "ProductSizeId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -311,21 +311,21 @@ namespace MicroManager.Migrations
                 columns: table => new
                 {
                     GrowMediaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GrowMediaTypesEnums = table.Column<int>(type: "int", nullable: false),
+                    Supplier_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Volume = table.Column<float>(type: "real", nullable: false),
                     OrderQty = table.Column<float>(type: "real", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
-                    Tax = table.Column<float>(type: "real", nullable: false)
+                    Tax = table.Column<float>(type: "real", nullable: false),
+                    GrowMediaTypeEnums = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GrowMedias", x => x.GrowMediaId);
                     table.ForeignKey(
-                        name: "FK_GrowMedias_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
+                        name: "FK_GrowMedias_Suppliers_Supplier_Id",
+                        column: x => x.Supplier_Id,
                         principalTable: "Suppliers",
                         principalColumn: "SupplierId",
                         onDelete: ReferentialAction.Cascade);
@@ -587,9 +587,9 @@ namespace MicroManager.Migrations
                 column: "CustomerTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GrowMedias_SupplierId",
+                name: "IX_GrowMedias_Supplier_Id",
                 table: "GrowMedias",
-                column: "SupplierId");
+                column: "Supplier_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Lights_SupplierId",
@@ -632,8 +632,8 @@ namespace MicroManager.Migrations
                 column: "ProductSizeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSize_1_ProductSizeId1",
-                table: "ProductSize_1",
+                name: "IX_ProductSize_ProductSizeId1",
+                table: "ProductSize",
                 column: "ProductSizeId1");
 
             migrationBuilder.CreateIndex(
@@ -722,7 +722,7 @@ namespace MicroManager.Migrations
                 name: "Crops");
 
             migrationBuilder.DropTable(
-                name: "ProductSize_1");
+                name: "ProductSize");
         }
     }
 }

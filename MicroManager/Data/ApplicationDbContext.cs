@@ -16,9 +16,7 @@ namespace MicroManager.Data
         //*******************MUST ADD THIS SECTION TO FILE************************
         protected override void OnModelCreating(ModelBuilder modelBuilder) //Model Relationships
         {
-            base.OnModelCreating(modelBuilder);
-
-
+            base.OnModelCreating(modelBuilder);           
 
         }
 
@@ -39,12 +37,12 @@ namespace MicroManager.Data
         public DbSet<Shelving> Shelving { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<GrowMedia> GrowMedias { get; set; }
-       
-        public DbSet<MicroManager.Models.ProductSize> ProductSize_1 { get; set; } = default!;
+        public DbSet<TypeMedia> TypeMedias { get; set; }
+
+
 
         //******Multi Modles on 1 View**************
         //public DbSet<ReportsViewModel> ReportsViewModels { get; set; }
-       
+
     }
 }
-

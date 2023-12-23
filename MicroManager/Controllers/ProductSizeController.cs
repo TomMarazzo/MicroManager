@@ -22,7 +22,7 @@ namespace MicroManager.Controllers
         // GET: ProductSize
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProductSize_1.ToListAsync());
+            return View(await _context.ProductSize.ToListAsync());
         }
 
         // GET: ProductSize/Details/5
@@ -33,7 +33,7 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.ProductSize_1
+            var productSize = await _context.ProductSize
                 .FirstOrDefaultAsync(m => m.ProductSizeId == id);
             if (productSize == null)
             {
@@ -74,7 +74,7 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.ProductSize_1.FindAsync(id);
+            var productSize = await _context.ProductSize.FindAsync(id);
             if (productSize == null)
             {
                 return NotFound();
@@ -125,7 +125,7 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.ProductSize_1
+            var productSize = await _context.ProductSize
                 .FirstOrDefaultAsync(m => m.ProductSizeId == id);
             if (productSize == null)
             {
@@ -140,10 +140,10 @@ namespace MicroManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var productSize = await _context.ProductSize_1.FindAsync(id);
+            var productSize = await _context.ProductSize.FindAsync(id);
             if (productSize != null)
             {
-                _context.ProductSize_1.Remove(productSize);
+                _context.ProductSize.Remove(productSize);
             }
 
             await _context.SaveChangesAsync();
@@ -152,7 +152,7 @@ namespace MicroManager.Controllers
 
         private bool ProductSizeExists(Guid id)
         {
-            return _context.ProductSize_1.Any(e => e.ProductSizeId == id);
+            return _context.ProductSize.Any(e => e.ProductSizeId == id);
         }
     }
 }

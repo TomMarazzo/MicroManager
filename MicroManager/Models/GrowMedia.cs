@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using MicroManager.Enums;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using MicroManager.Enums;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace MicroManager.Models
 {
@@ -10,12 +12,11 @@ namespace MicroManager.Models
     {
         [Key]
         public Guid GrowMediaId { get; set; } //PK
-        public Guid SupplierId { get; set; } //FK
-        public GrowMediaTypesEnum GrowMediaTypesEnums { get; set; }
-
-
+        public Guid Supplier_Id { get; set; } //FK
+        
         [Display(Name = "Date Y-M-D")]
         public DateOnly Date { get; set; }
+
         [Display(Name = "Grow Media Types")]
         public string Type { get; set; }
         public float Volume { get; set; }
@@ -47,13 +48,19 @@ namespace MicroManager.Models
             }
         }
 
-        
-
-        [ForeignKey(nameof(SupplierId))]
+        //For Supplier Dropdown from Dbase
+        [ForeignKey(nameof(Supplier_Id))]
         [ValidateNever]
         public virtual Supplier? Supplier { get; set; }
 
-        
 
+        public string? GrowMediaTypeEnums { get; set; } //Enum
+
+    }
+
+    public class TypeMedia 
+    {
+        public Guid TypeMediaId { get; set; }
+        public string NameType { get; set; }
     }
 }

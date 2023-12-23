@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231223171824_updates1")]
-    partial class updates1
+    [Migration("20231223200954_enumUpdate")]
+    partial class enumUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -174,8 +174,8 @@ namespace MicroManager.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<int>("GrowMediaTypesEnums")
-                        .HasColumnType("int");
+                    b.Property<string>("GrowMediaTypeEnums")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("OrderQty")
                         .HasColumnType("real");
@@ -183,7 +183,7 @@ namespace MicroManager.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<Guid>("SupplierId")
+                    b.Property<Guid>("Supplier_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("Tax")
@@ -198,7 +198,7 @@ namespace MicroManager.Migrations
 
                     b.HasKey("GrowMediaId");
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex("Supplier_Id");
 
                     b.ToTable("GrowMedias");
                 });
@@ -374,7 +374,7 @@ namespace MicroManager.Migrations
 
                     b.HasIndex("ProductSizeId1");
 
-                    b.ToTable("ProductSize_1");
+                    b.ToTable("ProductSize");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Schedule", b =>
@@ -793,7 +793,7 @@ namespace MicroManager.Migrations
                 {
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
                         .WithMany("GrowMedias")
-                        .HasForeignKey("SupplierId")
+                        .HasForeignKey("Supplier_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

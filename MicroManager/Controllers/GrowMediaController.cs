@@ -9,6 +9,7 @@ using MicroManager.Data;
 using MicroManager.Models;
 using static MicroManager.Controllers.PackageController;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using MicroManager.Enums;
 
 namespace MicroManager.Controllers
 {
@@ -32,7 +33,7 @@ namespace MicroManager.Controllers
                     double Total = 0;
                     foreach (var items in GrowMedias)
                     {
-                        if (items.Type == "PottingSoil")
+                        if (items.Type == GrowMediaTypeEnum.PottingSoil.ToString())
                         {
                             Total += items.TotalPrice;
                         }
@@ -47,7 +48,7 @@ namespace MicroManager.Controllers
                     double Total = 0;
                     foreach (var items in GrowMedias)
                     {
-                        if (items.Type == "Coca")
+                        if (items.Type == GrowMediaTypeEnum.Coca.ToString())
                         {
                             Total += items.TotalPrice;
                         }
@@ -62,7 +63,7 @@ namespace MicroManager.Controllers
                     double Total = 0;
                     foreach (var items in GrowMedias)
                     {
-                        if (items.Type == "Sand")
+                        if (items.Type == GrowMediaTypeEnum.Sand.ToString())
                         {
                             Total += items.TotalPrice;
                         }
@@ -78,7 +79,7 @@ namespace MicroManager.Controllers
                     double Total = 0;
                     foreach (var items in GrowMedias)
                     {
-                        if (items.Type == "Paper Towel")
+                        if (items.Type == GrowMediaTypeEnum.PaperTowel.ToString())
                         {
                             Total += items.TotalPrice;
                         }
@@ -105,9 +106,25 @@ namespace MicroManager.Controllers
         // GET: GrowMedia ****************Changes for Report*********
         public async Task<IActionResult> Index()
         {
+            if(!_context.TypeMedias.Any())
+            {
+                List<TypeMedia> typeMedia = new ();
+                TypeMedia typeMedia2 = new() {NameType = "Potting Soil" };
+                TypeMedia typeMedia3 = new() { NameType = "Coca" };
+                TypeMedia typeMedia4 = new() { NameType = "Sand" };
+                TypeMedia typeMedia5 = new() { NameType = "Paper Towel" };
+
+                typeMedia.Add (typeMedia2);
+                typeMedia.Add(typeMedia3);
+                typeMedia.Add(typeMedia4);
+                typeMedia.Add(typeMedia5);
+                await _context.AddRangeAsync(typeMedia);
+                await _context.SaveChangesAsync();
+            }
+            var MediaType = await _context.TypeMedias.ToListAsync();
             GrowMediaViewModel packageViewModel = new GrowMediaViewModel();
 
-            packageViewModel.GrowMedias = await _context.GrowMedias.Include(p => p.Supplier).ToListAsync();
+            packageViewModel.GrowMedias = await _context.GrowMedias.ToListAsync(); //Removes Supplier
 
             return View(packageViewModel);
         }
@@ -135,6 +152,7 @@ namespace MicroManager.Controllers
         public IActionResult Create()
         {
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
+            ViewData["MediaType"] = new SelectList(_context.TypeMedias, "NameType", "NameType");
             return View();
         }
 
@@ -143,7 +161,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GrowMediaId,SupplierId,Date,Type,Volume,OrderQty,Price,Tax")] GrowMedia growMedia)
+        public async Task<IActionResult> Create([Bind("GrowMediaId,Supplier_Id,Date,Type,Volume,OrderQty,Price,Tax")] GrowMedia growMedia)
         {
             if (ModelState.IsValid)
             {
@@ -152,7 +170,9 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", growMedia.SupplierId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
+            ViewData["MediaType"] = new SelectList(_context.TypeMedias, "NameType", "NameType");
+
             return View(growMedia);
         }
 
@@ -169,7 +189,8 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", growMedia.SupplierId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
+            ViewData["MediaType"] = new SelectList(_context.TypeMedias, "NameType", "NameType");
             return View(growMedia);
         }
 
@@ -178,7 +199,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("GrowMediaId,SupplierId,Date,Type,Volume,OrderQty,Price,Tax")] GrowMedia growMedia)
+        public async Task<IActionResult> Edit(Guid id, [Bind("GrowMediaId,Supplier_Id,Date,Type,Volume,OrderQty,Price,Tax")] GrowMedia growMedia)
         {
             if (id != growMedia.GrowMediaId)
             {
@@ -205,7 +226,8 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", growMedia.SupplierId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
+            ViewData["MediaType"] = new SelectList(_context.TypeMedias, "NameType", "NameType");
             return View(growMedia);
         }
 

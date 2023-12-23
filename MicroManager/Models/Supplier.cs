@@ -24,6 +24,6 @@ namespace MicroManager.Models
         public virtual List<Light>? Lights { get; set; }
         public virtual List<Package>? Packages { get; set; }
         public virtual List<GrowMedia>? GrowMedias { get; set; }
-        //public virtual List<GrowMediaType>? GrowMediaTypes { get; set; }
+        //public virtual List<GrowMedia>? Grow { get; set; }
     }
 }
