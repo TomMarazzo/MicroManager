@@ -58,8 +58,20 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Light" asp-action="Index">Grow Lights</a>
                         </li>
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="GrowMediaType" asp-action="Index">Grow Media Type</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="GrowMedia" asp-action="Index">Grow Media</a>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" /> @* ********DON'T TOUCH THIS**************' *@
+                    <div class="p-2 border rounded">
+                        <div class="form-check form-switch" id="btnSwitch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Mode</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -70,11 +82,23 @@
         </main>
     </div>
 
+
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2023 - MicroManager - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+    <script type="text/javascript">
+        document.getElementById('btnSwitch').addEventListener('click', () => {
+            if (document.documentElement.getAttribute('data-bs-theme') == 'dark') {
+                document.documentElement.getAttribute('data-bs-theme', 'light')
+            }
+            else {
+                document.documentElement.getAttribute('data-bs-theme', 'dark')
+            }
+        })</script>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -89,6 +89,18 @@ namespace MicroManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GrowMediaTypes",
+                columns: table => new
+                {
+                    GMTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GrowMediaTypes", x => x.GMTypeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductSize_1",
                 columns: table => new
                 {
@@ -303,6 +315,37 @@ namespace MicroManager.Migrations
                         column: x => x.ProductSizeId,
                         principalTable: "ProductSize_1",
                         principalColumn: "ProductSizeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GrowMedias",
+                columns: table => new
+                {
+                    GrowMediaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GMTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Volume = table.Column<float>(type: "real", nullable: false),
+                    OrderQty = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    Tax = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GrowMedias", x => x.GrowMediaId);
+                    table.ForeignKey(
+                        name: "FK_GrowMedias_GrowMediaTypes_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "GrowMediaTypes",
+                        principalColumn: "GMTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GrowMedias_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
+                        principalColumn: "SupplierId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -562,6 +605,11 @@ namespace MicroManager.Migrations
                 column: "CustomerTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GrowMedias_SupplierId",
+                table: "GrowMedias",
+                column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Lights_SupplierId",
                 table: "Lights",
                 column: "SupplierId");
@@ -644,6 +692,9 @@ namespace MicroManager.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
+                name: "GrowMedias");
+
+            migrationBuilder.DropTable(
                 name: "Lights");
 
             migrationBuilder.DropTable(
@@ -669,6 +720,9 @@ namespace MicroManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "GrowMediaTypes");
 
             migrationBuilder.DropTable(
                 name: "Orders");

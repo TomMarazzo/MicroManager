@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231222150429_updates")]
-    partial class updates
+    [Migration("20231222155320_updates1")]
+    partial class updates1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -163,6 +163,61 @@ namespace MicroManager.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CustomerTypes");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.GrowMedia", b =>
+                {
+                    b.Property<Guid>("GrowMediaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("GMTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("OrderQty")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("Tax")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Volume")
+                        .HasColumnType("real");
+
+                    b.HasKey("GrowMediaId");
+
+                    b.HasIndex("GMTypeId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("GrowMedias");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.GrowMediaType", b =>
+                {
+                    b.Property<Guid>("GMTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GMTypeId");
+
+                    b.ToTable("GrowMediaTypes");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Light", b =>
@@ -751,6 +806,25 @@ namespace MicroManager.Migrations
                     b.Navigation("CustomerType");
                 });
 
+            modelBuilder.Entity("MicroManager.Models.GrowMedia", b =>
+                {
+                    b.HasOne("MicroManager.Models.GrowMediaType", "GrowMediaType")
+                        .WithMany("GrowMedias")
+                        .HasForeignKey("GMTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MicroManager.Models.Supplier", "Supplier")
+                        .WithMany("GrowMedias")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GrowMediaType");
+
+                    b.Navigation("Supplier");
+                });
+
             modelBuilder.Entity("MicroManager.Models.Light", b =>
                 {
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
@@ -927,6 +1001,11 @@ namespace MicroManager.Migrations
                     b.Navigation("Customers");
                 });
 
+            modelBuilder.Entity("MicroManager.Models.GrowMediaType", b =>
+                {
+                    b.Navigation("GrowMedias");
+                });
+
             modelBuilder.Entity("MicroManager.Models.Order", b =>
                 {
                     b.Navigation("OrderDetails");
@@ -939,6 +1018,8 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.Supplier", b =>
                 {
+                    b.Navigation("GrowMedias");
+
                     b.Navigation("Lights");
 
                     b.Navigation("Packages");

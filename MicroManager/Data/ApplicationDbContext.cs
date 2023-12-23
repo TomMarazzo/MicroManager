@@ -37,6 +37,8 @@ namespace MicroManager.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Shelving> Shelving { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<GrowMedia> GrowMedias { get; set; }
+        public DbSet<GrowMediaType> GrowMediaTypes { get; set; }
         public DbSet<MicroManager.Models.ProductSize> ProductSize_1 { get; set; } = default!;
     }
 }

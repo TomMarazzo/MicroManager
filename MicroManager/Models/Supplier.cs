@@ -23,5 +23,6 @@ namespace MicroManager.Models
         public virtual List<Tray>? Trays { get; set; }
         public virtual List<Light>? Lights { get; set; }
         public virtual List<Package>? Packages { get; set; }
+        public virtual List<GrowMedia>? GrowMedias { get; set; }
     }
 }

@@ -1,23 +1,29 @@
-﻿@model IEnumerable<MicroManager.Models.Light>
+﻿@model IEnumerable<MicroManager.Models.GrowMedia>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Add Lighting</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
+                @Html.DisplayNameFor(model => model.GMTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Volume)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.OrderQty)
@@ -29,6 +35,9 @@
                 @Html.DisplayNameFor(model => model.Tax)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.GrowMediaType)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Supplier)
             </th>
             <th></th>
@@ -38,10 +47,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
+                @Html.DisplayFor(modelItem => item.GMTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Volume)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OrderQty)
@@ -53,12 +68,15 @@
                 @Html.DisplayFor(modelItem => item.Tax)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
+                @Html.DisplayFor(modelItem => item.GrowMediaType.GMTypeId)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.LightId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.LightId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.LightId">Delete</a>
+                @Html.DisplayFor(modelItem => item.Supplier.SupplierId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.GrowMediaId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.GrowMediaId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.GrowMediaId">Delete</a>
             </td>
         </tr>
 }

@@ -4,6 +4,7 @@ using MicroManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231222154727_updates")]
+    partial class updates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,8 +197,6 @@ namespace MicroManager.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("GrowMediaId");
-
-                    b.HasIndex("GMTypeId");
 
                     b.HasIndex("SupplierId");
 
@@ -807,7 +808,7 @@ namespace MicroManager.Migrations
                 {
                     b.HasOne("MicroManager.Models.GrowMediaType", "GrowMediaType")
                         .WithMany("GrowMedias")
-                        .HasForeignKey("GMTypeId")
+                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
