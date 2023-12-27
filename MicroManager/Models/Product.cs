@@ -8,8 +8,8 @@ namespace MicroManager.Models
     {
         public Guid ProductId { get; set; } //PK
         [Required]
-        public Guid CropId{ get; set; } //FK
-        public Guid ProductSizeId {  get; set; } //FK
+        public Guid Crop_Id{ get; set; } //FK
+        public Guid ProductSize_Id {  get; set; } //FK
         
         public virtual Crop? Crop { get; set; }
         [Display(Name = "Weight (oz)")]
@@ -20,11 +20,11 @@ namespace MicroManager.Models
         public decimal Price { get; set; }
 
         
-        [ForeignKey(nameof(ProductSizeId))]
+        [ForeignKey(nameof(ProductSize_Id))]
         [ValidateNever]
         public virtual ProductSize? ProductSize { get; set; }
 
-        [ForeignKey(nameof(CropId))]
+        [ForeignKey(nameof(Crop_Id))]
         [ValidateNever]
         public virtual Crop? Crops { get; set; }
     }

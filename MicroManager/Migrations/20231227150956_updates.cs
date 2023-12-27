@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MicroManager.Migrations
 {
     /// <inheritdoc />
-    public partial class update : Migration
+    public partial class updates : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -287,7 +287,8 @@ namespace MicroManager.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -305,9 +306,9 @@ namespace MicroManager.Migrations
                 columns: table => new
                 {
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CropId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductSizeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CropId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Crop_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductSize_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CropId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Weight = table.Column<double>(type: "float", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
@@ -318,16 +319,16 @@ namespace MicroManager.Migrations
                         name: "FK_Product_Crops_CropId",
                         column: x => x.CropId,
                         principalTable: "Crops",
+                        principalColumn: "CropId");
+                    table.ForeignKey(
+                        name: "FK_Product_Crops_Crop_Id",
+                        column: x => x.Crop_Id,
+                        principalTable: "Crops",
                         principalColumn: "CropId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Product_Crops_CropId1",
-                        column: x => x.CropId1,
-                        principalTable: "Crops",
-                        principalColumn: "CropId");
-                    table.ForeignKey(
-                        name: "FK_Product_ProductSize_ProductSizeId",
-                        column: x => x.ProductSizeId,
+                        name: "FK_Product_ProductSize_ProductSize_Id",
+                        column: x => x.ProductSize_Id,
                         principalTable: "ProductSize",
                         principalColumn: "ProductSizeId",
                         onDelete: ReferentialAction.Cascade);
@@ -339,11 +340,9 @@ namespace MicroManager.Migrations
                 {
                     EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Role_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EmpNumber = table.Column<int>(type: "int", nullable: false),
-                    MyProperty = table.Column<int>(type: "int", nullable: false),
+                    EmployeeNumber = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -396,8 +395,8 @@ namespace MicroManager.Migrations
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderQty = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Tax = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    Tax = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -678,19 +677,19 @@ namespace MicroManager.Migrations
                 column: "Supplier_Id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Product_Crop_Id",
+                table: "Product",
+                column: "Crop_Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Product_CropId",
                 table: "Product",
                 column: "CropId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_CropId1",
+                name: "IX_Product_ProductSize_Id",
                 table: "Product",
-                column: "CropId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Product_ProductSizeId",
-                table: "Product",
-                column: "ProductSizeId");
+                column: "ProductSize_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductSize_ProductSizeId1",

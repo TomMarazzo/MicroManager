@@ -5,25 +5,25 @@
 namespace MicroManager.Migrations
 {
     /// <inheritdoc />
-    public partial class update2 : Migration
+    public partial class updates2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Phone",
-                table: "Customers",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+            migrationBuilder.DropColumn(
+                name: "NoTrays",
+                table: "Trays");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Phone",
-                table: "Customers");
+            migrationBuilder.AddColumn<int>(
+                name: "NoTrays",
+                table: "Trays",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
         }
     }
 }

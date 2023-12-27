@@ -68,8 +68,8 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Name", product.CropId);
-            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSizeId);
+            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Name", product.Crop_Id);
+            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSize_Id);
             return View(product);
         }
 
@@ -86,8 +86,8 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Name", product.CropId);
-            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSizeId);
+            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Name", product.Crop_Id);
+            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSize_Id);
             return View(product);
         }
 
@@ -123,8 +123,8 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Name", product.CropId);
-            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSizeId);
+            ViewData["CropId"] = new SelectList(_context.Crops, "CropId", "Name", product.Crop_Id);
+            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSize_Id);
             return View(product);
         }
 

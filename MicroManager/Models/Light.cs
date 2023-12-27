@@ -16,11 +16,13 @@ namespace MicroManager.Models
         [Display(Name = "Qty")]
         public int OrderQty { get; set; }
 
-        [Column(TypeName = "decimal(10, 2)")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        [Required]
+        [Range(0.01, 999999)]
         public float Price { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        
         public float Tax { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public float Total
         {
             get

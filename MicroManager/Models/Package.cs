@@ -9,6 +9,7 @@ namespace MicroManager.Models
     {
         [Key]
         public Guid PackageId { get; set; } //PK
+        [Display(Name = "Supplier")]
         public Guid Supplier_Id { get; set; } //FK
         [Display(Name = "Date Y-M-D")]
         public DateTime Date { get; set; }
@@ -16,7 +17,7 @@ namespace MicroManager.Models
 
         [Display(Name = "Pack Size")]
         public int PackSize { get; set; }
-
+        [Display(Name = "Order Qty")]
         public int OrderQty { get; set; }
 
         [Column(TypeName = "decimal(10, 2)")]

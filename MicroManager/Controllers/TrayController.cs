@@ -10,22 +10,25 @@ using MicroManager.Models;
 
 namespace MicroManager.Controllers
 {
-    public class ProductSizeController : Controller
+    public class TrayController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductSizeController(ApplicationDbContext context)
+        public TrayController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: ProductSize
+
+
+        // GET: Tray
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProductSize.ToListAsync());
+            var applicationDbContext = _context.Trays.Include(t => t.Supplier);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: ProductSize/Details/5
+        // GET: Tray/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -33,40 +36,43 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.ProductSize
-                .FirstOrDefaultAsync(m => m.ProductSize_Id == id);
-            if (productSize == null)
+            var tray = await _context.Trays
+                .Include(t => t.Supplier)
+                .FirstOrDefaultAsync(m => m.TrayId == id);
+            if (tray == null)
             {
                 return NotFound();
             }
 
-            return View(productSize);
+            return View(tray);
         }
 
-        // GET: ProductSize/Create
+        // GET: Tray/Create
         public IActionResult Create()
         {
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
             return View();
         }
 
-        // POST: ProductSize/Create
+        // POST: Tray/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductSizeId,Size")] ProductSize productSize)
+        public async Task<IActionResult> Create([Bind("TrayId,Supplier_Id,Date,Type,Qty,Qty_pack,NoTrays,Price,Tax")] Tray tray)
         {
             if (ModelState.IsValid)
             {
-                productSize.ProductSizeId = Guid.NewGuid();
-                _context.Add(productSize);
+                tray.TrayId = Guid.NewGuid();
+                _context.Add(tray);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(productSize);
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", tray.Supplier_Id);
+            return View(tray);
         }
 
-        // GET: ProductSize/Edit/5
+        // GET: Tray/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -74,22 +80,23 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.ProductSize.FindAsync(id);
-            if (productSize == null)
+            var tray = await _context.Trays.FindAsync(id);
+            if (tray == null)
             {
                 return NotFound();
             }
-            return View(productSize);
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", tray.Supplier_Id);
+            return View(tray);
         }
 
-        // POST: ProductSize/Edit/5
+        // POST: Tray/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ProductSizeId,Size")] ProductSize productSize)
+        public async Task<IActionResult> Edit(Guid id, [Bind("TrayId,Supplier_Id,Date,Type,Qty,Qty_pack,NoTrays,Price,Tax")] Tray tray)
         {
-            if (id != productSize.ProductSizeId)
+            if (id != tray.TrayId)
             {
                 return NotFound();
             }
@@ -98,12 +105,12 @@ namespace MicroManager.Controllers
             {
                 try
                 {
-                    _context.Update(productSize);
+                    _context.Update(tray);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductSizeExists(productSize.ProductSizeId))
+                    if (!TrayExists(tray.TrayId))
                     {
                         return NotFound();
                     }
@@ -114,10 +121,11 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(productSize);
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", tray.Supplier_Id);
+            return View(tray);
         }
 
-        // GET: ProductSize/Delete/5
+        // GET: Tray/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -125,34 +133,35 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.ProductSize
-                .FirstOrDefaultAsync(m => m.ProductSize_Id == id);
-            if (productSize == null)
+            var tray = await _context.Trays
+                .Include(t => t.Supplier)
+                .FirstOrDefaultAsync(m => m.TrayId == id);
+            if (tray == null)
             {
                 return NotFound();
             }
 
-            return View(productSize);
+            return View(tray);
         }
 
-        // POST: ProductSize/Delete/5
+        // POST: Tray/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var productSize = await _context.ProductSize.FindAsync(id);
-            if (productSize != null)
+            var tray = await _context.Trays.FindAsync(id);
+            if (tray != null)
             {
-                _context.ProductSize.Remove(productSize);
+                _context.Trays.Remove(tray);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductSizeExists(Guid id)
+        private bool TrayExists(Guid id)
         {
-            return _context.ProductSize.Any(e => e.ProductSize_Id == id);
+            return _context.Trays.Any(e => e.TrayId == id);
         }
     }
 }

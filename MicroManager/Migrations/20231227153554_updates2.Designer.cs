@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231227130255_update1")]
-    partial class update1
+    [Migration("20231227153554_updates2")]
+    partial class updates2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,10 @@ namespace MicroManager.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -266,14 +270,14 @@ namespace MicroManager.Migrations
                     b.Property<int>("OrderQty")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(10, 2)");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<Guid>("Supplier_Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Tax")
-                        .HasColumnType("decimal(10, 2)");
+                    b.Property<float>("Tax")
+                        .HasColumnType("real");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -382,16 +386,16 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CropId")
+                    b.Property<Guid?>("CropId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CropId1")
+                    b.Property<Guid>("Crop_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<Guid>("ProductSizeId")
+                    b.Property<Guid>("ProductSize_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double?>("Weight")
@@ -401,9 +405,9 @@ namespace MicroManager.Migrations
 
                     b.HasIndex("CropId");
 
-                    b.HasIndex("CropId1");
+                    b.HasIndex("Crop_Id");
 
-                    b.HasIndex("ProductSizeId");
+                    b.HasIndex("ProductSize_Id");
 
                     b.ToTable("Product");
                 });
@@ -602,20 +606,20 @@ namespace MicroManager.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(10, 2)");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<float>("Qty")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Qty_pack")
                         .HasColumnType("real");
 
                     b.Property<Guid>("Supplier_Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Tax")
-                        .HasColumnType("decimal(10, 2)");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(10, 2)");
+                    b.Property<float>("Tax")
+                        .HasColumnType("real");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -956,19 +960,19 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.Product", b =>
                 {
+                    b.HasOne("MicroManager.Models.Crop", "Crop")
+                        .WithMany()
+                        .HasForeignKey("CropId");
+
                     b.HasOne("MicroManager.Models.Crop", "Crops")
                         .WithMany()
-                        .HasForeignKey("CropId")
+                        .HasForeignKey("Crop_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MicroManager.Models.Crop", "Crop")
-                        .WithMany()
-                        .HasForeignKey("CropId1");
-
                     b.HasOne("MicroManager.Models.ProductSize", "ProductSize")
                         .WithMany()
-                        .HasForeignKey("ProductSizeId")
+                        .HasForeignKey("ProductSize_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

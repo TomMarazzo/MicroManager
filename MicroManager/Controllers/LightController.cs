@@ -57,7 +57,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LightId,Supplier_Id,DateCreated,Type,OrderQty,Price,Tax")] Light light)
+        public async Task<IActionResult> Create([Bind("LightId,Supplier_Id,DateCreated,Type,OrderQty,Price,Tax,Total")] Light light)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("LightId,SupplierId,DateCreated,Type,OrderQty,Price,Tax")] Light light)
+        public async Task<IActionResult> Edit(Guid id, [Bind("LightId,SupplierId,DateCreated,Type,OrderQty,Price,Tax, Total")] Light light)
         {
             if (id != light.LightId)
             {
