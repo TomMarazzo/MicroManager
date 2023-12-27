@@ -10,23 +10,22 @@ using MicroManager.Models;
 
 namespace MicroManager.Controllers
 {
-    public class CustomerController : Controller
+    public class RoleController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CustomerController(ApplicationDbContext context)
+        public RoleController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Customer
+        // GET: Role
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Customers.Include(c => c.CustomerType);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Roles.ToListAsync());
         }
 
-        // GET: Customer/Details/5
+        // GET: Role/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -34,43 +33,40 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.CustomerType)
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
+            var role = await _context.Roles
+                .FirstOrDefaultAsync(m => m.RoleId == id);
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return View(customer);
+            return View(role);
         }
 
-        // GET: Customer/Create
+        // GET: Role/Create
         public IActionResult Create()
         {
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type");
             return View();
         }
 
-        // POST: Customer/Create
+        // POST: Role/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,CustomerTypeId,CompanyName,FirstName,LastName,Address,City,Region,PostalCode,Country,Phone")] Customer customer)
+        public async Task<IActionResult> Create([Bind("RoleId,RoleTitle")] Role role)
         {
             if (ModelState.IsValid)
             {
-                customer.CustomerId = Guid.NewGuid();
-                _context.Add(customer);
+                role.RoleId = Guid.NewGuid();
+                _context.Add(role);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type", customer.CustomerTypeId);
-            return View(customer);
+            return View(role);
         }
 
-        // GET: Customer/Edit/5
+        // GET: Role/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -78,23 +74,22 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
+            var role = await _context.Roles.FindAsync(id);
+            if (role == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type", customer.CustomerTypeId);
-            return View(customer);
+            return View(role);
         }
 
-        // POST: Customer/Edit/5
+        // POST: Role/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CustomerId,CustomerTypeId,CompanyName,FirstName,LastName,Address,City,Region,PostalCode,Country,Phone")] Customer customer)
+        public async Task<IActionResult> Edit(Guid id, [Bind("RoleId,RoleTitle")] Role role)
         {
-            if (id != customer.CustomerId)
+            if (id != role.RoleId)
             {
                 return NotFound();
             }
@@ -103,12 +98,12 @@ namespace MicroManager.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
+                    _context.Update(role);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.CustomerId))
+                    if (!RoleExists(role.RoleId))
                     {
                         return NotFound();
                     }
@@ -119,11 +114,10 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type", customer.CustomerTypeId);
-            return View(customer);
+            return View(role);
         }
 
-        // GET: Customer/Delete/5
+        // GET: Role/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -131,35 +125,34 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.CustomerType)
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
+            var role = await _context.Roles
+                .FirstOrDefaultAsync(m => m.RoleId == id);
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return View(customer);
+            return View(role);
         }
 
-        // POST: Customer/Delete/5
+        // POST: Role/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer != null)
+            var role = await _context.Roles.FindAsync(id);
+            if (role != null)
             {
-                _context.Customers.Remove(customer);
+                _context.Roles.Remove(role);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerExists(Guid id)
+        private bool RoleExists(Guid id)
         {
-            return _context.Customers.Any(e => e.CustomerId == id);
+            return _context.Roles.Any(e => e.RoleId == id);
         }
     }
 }

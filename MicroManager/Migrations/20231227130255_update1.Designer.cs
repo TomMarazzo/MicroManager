@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231223204305_enumUpdate2")]
-    partial class enumUpdate2
+    [Migration("20231227130255_update1")]
+    partial class update1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,14 +165,65 @@ namespace MicroManager.Migrations
                     b.ToTable("CustomerTypes");
                 });
 
+            modelBuilder.Entity("MicroManager.Models.Employee", b =>
+                {
+                    b.Property<Guid>("EmployeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EMail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Role_Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("EmployeeId");
+
+                    b.HasIndex("Role_Id");
+
+                    b.ToTable("Employees");
+                });
+
             modelBuilder.Entity("MicroManager.Models.GrowMedia", b =>
                 {
                     b.Property<Guid>("GrowMediaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("GrowMediaTypeEnums")
                         .HasColumnType("nvarchar(max)");
@@ -218,7 +269,7 @@ namespace MicroManager.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<Guid>("SupplierId")
+                    b.Property<Guid>("Supplier_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Tax")
@@ -230,7 +281,7 @@ namespace MicroManager.Migrations
 
                     b.HasKey("LightId");
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex("Supplier_Id");
 
                     b.ToTable("Lights");
                 });
@@ -312,7 +363,7 @@ namespace MicroManager.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<Guid>("SupplierId")
+                    b.Property<Guid>("Supplier_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Tax")
@@ -320,7 +371,7 @@ namespace MicroManager.Migrations
 
                     b.HasKey("PackageId");
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex("Supplier_Id");
 
                     b.ToTable("Packages");
                 });
@@ -377,6 +428,21 @@ namespace MicroManager.Migrations
                     b.ToTable("ProductSize");
                 });
 
+            modelBuilder.Entity("MicroManager.Models.Role", b =>
+                {
+                    b.Property<Guid>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RoleTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("MicroManager.Models.Schedule", b =>
                 {
                     b.Property<Guid>("ScheduleId")
@@ -418,7 +484,7 @@ namespace MicroManager.Migrations
                     b.Property<float>("Qty")
                         .HasColumnType("real");
 
-                    b.Property<Guid>("SupplierId")
+                    b.Property<Guid>("Supplier_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Tax")
@@ -433,7 +499,7 @@ namespace MicroManager.Migrations
 
                     b.HasKey("SeedId");
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex("Supplier_Id");
 
                     b.ToTable("Seeds");
                 });
@@ -459,7 +525,7 @@ namespace MicroManager.Migrations
                     b.Property<int>("Row")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("SupplierId")
+                    b.Property<Guid>("Supplier_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Tax")
@@ -467,7 +533,7 @@ namespace MicroManager.Migrations
 
                     b.HasKey("ShelvingId");
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex("Supplier_Id");
 
                     b.ToTable("Shelving");
                 });
@@ -502,11 +568,23 @@ namespace MicroManager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PostalCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Region")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -530,7 +608,7 @@ namespace MicroManager.Migrations
                     b.Property<float>("Qty")
                         .HasColumnType("real");
 
-                    b.Property<Guid>("SupplierId")
+                    b.Property<Guid>("Supplier_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Tax")
@@ -545,7 +623,7 @@ namespace MicroManager.Migrations
 
                     b.HasKey("TrayId");
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex("Supplier_Id");
 
                     b.ToTable("Trays");
                 });
@@ -804,6 +882,17 @@ namespace MicroManager.Migrations
                     b.Navigation("CustomerType");
                 });
 
+            modelBuilder.Entity("MicroManager.Models.Employee", b =>
+                {
+                    b.HasOne("MicroManager.Models.Role", "Roles")
+                        .WithMany("Employees")
+                        .HasForeignKey("Role_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Roles");
+                });
+
             modelBuilder.Entity("MicroManager.Models.GrowMedia", b =>
                 {
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
@@ -819,7 +908,7 @@ namespace MicroManager.Migrations
                 {
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
                         .WithMany("Lights")
-                        .HasForeignKey("SupplierId")
+                        .HasForeignKey("Supplier_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -858,7 +947,7 @@ namespace MicroManager.Migrations
                 {
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
                         .WithMany("Packages")
-                        .HasForeignKey("SupplierId")
+                        .HasForeignKey("Supplier_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -901,7 +990,7 @@ namespace MicroManager.Migrations
                 {
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
                         .WithMany("Seeds")
-                        .HasForeignKey("SupplierId")
+                        .HasForeignKey("Supplier_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -912,7 +1001,7 @@ namespace MicroManager.Migrations
                 {
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
                         .WithMany("Shelvings")
-                        .HasForeignKey("SupplierId")
+                        .HasForeignKey("Supplier_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -923,7 +1012,7 @@ namespace MicroManager.Migrations
                 {
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
                         .WithMany("Trays")
-                        .HasForeignKey("SupplierId")
+                        .HasForeignKey("Supplier_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -999,6 +1088,11 @@ namespace MicroManager.Migrations
             modelBuilder.Entity("MicroManager.Models.ProductSize", b =>
                 {
                     b.Navigation("ProductSizes");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.Role", b =>
+                {
+                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Supplier", b =>

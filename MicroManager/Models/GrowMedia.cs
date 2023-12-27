@@ -12,10 +12,9 @@ namespace MicroManager.Models
     {
         [Key]
         public Guid GrowMediaId { get; set; } //PK
-        public Guid Supplier_Id { get; set; } //FK
+        public Guid Supplier_Id { get; set; } //FK        
         
-        [Display(Name = "Date Y-M-D")]
-        public DateOnly Date { get; set; }
+        public DateTime Date { get; set; }
 
         [Display(Name = "Grow Media Types")]
         public string Type { get; set; }

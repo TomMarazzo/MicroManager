@@ -94,7 +94,7 @@ namespace MicroManager.Controllers
         // GET: Package/Create
         public IActionResult Create()
         {
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId");
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
             return View();
         }
 
@@ -103,7 +103,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PackageId,SupplierId,Date,PackageType,PackSize,OrderQty,Price,Tax")] Package package)
+        public async Task<IActionResult> Create([Bind("PackageId,Supplier_Id,Date,PackageType,PackSize,OrderQty,Price,Tax")] Package package)
         {
             if (ModelState.IsValid)
             {
@@ -112,7 +112,7 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(PackageIndex));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId", package.SupplierId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", package.Supplier_Id);
             return View(package);
         }
 
@@ -129,7 +129,7 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId", package.SupplierId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", package.Supplier_Id);
             return View(package);
         }
 
@@ -138,7 +138,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("PackageId,SupplierId,Date,PackageType,PackSize,OrderQty,Price,Tax")] Package package)
+        public async Task<IActionResult> Edit(Guid id, [Bind("PackageId,Supplier_Id,Date,PackageType,PackSize,OrderQty,Price,Tax")] Package package)
         {
             if (id != package.PackageId)
             {
@@ -165,7 +165,7 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(PackageIndex));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId", package.SupplierId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", package.Supplier_Id);
             return View(package);
         }
 

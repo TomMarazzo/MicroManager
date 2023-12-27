@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MicroManager.Migrations
 {
     /// <inheritdoc />
-    public partial class enumUpdate : Migration
+    public partial class update : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -107,6 +107,18 @@ namespace MicroManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleTitle = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.RoleId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Schedules",
                 columns: table => new
                 {
@@ -134,11 +146,26 @@ namespace MicroManager.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    URL = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Suppliers", x => x.SupplierId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TypeMedias",
+                columns: table => new
+                {
+                    TypeMediaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NameType = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TypeMedias", x => x.TypeMediaId);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,12 +334,41 @@ namespace MicroManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Role_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmpNumber = table.Column<int>(type: "int", nullable: false),
+                    MyProperty = table.Column<int>(type: "int", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EMail = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
+                    table.ForeignKey(
+                        name: "FK_Employees_Roles_Role_Id",
+                        column: x => x.Role_Id,
+                        principalTable: "Roles",
+                        principalColumn: "RoleId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GrowMedias",
                 columns: table => new
                 {
                     GrowMediaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Supplier_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Volume = table.Column<float>(type: "real", nullable: false),
                     OrderQty = table.Column<float>(type: "real", nullable: false),
@@ -336,7 +392,7 @@ namespace MicroManager.Migrations
                 columns: table => new
                 {
                     LightId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Supplier_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderQty = table.Column<int>(type: "int", nullable: false),
@@ -347,8 +403,8 @@ namespace MicroManager.Migrations
                 {
                     table.PrimaryKey("PK_Lights", x => x.LightId);
                     table.ForeignKey(
-                        name: "FK_Lights_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
+                        name: "FK_Lights_Suppliers_Supplier_Id",
+                        column: x => x.Supplier_Id,
                         principalTable: "Suppliers",
                         principalColumn: "SupplierId",
                         onDelete: ReferentialAction.Cascade);
@@ -359,7 +415,7 @@ namespace MicroManager.Migrations
                 columns: table => new
                 {
                     PackageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Supplier_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PackageType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PackSize = table.Column<int>(type: "int", nullable: false),
@@ -371,8 +427,8 @@ namespace MicroManager.Migrations
                 {
                     table.PrimaryKey("PK_Packages", x => x.PackageId);
                     table.ForeignKey(
-                        name: "FK_Packages_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
+                        name: "FK_Packages_Suppliers_Supplier_Id",
+                        column: x => x.Supplier_Id,
                         principalTable: "Suppliers",
                         principalColumn: "SupplierId",
                         onDelete: ReferentialAction.Cascade);
@@ -383,7 +439,7 @@ namespace MicroManager.Migrations
                 columns: table => new
                 {
                     SeedId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Supplier_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Qty = table.Column<float>(type: "real", nullable: false),
@@ -395,8 +451,8 @@ namespace MicroManager.Migrations
                 {
                     table.PrimaryKey("PK_Seeds", x => x.SeedId);
                     table.ForeignKey(
-                        name: "FK_Seeds_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
+                        name: "FK_Seeds_Suppliers_Supplier_Id",
+                        column: x => x.Supplier_Id,
                         principalTable: "Suppliers",
                         principalColumn: "SupplierId",
                         onDelete: ReferentialAction.Cascade);
@@ -407,7 +463,7 @@ namespace MicroManager.Migrations
                 columns: table => new
                 {
                     ShelvingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Supplier_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Qty = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
@@ -419,8 +475,8 @@ namespace MicroManager.Migrations
                 {
                     table.PrimaryKey("PK_Shelving", x => x.ShelvingId);
                     table.ForeignKey(
-                        name: "FK_Shelving_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
+                        name: "FK_Shelving_Suppliers_Supplier_Id",
+                        column: x => x.Supplier_Id,
                         principalTable: "Suppliers",
                         principalColumn: "SupplierId",
                         onDelete: ReferentialAction.Cascade);
@@ -431,7 +487,7 @@ namespace MicroManager.Migrations
                 columns: table => new
                 {
                     TrayId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Supplier_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Qty = table.Column<float>(type: "real", nullable: false),
@@ -443,8 +499,8 @@ namespace MicroManager.Migrations
                 {
                     table.PrimaryKey("PK_Trays", x => x.TrayId);
                     table.ForeignKey(
-                        name: "FK_Trays_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
+                        name: "FK_Trays_Suppliers_Supplier_Id",
+                        column: x => x.Supplier_Id,
                         principalTable: "Suppliers",
                         principalColumn: "SupplierId",
                         onDelete: ReferentialAction.Cascade);
@@ -587,14 +643,19 @@ namespace MicroManager.Migrations
                 column: "CustomerTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Employees_Role_Id",
+                table: "Employees",
+                column: "Role_Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GrowMedias_Supplier_Id",
                 table: "GrowMedias",
                 column: "Supplier_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lights_SupplierId",
+                name: "IX_Lights_Supplier_Id",
                 table: "Lights",
-                column: "SupplierId");
+                column: "Supplier_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_OrderId",
@@ -612,9 +673,9 @@ namespace MicroManager.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Packages_SupplierId",
+                name: "IX_Packages_Supplier_Id",
                 table: "Packages",
-                column: "SupplierId");
+                column: "Supplier_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_CropId",
@@ -637,19 +698,19 @@ namespace MicroManager.Migrations
                 column: "ProductSizeId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Seeds_SupplierId",
+                name: "IX_Seeds_Supplier_Id",
                 table: "Seeds",
-                column: "SupplierId");
+                column: "Supplier_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shelving_SupplierId",
+                name: "IX_Shelving_Supplier_Id",
                 table: "Shelving",
-                column: "SupplierId");
+                column: "Supplier_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trays_SupplierId",
+                name: "IX_Trays_Supplier_Id",
                 table: "Trays",
-                column: "SupplierId");
+                column: "Supplier_Id");
         }
 
         /// <inheritdoc />
@@ -672,6 +733,9 @@ namespace MicroManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "Carts");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "GrowMedias");
@@ -698,10 +762,16 @@ namespace MicroManager.Migrations
                 name: "Trays");
 
             migrationBuilder.DropTable(
+                name: "TypeMedias");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Orders");

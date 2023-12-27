@@ -1,11 +1,11 @@
-﻿@model IEnumerable<MicroManager.Models.Customer>
+﻿@model IEnumerable<MicroManager.Models.Supplier>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Add Customer Info:</h1>
+<h1>Suppliers</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New</a>
@@ -41,7 +41,10 @@
                 @Html.DisplayNameFor(model => model.Phone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerType)
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.URL)
             </th>
             <th></th>
         </tr>
@@ -73,16 +76,19 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Country)
             </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CustomerType.Type)
+                @Html.DisplayFor(modelItem => item.Phone)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CustomerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.URL)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SupplierId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SupplierId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SupplierId">Delete</a>
             </td>
         </tr>
 }

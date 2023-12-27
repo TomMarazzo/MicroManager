@@ -10,23 +10,23 @@ using MicroManager.Models;
 
 namespace MicroManager.Controllers
 {
-    public class CustomerController : Controller
+    public class EmployeeController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CustomerController(ApplicationDbContext context)
+        public EmployeeController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Customer
+        // GET: Employee
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Customers.Include(c => c.CustomerType);
+            var applicationDbContext = _context.Employees.Include(e => e.Roles);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Customer/Details/5
+        // GET: Employee/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -34,43 +34,43 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.CustomerType)
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
+            var employee = await _context.Employees
+                .Include(e => e.Roles)
+                .FirstOrDefaultAsync(m => m.EmployeeId == id);
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(customer);
+            return View(employee);
         }
 
-        // GET: Customer/Create
+        // GET: Employee/Create
         public IActionResult Create()
         {
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type");
+            ViewData["Role_Id"] = new SelectList(_context.Roles, "RoleId", "RoleTitle");
             return View();
         }
 
-        // POST: Customer/Create
+        // POST: Employee/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,CustomerTypeId,CompanyName,FirstName,LastName,Address,City,Region,PostalCode,Country,Phone")] Customer customer)
+        public async Task<IActionResult> Create([Bind("EmployeeId,Role_Id,EmployeeNumber,FirstName,LastName,City,Region,PostalCode,Country,Phone,EMail")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                customer.CustomerId = Guid.NewGuid();
-                _context.Add(customer);
+                employee.EmployeeId = Guid.NewGuid();
+                _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type", customer.CustomerTypeId);
-            return View(customer);
+            ViewData["Role_Id"] = new SelectList(_context.Roles, "RoleId", "RoleTitle", employee.Role_Id);
+            return View(employee);
         }
 
-        // GET: Customer/Edit/5
+        // GET: Employee/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -78,23 +78,23 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type", customer.CustomerTypeId);
-            return View(customer);
+            ViewData["Role_Id"] = new SelectList(_context.Roles, "RoleId", "RoleTitle", employee.Role_Id);
+            return View(employee);
         }
 
-        // POST: Customer/Edit/5
+        // POST: Employee/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CustomerId,CustomerTypeId,CompanyName,FirstName,LastName,Address,City,Region,PostalCode,Country,Phone")] Customer customer)
+        public async Task<IActionResult> Edit(Guid id, [Bind("EmployeeId,Role_Id,EmployeeNumber,FirstName,LastName,City,Region,PostalCode,Country,Phone,EMail")] Employee employee)
         {
-            if (id != customer.CustomerId)
+            if (id != employee.EmployeeId)
             {
                 return NotFound();
             }
@@ -103,12 +103,12 @@ namespace MicroManager.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
+                    _context.Update(employee);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.CustomerId))
+                    if (!EmployeeExists(employee.EmployeeId))
                     {
                         return NotFound();
                     }
@@ -119,11 +119,11 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerTypeId"] = new SelectList(_context.CustomerTypes, "Id", "Type", customer.CustomerTypeId);
-            return View(customer);
+            ViewData["Role_Id"] = new SelectList(_context.Roles, "RoleId", "RoleTitle", employee.Role_Id);
+            return View(employee);
         }
 
-        // GET: Customer/Delete/5
+        // GET: Employee/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -131,35 +131,35 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.CustomerType)
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
+            var employee = await _context.Employees
+                .Include(e => e.Roles)
+                .FirstOrDefaultAsync(m => m.EmployeeId == id);
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(customer);
+            return View(employee);
         }
 
-        // POST: Customer/Delete/5
+        // POST: Employee/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer != null)
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee != null)
             {
-                _context.Customers.Remove(customer);
+                _context.Employees.Remove(employee);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerExists(Guid id)
+        private bool EmployeeExists(Guid id)
         {
-            return _context.Customers.Any(e => e.CustomerId == id);
+            return _context.Employees.Any(e => e.EmployeeId == id);
         }
     }
 }

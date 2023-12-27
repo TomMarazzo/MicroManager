@@ -20,7 +20,7 @@ namespace MicroManager.Controllers
         }
 
         // GET: Supplier
-        public async Task<IActionResult> SupplierIndex()
+        public async Task<IActionResult> Index()
         {
             return View(await _context.Suppliers.ToListAsync());
         }
@@ -54,14 +54,14 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SupplierId,CompanyName,FirstName,LastName,Address,City,Region,PostalCode,Country")] Supplier supplier)
+        public async Task<IActionResult> Create([Bind("SupplierId,CompanyName,FirstName,LastName,Address,City,Region,PostalCode,Country,Phone,email,URL")] Supplier supplier)
         {
             if (ModelState.IsValid)
             {
                 supplier.SupplierId = Guid.NewGuid();
                 _context.Add(supplier);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(SupplierIndex));
+                return RedirectToAction(nameof(Index));
             }
             return View(supplier);
         }
@@ -87,7 +87,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("SupplierId,CompanyName,FirstName,LastName,Address,City,Region,PostalCode,Country")] Supplier supplier)
+        public async Task<IActionResult> Edit(Guid id, [Bind("SupplierId,CompanyName,FirstName,LastName,Address,City,Region,PostalCode,Country,Phone,email,URL")] Supplier supplier)
         {
             if (id != supplier.SupplierId)
             {
@@ -112,7 +112,7 @@ namespace MicroManager.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(SupplierIndex));
+                return RedirectToAction(nameof(Index));
             }
             return View(supplier);
         }
@@ -147,7 +147,7 @@ namespace MicroManager.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(SupplierIndex));
+            return RedirectToAction(nameof(Index));
         }
 
         private bool SupplierExists(Guid id)

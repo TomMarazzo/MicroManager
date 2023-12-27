@@ -7,7 +7,7 @@ namespace MicroManager.Models
     {
         [Key]
         public Guid TrayId { get; set; } //PK
-        public Guid SupplierId { get; set; } //FK
+        public Guid Supplier_Id { get; set; } //FK
         [Display(Name = "Date Y-M-D")]
         public DateTime Date { get; set; }
         public string Type { get; set; }
@@ -22,7 +22,7 @@ namespace MicroManager.Models
         [Column(TypeName = "decimal(10, 2)")]
         public decimal Total { get; set; }
 
-        [ForeignKey(nameof(SupplierId))]
+        [ForeignKey(nameof(Supplier_Id))]
         //[ValidateNever]
         public virtual Supplier? Supplier { get; set; }
     }

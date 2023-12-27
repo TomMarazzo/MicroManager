@@ -57,7 +57,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LightId,SupplierId,DateCreated,Type,OrderQty,Price,Tax")] Light light)
+        public async Task<IActionResult> Create([Bind("LightId,Supplier_Id,DateCreated,Type,OrderQty,Price,Tax")] Light light)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +66,7 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.SupplierId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.Supplier_Id);
             return View(light);
         }
 
@@ -83,7 +83,7 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.SupplierId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.Supplier_Id);
             return View(light);
         }
 
@@ -119,7 +119,7 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.SupplierId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.Supplier_Id);
             return View(light);
         }
 

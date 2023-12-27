@@ -38,11 +38,10 @@ namespace MicroManager.Data
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<GrowMedia> GrowMedias { get; set; }
         public DbSet<TypeMedia> TypeMedias { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
 
-
-        //******Multi Modles on 1 View**************
-        //public DbSet<ReportsViewModel> ReportsViewModels { get; set; }
 
     }
 }

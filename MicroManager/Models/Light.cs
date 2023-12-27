@@ -7,7 +7,7 @@ namespace MicroManager.Models
     {
         [Key]
         public Guid LightId { get; set; } //PK
-        public Guid SupplierId { get; set; } //FK
+        public Guid Supplier_Id { get; set; } //FK
         [Display(Name = "Date Y-M-D")]
         public DateTime DateCreated { get; set; }
 
@@ -31,7 +31,7 @@ namespace MicroManager.Models
             }
         }
 
-        [ForeignKey(nameof(SupplierId))]
+        [ForeignKey(nameof(Supplier_Id))]
         //[ValidateNever]
         public virtual Supplier? Supplier { get; set; }
     }
