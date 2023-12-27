@@ -7,14 +7,14 @@ namespace MicroManager.Models
     {
         [Key]
         public Guid CropId { get; set; }
-        [Display(Name = "Name - 1020")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
         [Display(Name = "Seed Density (g)")]
         public int SeedDensity { get; set; }
         [Display(Name = "Soak Hours")]
-        public int SoakHours { get; set; } 
+        public int SoakHours { get; set; }
         [Display(Name = "Germination Days")]
-        public int GerminationDays { get; set; } 
+        public int GerminationDays { get; set; }
         [Display(Name = "Stack Days")]
         public int StackDays { get; set; }
         [Display(Name = "Black Out Days")]
@@ -28,6 +28,7 @@ namespace MicroManager.Models
         public int ExpectedYield { get; set; }
 
         public virtual List<Crop>? Crops { get; set; } //Need this to make the dropdown list in Order for Crop
+
 
     }
 }

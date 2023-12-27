@@ -40,6 +40,7 @@ namespace MicroManager.Data
         public DbSet<TypeMedia> TypeMedias { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Role> Roles { get; set; }
+        
 
 
 

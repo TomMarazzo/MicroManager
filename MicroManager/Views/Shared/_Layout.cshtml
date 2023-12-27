@@ -26,13 +26,8 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Crop" asp-action="CropIndex">Crop</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Supplier" asp-action="Index">Supplier</a>
-                        </li>
-
+                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Crop" asp-action="CropIndex">Crop</a></li>
+                       
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="OrderDetail" asp-action="Index">Order Details</a>
                         </li>
@@ -77,11 +72,14 @@
                                         Inventory
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Supplier" asp-action="Index">Supplier</a></li>
                                         <li><a class="nav-link text-dark" asp-area="" asp-controller="Package" asp-action="PackageIndex">Package</a></li>
                                         <li><a class="nav-link text-dark" asp-area="" asp-controller="Shelving" asp-action="Index">Shelving</a></li>
                                         <li><a class="nav-link text-dark" asp-area="" asp-controller="GrowMedia" asp-action="Index">Grow Media</a></li>
                                         <li><a class="nav-link text-dark" asp-area="" asp-controller="Light" asp-action="Index">Grow Lights</a></li>
                                         <li><a class="nav-link text-dark" asp-area="" asp-controller="Tray" asp-action="Index">Trays</a></li>
+                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Seed" asp-action="Index">Seeds</a></li>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Crop" asp-action="CropIndex">Crop</a></li>
                                     </ul>
                         </div>
                         <div class="collapse navbar-collapse">
