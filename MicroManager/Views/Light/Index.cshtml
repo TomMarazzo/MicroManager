@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Add Lighting</h1>
+<h1>Lights</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -29,45 +29,44 @@
                 @Html.DisplayNameFor(model => model.Tax)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Total)
+                @Html.DisplayNameFor(model => model.Supplier)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Supplier)
+                @Html.DisplayNameFor(model => model.InventoryCategory)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateCreated)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Type)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderQty)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Tax)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Total)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.LightId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.LightId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.LightId">Delete</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderQty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.InventoryCategory.InventoryCategoryType)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.LightId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LightId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LightId">Delete</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

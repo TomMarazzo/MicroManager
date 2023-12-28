@@ -8,6 +8,9 @@ namespace MicroManager.Models
         [Key]
         public Guid LightId { get; set; } //PK
         public Guid Supplier_Id { get; set; } //FK
+
+        [Display(Name = "Inventory Category")]
+        public Guid InventoryCategory_Id { get; set; } //FK
         [Display(Name = "Date Y-M-D")]
         public DateTime DateCreated { get; set; }
 
@@ -36,5 +39,9 @@ namespace MicroManager.Models
         [ForeignKey(nameof(Supplier_Id))]
         //[ValidateNever]
         public virtual Supplier? Supplier { get; set; }
+
+        [ForeignKey(nameof(InventoryCategory_Id))]
+        //[ValidateNever]
+        public virtual InventoryCategory? InventoryCategory { get; set; }
     }
 }

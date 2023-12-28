@@ -40,7 +40,9 @@ namespace MicroManager.Data
         public DbSet<TypeMedia> TypeMedias { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Role> Roles { get; set; }
-        
+        public DbSet<MicroManager.Models.InventoryCategory> InventoryCategory { get; set; } = default!;
+        public DbSet<InventoryCategory> InventoryCategories { get; set; }
+
 
 
 

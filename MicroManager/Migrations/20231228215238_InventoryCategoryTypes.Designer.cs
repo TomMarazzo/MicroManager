@@ -4,6 +4,7 @@ using MicroManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231228215238_InventoryCategoryTypes")]
+    partial class InventoryCategoryTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,26 +257,6 @@ namespace MicroManager.Migrations
                     b.ToTable("GrowMedias");
                 });
 
-            modelBuilder.Entity("MicroManager.Models.InventoryCategory", b =>
-                {
-                    b.Property<Guid>("InventoryCategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("InventoryCategoryType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("SupplierId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("InventoryCategoryId");
-
-                    b.HasIndex("SupplierId");
-
-                    b.ToTable("InventoryCategory");
-                });
-
             modelBuilder.Entity("MicroManager.Models.Light", b =>
                 {
                     b.Property<Guid>("LightId")
@@ -282,9 +265,6 @@ namespace MicroManager.Migrations
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("InventoryCategory_Id")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("OrderQty")
                         .HasColumnType("int");
@@ -303,8 +283,6 @@ namespace MicroManager.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("LightId");
-
-                    b.HasIndex("InventoryCategory_Id");
 
                     b.HasIndex("Supplier_Id");
 
@@ -913,28 +891,13 @@ namespace MicroManager.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("MicroManager.Models.InventoryCategory", b =>
-                {
-                    b.HasOne("MicroManager.Models.Supplier", null)
-                        .WithMany("InventoryCategories")
-                        .HasForeignKey("SupplierId");
-                });
-
             modelBuilder.Entity("MicroManager.Models.Light", b =>
                 {
-                    b.HasOne("MicroManager.Models.InventoryCategory", "InventoryCategory")
-                        .WithMany()
-                        .HasForeignKey("InventoryCategory_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
                         .WithMany("Lights")
                         .HasForeignKey("Supplier_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("InventoryCategory");
 
                     b.Navigation("Supplier");
                 });
@@ -1107,8 +1070,6 @@ namespace MicroManager.Migrations
             modelBuilder.Entity("MicroManager.Models.Supplier", b =>
                 {
                     b.Navigation("GrowMedias");
-
-                    b.Navigation("InventoryCategories");
 
                     b.Navigation("Lights");
 

@@ -22,7 +22,7 @@ namespace MicroManager.Controllers
         // GET: Light
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Lights.Include(l => l.Supplier);
+            var applicationDbContext = _context.Lights.Include(l => l.InventoryCategory).Include(l => l.Supplier);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace MicroManager.Controllers
             }
 
             var light = await _context.Lights
+                .Include(l => l.InventoryCategory)
                 .Include(l => l.Supplier)
                 .FirstOrDefaultAsync(m => m.LightId == id);
             if (light == null)
@@ -48,7 +49,8 @@ namespace MicroManager.Controllers
         // GET: Light/Create
         public IActionResult Create()
         {
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategory, "InventoryCategoryId", "InventoryCategoryType");
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
             return View();
         }
 
@@ -57,7 +59,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LightId,Supplier_Id,DateCreated,Type,OrderQty,Price,Tax,Total")] Light light)
+        public async Task<IActionResult> Create( Light light)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +68,8 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.Supplier_Id);
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategory, "InventoryCategoryId", "InventoryCategoryType", light.InventoryCategory_Id);
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.Supplier_Id);
             return View(light);
         }
 
@@ -83,7 +86,8 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.Supplier_Id);
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategory, "InventoryCategoryId", "InventoryCategoryType", light.InventoryCategory_Id);
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.Supplier_Id);
             return View(light);
         }
 
@@ -92,7 +96,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("LightId,SupplierId,DateCreated,Type,OrderQty,Price,Tax, Total")] Light light)
+        public async Task<IActionResult> Edit(Guid id, Light light)
         {
             if (id != light.LightId)
             {
@@ -119,7 +123,8 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.Supplier_Id);
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategory, "InventoryCategoryId", "InventoryCategoryType", light.InventoryCategory_Id);
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", light.Supplier_Id);
             return View(light);
         }
 
@@ -132,6 +137,7 @@ namespace MicroManager.Controllers
             }
 
             var light = await _context.Lights
+                .Include(l => l.InventoryCategory)
                 .Include(l => l.Supplier)
                 .FirstOrDefaultAsync(m => m.LightId == id);
             if (light == null)
