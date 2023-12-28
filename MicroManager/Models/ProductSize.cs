@@ -7,7 +7,7 @@ namespace MicroManager.Models
     {
         [Key]
         public Guid ProductSizeId { get; set; }
-        
+        [Display(Name = "Package Size")]
         public string Size { get; set; }
         
     }

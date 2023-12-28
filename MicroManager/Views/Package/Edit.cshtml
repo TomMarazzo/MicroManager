@@ -25,10 +25,10 @@
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PackageType" class="control-label"></label>
-                <input asp-for="PackageType" class="form-control" />
-                <span asp-validation-for="PackageType" class="text-danger"></span>
+                <label asp-for="Package_ProductSize_Id" class="control-label"></label>
+                <select asp-for="Package_ProductSize_Id" class="form-control" asp-items="ViewBag.ProductSizeId"></select>
             </div>
+
             <div class="form-group">
                 <label asp-for="PackSize" class="control-label"></label>
                 <input asp-for="PackSize" class="form-control" />

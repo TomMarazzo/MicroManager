@@ -59,7 +59,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,Seed_Id,ProductSize_Id,Weight,Price")] Product product)
+        public async Task<IActionResult> Create( Product product)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace MicroManager.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SeedId"] = new SelectList(_context.Seeds, "SeedId", "Type");
-            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSize_Id);
+            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size");
             return View(product);
         }
 
@@ -87,7 +87,7 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
             ViewData["SeedId"] = new SelectList(_context.Seeds, "SeedId", "Type", product.Seed_Id);
-            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSize_Id);
+            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.Product_ProductSize_Id);
             return View(product);
         }
 
@@ -96,7 +96,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ProductId,Seed_Id,ProductSize_Id,Weight,Price")] Product product)
+        public async Task<IActionResult> Edit(Guid id, Product product)
         {
             if (id != product.ProductId)
             {
@@ -124,7 +124,7 @@ namespace MicroManager.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SeedId"] = new SelectList(_context.Seeds, "SeedId", "Type", product.Seed_Id);
-            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.ProductSize_Id);
+            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.Product_ProductSize_Id);
             return View(product);
         }
 

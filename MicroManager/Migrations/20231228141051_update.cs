@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MicroManager.Migrations
 {
     /// <inheritdoc />
-    public partial class updates : Migration
+    public partial class update : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,17 +63,11 @@ namespace MicroManager.Migrations
                     BlackOutDays = table.Column<int>(type: "int", nullable: false),
                     WeightedDays = table.Column<int>(type: "int", nullable: false),
                     TotalGrowthDays = table.Column<int>(type: "int", nullable: false),
-                    ExpectedYield = table.Column<int>(type: "int", nullable: false),
-                    CropId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ExpectedYield = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Crops", x => x.CropId);
-                    table.ForeignKey(
-                        name: "FK_Crops_Crops_CropId1",
-                        column: x => x.CropId1,
-                        principalTable: "Crops",
-                        principalColumn: "CropId");
                 });
 
             migrationBuilder.CreateTable(
@@ -89,21 +83,15 @@ namespace MicroManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductSize",
+                name: "ProductSizes",
                 columns: table => new
                 {
                     ProductSizeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductSizeId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductSize", x => x.ProductSizeId);
-                    table.ForeignKey(
-                        name: "FK_ProductSize_ProductSize_ProductSizeId1",
-                        column: x => x.ProductSizeId1,
-                        principalTable: "ProductSize",
-                        principalColumn: "ProductSizeId");
+                    table.PrimaryKey("PK_ProductSizes", x => x.ProductSizeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -302,39 +290,6 @@ namespace MicroManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Product",
-                columns: table => new
-                {
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Crop_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductSize_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CropId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Weight = table.Column<double>(type: "float", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.ProductId);
-                    table.ForeignKey(
-                        name: "FK_Product_Crops_CropId",
-                        column: x => x.CropId,
-                        principalTable: "Crops",
-                        principalColumn: "CropId");
-                    table.ForeignKey(
-                        name: "FK_Product_Crops_Crop_Id",
-                        column: x => x.Crop_Id,
-                        principalTable: "Crops",
-                        principalColumn: "CropId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Product_ProductSize_ProductSize_Id",
-                        column: x => x.ProductSize_Id,
-                        principalTable: "ProductSize",
-                        principalColumn: "ProductSizeId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
@@ -343,6 +298,7 @@ namespace MicroManager.Migrations
                     EmployeeNumber = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -415,8 +371,8 @@ namespace MicroManager.Migrations
                 {
                     PackageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Supplier_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductSize_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PackageType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PackSize = table.Column<int>(type: "int", nullable: false),
                     OrderQty = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
@@ -425,6 +381,12 @@ namespace MicroManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Packages", x => x.PackageId);
+                    table.ForeignKey(
+                        name: "FK_Packages_ProductSizes_ProductSize_Id",
+                        column: x => x.ProductSize_Id,
+                        principalTable: "ProductSizes",
+                        principalColumn: "ProductSizeId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Packages_Suppliers_Supplier_Id",
                         column: x => x.Supplier_Id,
@@ -442,9 +404,9 @@ namespace MicroManager.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Qty = table.Column<float>(type: "real", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    Tax = table.Column<double>(type: "float", nullable: false),
-                    Total = table.Column<double>(type: "float", nullable: false)
+                    Qty_pack = table.Column<float>(type: "real", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    Tax = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -490,9 +452,9 @@ namespace MicroManager.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Qty = table.Column<float>(type: "real", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Tax = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Total = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                    Qty_pack = table.Column<float>(type: "real", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    Tax = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -502,6 +464,33 @@ namespace MicroManager.Migrations
                         column: x => x.Supplier_Id,
                         principalTable: "Suppliers",
                         principalColumn: "SupplierId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Seed_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductSize_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Weight = table.Column<double>(type: "float", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductId);
+                    table.ForeignKey(
+                        name: "FK_Products_ProductSizes_ProductSize_Id",
+                        column: x => x.ProductSize_Id,
+                        principalTable: "ProductSizes",
+                        principalColumn: "ProductSizeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Products_Seeds_Seed_Id",
+                        column: x => x.Seed_Id,
+                        principalTable: "Seeds",
+                        principalColumn: "SeedId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -526,9 +515,9 @@ namespace MicroManager.Migrations
                         principalColumn: "CustomerId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Carts_Product_ProductId",
+                        name: "FK_Carts_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "Product",
+                        principalTable: "Products",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -554,9 +543,9 @@ namespace MicroManager.Migrations
                         principalColumn: "CustomerId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orders_Product_ProductId",
+                        name: "FK_Orders_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "Product",
+                        principalTable: "Products",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -632,11 +621,6 @@ namespace MicroManager.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Crops_CropId1",
-                table: "Crops",
-                column: "CropId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Customers_CustomerTypeId",
                 table: "Customers",
                 column: "CustomerTypeId");
@@ -672,29 +656,24 @@ namespace MicroManager.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Packages_ProductSize_Id",
+                table: "Packages",
+                column: "ProductSize_Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Packages_Supplier_Id",
                 table: "Packages",
                 column: "Supplier_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_Crop_Id",
-                table: "Product",
-                column: "Crop_Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Product_CropId",
-                table: "Product",
-                column: "CropId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Product_ProductSize_Id",
-                table: "Product",
+                name: "IX_Products_ProductSize_Id",
+                table: "Products",
                 column: "ProductSize_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSize_ProductSizeId1",
-                table: "ProductSize",
-                column: "ProductSizeId1");
+                name: "IX_Products_Seed_Id",
+                table: "Products",
+                column: "Seed_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Seeds_Supplier_Id",
@@ -734,6 +713,9 @@ namespace MicroManager.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
+                name: "Crops");
+
+            migrationBuilder.DropTable(
                 name: "Employees");
 
             migrationBuilder.DropTable(
@@ -750,9 +732,6 @@ namespace MicroManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "Schedules");
-
-            migrationBuilder.DropTable(
-                name: "Seeds");
 
             migrationBuilder.DropTable(
                 name: "Shelving");
@@ -776,22 +755,22 @@ namespace MicroManager.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Suppliers");
-
-            migrationBuilder.DropTable(
                 name: "Customers");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "CustomerTypes");
 
             migrationBuilder.DropTable(
-                name: "Crops");
+                name: "ProductSizes");
 
             migrationBuilder.DropTable(
-                name: "ProductSize");
+                name: "Seeds");
+
+            migrationBuilder.DropTable(
+                name: "Suppliers");
         }
     }
 }

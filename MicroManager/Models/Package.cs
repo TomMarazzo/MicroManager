@@ -11,16 +11,16 @@ namespace MicroManager.Models
         public Guid PackageId { get; set; } //PK
         [Display(Name = "Supplier")]
         public Guid Supplier_Id { get; set; } //FK
-        public Guid ProductSize_Id { get; set; } //FK
+        [Display(Name = "Package Size")]
+        public Guid Package_ProductSize_Id { get; set; } //FK
         [Display(Name = "Date Y-M-D")]
         public DateTime Date { get; set; }
-        public string PackageType { get; set; }
-        [Display(Name = "Package Description")]
+       
+        
+        [ForeignKey(nameof(Package_ProductSize_Id))]
+        public virtual ProductSize? ProductSize{ get; set; }
 
-        [ForeignKey(nameof(ProductSize_Id))]
-        public virtual ProductSize ProductSize{ get; set; }
-
-        [Display(Name = "Pack Size")]
+        [Display(Name = "Qty Per Pack")]
         public int PackSize { get; set; }
         [Display(Name = "Order Qty")]
         public int OrderQty { get; set; }

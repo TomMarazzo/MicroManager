@@ -30,7 +30,7 @@ namespace MicroManager.Controllers
                     double Total = 0;
                     foreach (var items in Packages)
                     {
-                        if (items.PackageType == "Plastic")
+                        if (items.ProductSize.Size.Contains("Plastic"))
                         {
                             Total += items.Total;
                         }
@@ -45,7 +45,7 @@ namespace MicroManager.Controllers
                     double Total = 0;
                     foreach (var items in Packages)
                     {
-                        if (items.PackageType == "Paper")
+                        if (items.ProductSize.Size.Contains("Cardboard"))
                         {
                             Total += items.Total;
                         }
@@ -95,7 +95,7 @@ namespace MicroManager.Controllers
         public IActionResult Create()
         {
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
-            ViewData["ProductSizeId"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size");
+            ViewData["ProductSizeId"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size"); //Added this to be a DropDown List in the Package Type View
             return View();
         }
 
@@ -104,7 +104,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PackageId,Supplier_Id,Date,PackageType,PackSize,OrderQty,Price,Tax")] Package package)
+        public async Task<IActionResult> Create( Package package)
         {
             if (ModelState.IsValid)
             {
@@ -114,7 +114,7 @@ namespace MicroManager.Controllers
                 return RedirectToAction(nameof(PackageIndex));
             }
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", package.Supplier_Id);
-            ViewData["ProductSizeId"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size");
+            ViewData["ProductSizeId"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size"); //
             return View(package);
         }
 
@@ -141,7 +141,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("PackageId,Supplier_Id,Date,PackageType,PackSize,OrderQty,Price,Tax")] Package package)
+        public async Task<IActionResult> Edit(Guid id, Package package)
         {
             if (id != package.PackageId)
             {
@@ -152,6 +152,8 @@ namespace MicroManager.Controllers
             {
                 try
                 {
+                    var packageSize = await _context.ProductSizes.FirstAsync(a => a.ProductSizeId == package.Package_ProductSize_Id);
+                    package.ProductSize = packageSize;
                     _context.Update(package);
                     await _context.SaveChangesAsync();
                 }

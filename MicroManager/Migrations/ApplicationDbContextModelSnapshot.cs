@@ -356,15 +356,11 @@ namespace MicroManager.Migrations
                     b.Property<int>("PackSize")
                         .HasColumnType("int");
 
-                    b.Property<string>("PackageType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("Package_ProductSize_Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
-
-                    b.Property<Guid>("ProductSize_Id")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("Supplier_Id")
                         .HasColumnType("uniqueidentifier");
@@ -374,7 +370,7 @@ namespace MicroManager.Migrations
 
                     b.HasKey("PackageId");
 
-                    b.HasIndex("ProductSize_Id");
+                    b.HasIndex("Package_ProductSize_Id");
 
                     b.HasIndex("Supplier_Id");
 
@@ -390,7 +386,7 @@ namespace MicroManager.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<Guid>("ProductSize_Id")
+                    b.Property<Guid>("Product_ProductSize_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("Seed_Id")
@@ -401,7 +397,7 @@ namespace MicroManager.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.HasIndex("ProductSize_Id");
+                    b.HasIndex("Product_ProductSize_Id");
 
                     b.HasIndex("Seed_Id");
 
@@ -935,7 +931,7 @@ namespace MicroManager.Migrations
                 {
                     b.HasOne("MicroManager.Models.ProductSize", "ProductSize")
                         .WithMany()
-                        .HasForeignKey("ProductSize_Id")
+                        .HasForeignKey("Package_ProductSize_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -954,7 +950,7 @@ namespace MicroManager.Migrations
                 {
                     b.HasOne("MicroManager.Models.ProductSize", "ProductSize")
                         .WithMany()
-                        .HasForeignKey("ProductSize_Id")
+                        .HasForeignKey("Product_ProductSize_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
