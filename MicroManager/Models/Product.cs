@@ -8,10 +8,9 @@ namespace MicroManager.Models
     {
         public Guid ProductId { get; set; } //PK
         [Required]
-        public Guid Crop_Id{ get; set; } //FK
-        public Guid ProductSize_Id {  get; set; } //FK
+        public Guid Seed_Id{ get; set; } //FK
+        public Guid ProductSize_Id {  get; set; } //FK        
         
-        public virtual Crop? Crop { get; set; }
         [Display(Name = "Weight (oz)")]
         
         public double? Weight { get; set; }
@@ -24,8 +23,8 @@ namespace MicroManager.Models
         [ValidateNever]
         public virtual ProductSize? ProductSize { get; set; }
 
-        [ForeignKey(nameof(Crop_Id))]
+        [ForeignKey(nameof(Seed_Id))]
         [ValidateNever]
-        public virtual Crop? Crops { get; set; }
+        public virtual Seed? Seeds { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace MicroManager.Data
         public DbSet<Light> Lights { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Product> ProductSize { get; set; }
+        public DbSet<ProductSize> ProductSizes { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Shelving> Shelving { get; set; }

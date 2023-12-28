@@ -21,10 +21,16 @@
                 Package Type
             </th>
             <th>
+                Package Description
+            </th>
+            <th>
                 Pack Size
             </th>
             <th>
                 Order Qty
+            </th>
+            <th>
+                Total Packages
             </th>
             <th>
                 Price
@@ -52,10 +58,16 @@
                     @Html.DisplayFor(modelItem => item.PackageType)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.ProductSize.Size)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.PackSize)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.OrderQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPackages)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)

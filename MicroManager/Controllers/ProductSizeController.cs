@@ -22,7 +22,7 @@ namespace MicroManager.Controllers
         // GET: ProductSize
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProductSize.ToListAsync());
+            return View(await _context.ProductSizes.ToListAsync());
         }
 
         // GET: ProductSize/Details/5
@@ -33,8 +33,8 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.ProductSize
-                .FirstOrDefaultAsync(m => m.ProductSize_Id == id);
+            var productSize = await _context.ProductSizes
+                .FirstOrDefaultAsync(m => m.ProductSizeId == id);
             if (productSize == null)
             {
                 return NotFound();
@@ -74,7 +74,7 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.ProductSize.FindAsync(id);
+            var productSize = await _context.ProductSizes.FindAsync(id);
             if (productSize == null)
             {
                 return NotFound();
@@ -125,8 +125,8 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var productSize = await _context.ProductSize
-                .FirstOrDefaultAsync(m => m.ProductSize_Id == id);
+            var productSize = await _context.ProductSizes
+                .FirstOrDefaultAsync(m => m.ProductSizeId == id);
             if (productSize == null)
             {
                 return NotFound();
@@ -140,10 +140,10 @@ namespace MicroManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var productSize = await _context.ProductSize.FindAsync(id);
+            var productSize = await _context.ProductSizes.FindAsync(id);
             if (productSize != null)
             {
-                _context.ProductSize.Remove(productSize);
+                _context.ProductSizes.Remove(productSize);
             }
 
             await _context.SaveChangesAsync();
@@ -152,7 +152,7 @@ namespace MicroManager.Controllers
 
         private bool ProductSizeExists(Guid id)
         {
-            return _context.ProductSize.Any(e => e.ProductSize_Id == id);
+            return _context.ProductSizes.Any(e => e.ProductSizeId == id);
         }
     }
 }

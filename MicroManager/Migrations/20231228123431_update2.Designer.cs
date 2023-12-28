@@ -4,6 +4,7 @@ using MicroManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231228123431_update2")]
+    partial class update2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -356,15 +359,16 @@ namespace MicroManager.Migrations
                     b.Property<int>("PackSize")
                         .HasColumnType("int");
 
+                    b.Property<string>("PackageDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PackageType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
-
-                    b.Property<Guid>("ProductSize_Id")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("Supplier_Id")
                         .HasColumnType("uniqueidentifier");
@@ -373,8 +377,6 @@ namespace MicroManager.Migrations
                         .HasColumnType("decimal(10, 2)");
 
                     b.HasKey("PackageId");
-
-                    b.HasIndex("ProductSize_Id");
 
                     b.HasIndex("Supplier_Id");
 
@@ -933,19 +935,11 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.Package", b =>
                 {
-                    b.HasOne("MicroManager.Models.ProductSize", "ProductSize")
-                        .WithMany()
-                        .HasForeignKey("ProductSize_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
                         .WithMany("Packages")
                         .HasForeignKey("Supplier_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ProductSize");
 
                     b.Navigation("Supplier");
                 });

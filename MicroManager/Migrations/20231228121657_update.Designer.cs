@@ -4,6 +4,7 @@ using MicroManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231228121657_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,6 +67,9 @@ namespace MicroManager.Migrations
                     b.Property<int>("BlackOutDays")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("CropId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("ExpectedYield")
                         .HasColumnType("int");
 
@@ -90,6 +96,8 @@ namespace MicroManager.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("CropId");
+
+                    b.HasIndex("CropId1");
 
                     b.ToTable("Crops");
                 });
@@ -356,15 +364,16 @@ namespace MicroManager.Migrations
                     b.Property<int>("PackSize")
                         .HasColumnType("int");
 
+                    b.Property<string>("PackageDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PackageType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
-
-                    b.Property<Guid>("ProductSize_Id")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("Supplier_Id")
                         .HasColumnType("uniqueidentifier");
@@ -373,8 +382,6 @@ namespace MicroManager.Migrations
                         .HasColumnType("decimal(10, 2)");
 
                     b.HasKey("PackageId");
-
-                    b.HasIndex("ProductSize_Id");
 
                     b.HasIndex("Supplier_Id");
 
@@ -387,13 +394,16 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CropId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Crop_Id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
 
                     b.Property<Guid>("ProductSize_Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("Seed_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double?>("Weight")
@@ -401,9 +411,11 @@ namespace MicroManager.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.HasIndex("ProductSize_Id");
+                    b.HasIndex("CropId");
 
-                    b.HasIndex("Seed_Id");
+                    b.HasIndex("Crop_Id");
+
+                    b.HasIndex("ProductSize_Id");
 
                     b.ToTable("Products");
                 });
@@ -859,6 +871,13 @@ namespace MicroManager.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("MicroManager.Models.Crop", b =>
+                {
+                    b.HasOne("MicroManager.Models.Crop", null)
+                        .WithMany("Crops")
+                        .HasForeignKey("CropId1");
+                });
+
             modelBuilder.Entity("MicroManager.Models.Customer", b =>
                 {
                     b.HasOne("MicroManager.Models.CustomerType", "CustomerType")
@@ -933,40 +952,38 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.Package", b =>
                 {
-                    b.HasOne("MicroManager.Models.ProductSize", "ProductSize")
-                        .WithMany()
-                        .HasForeignKey("ProductSize_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MicroManager.Models.Supplier", "Supplier")
                         .WithMany("Packages")
                         .HasForeignKey("Supplier_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ProductSize");
-
                     b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Product", b =>
                 {
+                    b.HasOne("MicroManager.Models.Crop", "Crop")
+                        .WithMany()
+                        .HasForeignKey("CropId");
+
+                    b.HasOne("MicroManager.Models.Crop", "Crops")
+                        .WithMany()
+                        .HasForeignKey("Crop_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MicroManager.Models.ProductSize", "ProductSize")
                         .WithMany()
                         .HasForeignKey("ProductSize_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MicroManager.Models.Seed", "Seeds")
-                        .WithMany()
-                        .HasForeignKey("Seed_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Crop");
+
+                    b.Navigation("Crops");
 
                     b.Navigation("ProductSize");
-
-                    b.Navigation("Seeds");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Seed", b =>
@@ -1051,6 +1068,11 @@ namespace MicroManager.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MicroManager.Models.Crop", b =>
+                {
+                    b.Navigation("Crops");
                 });
 
             modelBuilder.Entity("MicroManager.Models.CustomerType", b =>

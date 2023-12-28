@@ -11,9 +11,14 @@ namespace MicroManager.Models
         public Guid PackageId { get; set; } //PK
         [Display(Name = "Supplier")]
         public Guid Supplier_Id { get; set; } //FK
+        public Guid ProductSize_Id { get; set; } //FK
         [Display(Name = "Date Y-M-D")]
         public DateTime Date { get; set; }
         public string PackageType { get; set; }
+        [Display(Name = "Package Description")]
+
+        [ForeignKey(nameof(ProductSize_Id))]
+        public virtual ProductSize ProductSize{ get; set; }
 
         [Display(Name = "Pack Size")]
         public int PackSize { get; set; }
@@ -32,6 +37,16 @@ namespace MicroManager.Models
                 if (Price >= 0 && OrderQty >= 0 && Tax >= 0)
                     return Price * Tax * OrderQty;
                 return (float)Price;
+            }
+        }
+
+        public int TotalPackages
+        {
+            get
+            {
+                if (PackSize >= 0 && OrderQty >= 0 )
+                    return PackSize * OrderQty;
+                return 0;
             }
         }
 

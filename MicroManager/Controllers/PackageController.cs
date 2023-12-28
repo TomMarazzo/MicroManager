@@ -95,6 +95,7 @@ namespace MicroManager.Controllers
         public IActionResult Create()
         {
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
+            ViewData["ProductSizeId"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size");
             return View();
         }
 
@@ -113,6 +114,7 @@ namespace MicroManager.Controllers
                 return RedirectToAction(nameof(PackageIndex));
             }
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", package.Supplier_Id);
+            ViewData["ProductSizeId"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size");
             return View(package);
         }
 
@@ -130,6 +132,7 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", package.Supplier_Id);
+            ViewData["ProductSizeId"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size");
             return View(package);
         }
 
@@ -166,6 +169,8 @@ namespace MicroManager.Controllers
                 return RedirectToAction(nameof(PackageIndex));
             }
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName", package.Supplier_Id);
+            ViewData["ProductSizeId"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size");
+
             return View(package);
         }
 
