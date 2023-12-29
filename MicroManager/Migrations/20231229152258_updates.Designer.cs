@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231229134234_updates")]
+    [Migration("20231229152258_updates")]
     partial class updates
     {
         /// <inheritdoc />
@@ -875,7 +875,8 @@ namespace MicroManager.Migrations
                         .WithMany("Carts")
                         .HasForeignKey("Product_Id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Carts_ProductId");
 
                     b.Navigation("Customer");
 
@@ -958,13 +959,15 @@ namespace MicroManager.Migrations
                         .WithMany("OrderDetails")
                         .HasForeignKey("Order_Id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_OrderDetails_OrderId");
 
                     b.HasOne("MicroManager.Models.Product", "Products")
                         .WithMany("OrderDetails")
                         .HasForeignKey("Product_Id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_OrderDetails_ProductId");
 
                     b.Navigation("Orders");
 
@@ -996,7 +999,8 @@ namespace MicroManager.Migrations
                         .WithMany("Products")
                         .HasForeignKey("InventoryCategory_Id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Products_InventoryCategoryId");
 
                     b.HasOne("MicroManager.Models.ProductSize", "ProductSize")
                         .WithMany()

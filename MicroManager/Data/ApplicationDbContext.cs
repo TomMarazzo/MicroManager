@@ -16,9 +16,38 @@ namespace MicroManager.Data
         //*******************MUST ADD THIS SECTION TO FILE************************
         protected override void OnModelCreating(ModelBuilder modelBuilder) //Model Relationships
         {
-            base.OnModelCreating(modelBuilder);           
+            base.OnModelCreating(modelBuilder);
+
+            //Define Relationships and Keys
+
+            //Product and Category
+            modelBuilder.Entity<Product>()
+                    .HasOne(p => p.InventoryCategory)
+                    .WithMany(c => c.Products)
+                    .HasForeignKey(p => p.InventoryCategory_Id)
+                    .HasConstraintName("FK_Products_InventoryCategoryId");
+            //Product and OrderDetail
+            modelBuilder.Entity<OrderDetail>()
+                   .HasOne(p => p.Products)
+                   .WithMany(c => c.OrderDetails)
+                   .HasForeignKey(p => p.Product_Id)
+                   .HasConstraintName("FK_OrderDetails_ProductId");
+            //Product and Cart
+            modelBuilder.Entity<Cart>()
+                   .HasOne(p => p.Product)
+                   .WithMany(c => c.Carts)
+                   .HasForeignKey(p => p.Product_Id)
+                   .HasConstraintName("FK_Carts_ProductId");
+            //OrderDetail and Order
+            modelBuilder.Entity<OrderDetail>()
+                   .HasOne(p => p.Orders)
+                   .WithMany(c => c.OrderDetails)
+                   .HasForeignKey(p => p.Order_Id)
+                   .HasConstraintName("FK_OrderDetails_OrderId");
 
         }
+
+
 
         //***************MUST ADD DbSets HERE **************************
         public DbSet<Customer> Customers { get; set; }

@@ -12,7 +12,6 @@ namespace MicroManager.Models
         public Guid Customer_Id { get; set; }//FK
         
 
-        
         [DisplayFormat(DataFormatString = "{0:c}")]
         public double Price { get; set; }
 
@@ -22,8 +21,8 @@ namespace MicroManager.Models
         [ForeignKey(nameof(Customer_Id))]
         [ValidateNever]
         public virtual Customer? Customer { get; set; }
-
         
+
         //Child reference 
         public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
 

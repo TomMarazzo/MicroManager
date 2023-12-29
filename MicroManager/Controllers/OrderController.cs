@@ -48,7 +48,7 @@ namespace MicroManager.Controllers
         // GET: Order/Create
         public IActionResult Create()
         {
-            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CompanyName");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderId,OrderDate,Customer_Id,Price,Quantity")] Order order)
+        public async Task<IActionResult> Create( Order order)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("OrderId,OrderDate,Customer_Id,Price,Quantity")] Order order)
+        public async Task<IActionResult> Edit(Guid id,  Order order)
         {
             if (id != order.OrderId)
             {

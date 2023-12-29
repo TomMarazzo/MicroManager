@@ -527,7 +527,7 @@ namespace MicroManager.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.ProductId);
                     table.ForeignKey(
-                        name: "FK_Products_InventoryCategories_InventoryCategory_Id",
+                        name: "FK_Products_InventoryCategoryId",
                         column: x => x.InventoryCategory_Id,
                         principalTable: "InventoryCategories",
                         principalColumn: "InventoryCategoryId",
@@ -567,7 +567,7 @@ namespace MicroManager.Migrations
                         principalColumn: "CustomerId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Carts_Products_Product_Id",
+                        name: "FK_Carts_ProductId",
                         column: x => x.Product_Id,
                         principalTable: "Products",
                         principalColumn: "ProductId",
@@ -588,13 +588,13 @@ namespace MicroManager.Migrations
                 {
                     table.PrimaryKey("PK_OrderDetails", x => x.OrderDetailId);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Orders_Order_Id",
+                        name: "FK_OrderDetails_OrderId",
                         column: x => x.Order_Id,
                         principalTable: "Orders",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Products_Product_Id",
+                        name: "FK_OrderDetails_ProductId",
                         column: x => x.Product_Id,
                         principalTable: "Products",
                         principalColumn: "ProductId",

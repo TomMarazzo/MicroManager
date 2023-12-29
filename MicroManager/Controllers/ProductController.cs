@@ -51,8 +51,8 @@ namespace MicroManager.Controllers
         public IActionResult Create()
         {
             ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType");
-            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "ProductSizeId");
-            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "SeedId");
+            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size");
+            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "Type");
             return View();
         }
 
