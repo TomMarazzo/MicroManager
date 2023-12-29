@@ -41,6 +41,9 @@
                 @Html.DisplayNameFor(model => model.Phone)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CustomerType)
             </th>
             <th></th>
@@ -74,7 +77,10 @@
                 @Html.DisplayFor(modelItem => item.Country)
             </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
                 </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CustomerType.Type)

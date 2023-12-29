@@ -27,6 +27,7 @@ namespace MicroManager.Models
         public string Country { get; set; }
 
         public string Phone { get; set; }
+        public string email { get; set; }
 
         [Display(Name = "Customer Type")]
         [ForeignKey(nameof(CustomerTypeId))]

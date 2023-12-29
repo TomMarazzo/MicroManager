@@ -16,7 +16,7 @@ namespace MicroManager.Models
         [Display(Name = "Category")]
         public Guid InventoryCategory_Id { get; set; } //FK 
 
-        [Column(TypeName = "decimal(10, 2)")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal Price { get; set; }
 
         //Link to Product packageing Size

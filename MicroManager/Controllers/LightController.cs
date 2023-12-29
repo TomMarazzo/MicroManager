@@ -10,23 +10,23 @@ using MicroManager.Models;
 
 namespace MicroManager.Controllers
 {
-    public class OrderController : Controller
+    public class LightController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public OrderController(ApplicationDbContext context)
+        public LightController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Order
+        // GET: Light
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Orders.Include(o => o.Customer);
+            var applicationDbContext = _context.Lights.Include(l => l.InventoryCategory).Include(l => l.Supplier);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Order/Details/5
+        // GET: Light/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -34,43 +34,46 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders
-                .Include(o => o.Customer)
-                .FirstOrDefaultAsync(m => m.OrderId == id);
-            if (order == null)
+            var light = await _context.Lights
+                .Include(l => l.InventoryCategory)
+                .Include(l => l.Supplier)
+                .FirstOrDefaultAsync(m => m.LightId == id);
+            if (light == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            return View(light);
         }
 
-        // GET: Order/Create
+        // GET: Light/Create
         public IActionResult Create()
         {
-            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CompanyName");
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType");
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "email");
             return View();
         }
 
-        // POST: Order/Create
+        // POST: Light/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Order order)
+        public async Task<IActionResult> Create( Light light)
         {
             if (ModelState.IsValid)
             {
-                order.OrderId = Guid.NewGuid();
-                _context.Add(order);
+                light.LightId = Guid.NewGuid();
+                _context.Add(light);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.Customer_Id);
-            return View(order);
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", light.InventoryCategory_Id);
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "email", light.Supplier_Id);
+            return View(light);
         }
 
-        // GET: Order/Edit/5
+        // GET: Light/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -78,23 +81,24 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
+            var light = await _context.Lights.FindAsync(id);
+            if (light == null)
             {
                 return NotFound();
             }
-            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.Customer_Id);
-            return View(order);
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", light.InventoryCategory_Id);
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "email", light.Supplier_Id);
+            return View(light);
         }
 
-        // POST: Order/Edit/5
+        // POST: Light/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id,  Order order)
+        public async Task<IActionResult> Edit(Guid id,  Light light)
         {
-            if (id != order.OrderId)
+            if (id != light.LightId)
             {
                 return NotFound();
             }
@@ -103,12 +107,12 @@ namespace MicroManager.Controllers
             {
                 try
                 {
-                    _context.Update(order);
+                    _context.Update(light);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderExists(order.OrderId))
+                    if (!LightExists(light.LightId))
                     {
                         return NotFound();
                     }
@@ -119,11 +123,12 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.Customer_Id);
-            return View(order);
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", light.InventoryCategory_Id);
+            ViewData["Supplier_Id"] = new SelectList(_context.Suppliers, "SupplierId", "email", light.Supplier_Id);
+            return View(light);
         }
 
-        // GET: Order/Delete/5
+        // GET: Light/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -131,35 +136,36 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders
-                .Include(o => o.Customer)
-                .FirstOrDefaultAsync(m => m.OrderId == id);
-            if (order == null)
+            var light = await _context.Lights
+                .Include(l => l.InventoryCategory)
+                .Include(l => l.Supplier)
+                .FirstOrDefaultAsync(m => m.LightId == id);
+            if (light == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            return View(light);
         }
 
-        // POST: Order/Delete/5
+        // POST: Light/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var order = await _context.Orders.FindAsync(id);
-            if (order != null)
+            var light = await _context.Lights.FindAsync(id);
+            if (light != null)
             {
-                _context.Orders.Remove(order);
+                _context.Lights.Remove(light);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool OrderExists(Guid id)
+        private bool LightExists(Guid id)
         {
-            return _context.Orders.Any(e => e.OrderId == id);
+            return _context.Lights.Any(e => e.LightId == id);
         }
     }
 }

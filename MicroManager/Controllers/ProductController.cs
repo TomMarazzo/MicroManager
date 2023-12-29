@@ -71,8 +71,8 @@ namespace MicroManager.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", product.InventoryCategory_Id);
-            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "ProductSizeId", product.Product_ProductSize_Id);
-            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "SeedId", product.Seed_Id);
+            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size", product.Product_ProductSize_Id);
+            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "Type", product.Seed_Id);
             return View(product);
         }
 
@@ -90,8 +90,8 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
             ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", product.InventoryCategory_Id);
-            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "ProductSizeId", product.Product_ProductSize_Id);
-            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "SeedId", product.Seed_Id);
+            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size", product.Product_ProductSize_Id);
+            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "Type", product.Seed_Id);
             return View(product);
         }
 
@@ -128,8 +128,8 @@ namespace MicroManager.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", product.InventoryCategory_Id);
-            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "ProductSizeId", product.Product_ProductSize_Id);
-            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "SeedId", product.Seed_Id);
+            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size", product.Product_ProductSize_Id);
+            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "Type", product.Seed_Id);
             return View(product);
         }
 

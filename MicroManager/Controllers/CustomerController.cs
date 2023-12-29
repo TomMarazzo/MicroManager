@@ -57,7 +57,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,CustomerTypeId,CompanyName,FirstName,LastName,Address,City,Region,PostalCode,Country,Phone")] Customer customer)
+        public async Task<IActionResult> Create( Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CustomerId,CustomerTypeId,CompanyName,FirstName,LastName,Address,City,Region,PostalCode,Country,Phone")] Customer customer)
+        public async Task<IActionResult> Edit(Guid id,  Customer customer)
         {
             if (id != customer.CustomerId)
             {
