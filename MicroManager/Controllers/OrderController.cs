@@ -22,7 +22,7 @@ namespace MicroManager.Controllers
         // GET: Order
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Orders.Include(o => o.Customer).Include(o => o.Product);
+            var applicationDbContext = _context.Orders.Include(o => o.Customer);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,7 +36,6 @@ namespace MicroManager.Controllers
 
             var order = await _context.Orders
                 .Include(o => o.Customer)
-                .Include(o => o.Product)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {
@@ -49,8 +48,7 @@ namespace MicroManager.Controllers
         // GET: Order/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CompanyName");
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId");
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
             return View();
         }
 
@@ -59,7 +57,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderId,OrderDate,CustomerId,ProductId,Price,Quantity")] Order order)
+        public async Task<IActionResult> Create([Bind("OrderId,OrderDate,Customer_Id,Price,Quantity")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -68,8 +66,7 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CompanyName", order.CustomerId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", order.ProductId);
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.Customer_Id);
             return View(order);
         }
 
@@ -86,8 +83,7 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CompanyName", order.CustomerId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", order.ProductId);
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.Customer_Id);
             return View(order);
         }
 
@@ -96,7 +92,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("OrderId,OrderDate,CustomerId,ProductId,Price,Quantity")] Order order)
+        public async Task<IActionResult> Edit(Guid id, [Bind("OrderId,OrderDate,Customer_Id,Price,Quantity")] Order order)
         {
             if (id != order.OrderId)
             {
@@ -123,8 +119,7 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CompanyName", order.CustomerId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", order.ProductId);
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.Customer_Id);
             return View(order);
         }
 
@@ -138,7 +133,6 @@ namespace MicroManager.Controllers
 
             var order = await _context.Orders
                 .Include(o => o.Customer)
-                .Include(o => o.Product)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {

@@ -6,23 +6,24 @@ namespace MicroManager.Models
 {
     public class Order
     {
+        [Key]
         public Guid OrderId { get; set; } //PK
         public DateTime OrderDate { get; set; }
-        public Guid CustomerId { get; set; }//FK
-        public Guid ProductId { get; set; } //FK
+        public Guid Customer_Id { get; set; }//FK
+        
 
+        
         [DisplayFormat(DataFormatString = "{0:c}")]
         public double Price { get; set; }
 
         public int Quantity { get; set; }
 
-        [ForeignKey(nameof(ProductId))]
-        [ValidateNever]
-        public virtual Product? Product { get; set; }
-
-        [ForeignKey(nameof(CustomerId))]
+       
+        [ForeignKey(nameof(Customer_Id))]
         [ValidateNever]
         public virtual Customer? Customer { get; set; }
+
+        
         //Child reference 
         public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
 

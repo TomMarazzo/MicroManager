@@ -22,7 +22,7 @@ namespace MicroManager.Controllers
         // GET: InventoryCategory
         public async Task<IActionResult> Index()
         {
-            return View(await _context.InventoryCategory.ToListAsync());
+            return View(await _context.InventoryCategories.ToListAsync());
         }
 
         // GET: InventoryCategory/Details/5
@@ -33,7 +33,7 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var inventoryCategory = await _context.InventoryCategory
+            var inventoryCategory = await _context.InventoryCategories
                 .FirstOrDefaultAsync(m => m.InventoryCategoryId == id);
             if (inventoryCategory == null)
             {
@@ -74,7 +74,7 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var inventoryCategory = await _context.InventoryCategory.FindAsync(id);
+            var inventoryCategory = await _context.InventoryCategories.FindAsync(id);
             if (inventoryCategory == null)
             {
                 return NotFound();
@@ -125,7 +125,7 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var inventoryCategory = await _context.InventoryCategory
+            var inventoryCategory = await _context.InventoryCategories
                 .FirstOrDefaultAsync(m => m.InventoryCategoryId == id);
             if (inventoryCategory == null)
             {
@@ -140,10 +140,10 @@ namespace MicroManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var inventoryCategory = await _context.InventoryCategory.FindAsync(id);
+            var inventoryCategory = await _context.InventoryCategories.FindAsync(id);
             if (inventoryCategory != null)
             {
-                _context.InventoryCategory.Remove(inventoryCategory);
+                _context.InventoryCategories.Remove(inventoryCategory);
             }
 
             await _context.SaveChangesAsync();
@@ -152,7 +152,7 @@ namespace MicroManager.Controllers
 
         private bool InventoryCategoryExists(Guid id)
         {
-            return _context.InventoryCategory.Any(e => e.InventoryCategoryId == id);
+            return _context.InventoryCategories.Any(e => e.InventoryCategoryId == id);
         }
     }
 }

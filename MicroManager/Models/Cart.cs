@@ -8,8 +8,8 @@ namespace MicroManager.Models
     {
         public Guid CartId { get; set; } //PK
 
-        public Guid ProductId { get; set; } //FK
-        public Guid CustomerId { get; set; } //FK
+        public Guid Product_Id { get; set; } //FK
+        public Guid Customer_Id { get; set; } //FK
 
         public DateTime DateCreated { get; set; }
 
@@ -17,10 +17,10 @@ namespace MicroManager.Models
 
         [DisplayFormat(DataFormatString = "{0:c}")]
         public double Price { get; set; }
-        [ForeignKey (nameof(ProductId))]
+        [ForeignKey (nameof(Product_Id))]
         public virtual Product? Product { get; set; }
 
-        [ForeignKey(nameof(CustomerId))]
+        [ForeignKey(nameof(Customer_Id))]
         public virtual Customer? Customer { get; set; }
 
         public double Total

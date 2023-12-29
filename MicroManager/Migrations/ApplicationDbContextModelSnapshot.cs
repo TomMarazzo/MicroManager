@@ -31,7 +31,7 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid>("Customer_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -40,7 +40,7 @@ namespace MicroManager.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("Product_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
@@ -48,9 +48,9 @@ namespace MicroManager.Migrations
 
                     b.HasKey("CartId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("Customer_Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("Product_Id");
 
                     b.ToTable("Carts");
                 });
@@ -271,7 +271,7 @@ namespace MicroManager.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("InventoryCategory");
+                    b.ToTable("InventoryCategories");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Light", b =>
@@ -317,7 +317,7 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid>("Customer_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("OrderDate")
@@ -326,17 +326,12 @@ namespace MicroManager.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("ProductId");
+                    b.HasIndex("Customer_Id");
 
                     b.ToTable("Orders");
                 });
@@ -347,13 +342,13 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("OrderId")
+                    b.Property<Guid>("Order_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("Product_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
@@ -361,7 +356,9 @@ namespace MicroManager.Migrations
 
                     b.HasKey("OrderDetailId");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("Order_Id");
+
+                    b.HasIndex("Product_Id");
 
                     b.ToTable("OrderDetails");
                 });
@@ -408,6 +405,9 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("InventoryCategory_Id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
 
@@ -417,10 +417,9 @@ namespace MicroManager.Migrations
                     b.Property<Guid>("Seed_Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double?>("Weight")
-                        .HasColumnType("float");
-
                     b.HasKey("ProductId");
+
+                    b.HasIndex("InventoryCategory_Id");
 
                     b.HasIndex("Product_ProductSize_Id");
 
@@ -865,13 +864,13 @@ namespace MicroManager.Migrations
                 {
                     b.HasOne("MicroManager.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("Customer_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MicroManager.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
+                        .WithMany("Carts")
+                        .HasForeignKey("Product_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -943,28 +942,30 @@ namespace MicroManager.Migrations
                 {
                     b.HasOne("MicroManager.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MicroManager.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("Customer_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Customer");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MicroManager.Models.OrderDetail", b =>
                 {
-                    b.HasOne("MicroManager.Models.Order", null)
+                    b.HasOne("MicroManager.Models.Order", "Orders")
                         .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId")
+                        .HasForeignKey("Order_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("MicroManager.Models.Product", "Products")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("Product_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Package", b =>
@@ -988,6 +989,12 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.Product", b =>
                 {
+                    b.HasOne("MicroManager.Models.InventoryCategory", "InventoryCategory")
+                        .WithMany("Products")
+                        .HasForeignKey("InventoryCategory_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MicroManager.Models.ProductSize", "ProductSize")
                         .WithMany()
                         .HasForeignKey("Product_ProductSize_Id")
@@ -999,6 +1006,8 @@ namespace MicroManager.Migrations
                         .HasForeignKey("Seed_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("InventoryCategory");
 
                     b.Navigation("ProductSize");
 
@@ -1094,8 +1103,20 @@ namespace MicroManager.Migrations
                     b.Navigation("Customers");
                 });
 
+            modelBuilder.Entity("MicroManager.Models.InventoryCategory", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("MicroManager.Models.Order", b =>
                 {
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.Product", b =>
+                {
+                    b.Navigation("Carts");
+
                     b.Navigation("OrderDetails");
                 });
 

@@ -16,18 +16,18 @@
             <input type="hidden" asp-for="ProductId" />
             <div class="form-group">
                 <label asp-for="Seed_Id" class="control-label"></label>
-                <select asp-for="Seed_Id" class="form-control" asp-items="ViewBag.SeedId"></select>
+                <select asp-for="Seed_Id" class="form-control" asp-items="ViewBag.Seed_Id"></select>
                 <span asp-validation-for="Seed_Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Product_ProductSize_Id" class="control-label"></label>
-                <select asp-for="Product_ProductSize_Id" class="form-control" asp-items="ViewBag.ProductSizeId"></select>
+                <select asp-for="Product_ProductSize_Id" class="form-control" asp-items="ViewBag.Product_ProductSize_Id"></select>
                 <span asp-validation-for="Product_ProductSize_Id" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Weight" class="control-label"></label>
-                <input asp-for="Weight" class="form-control" />
-                <span asp-validation-for="Weight" class="text-danger"></span>
+                <label asp-for="InventoryCategory_Id" class="control-label"></label>
+                <select asp-for="InventoryCategory_Id" class="form-control" asp-items="ViewBag.InventoryCategory_Id"></select>
+                <span asp-validation-for="InventoryCategory_Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>

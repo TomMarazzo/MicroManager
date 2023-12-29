@@ -22,7 +22,8 @@ namespace MicroManager.Controllers
         // GET: OrderDetail
         public async Task<IActionResult> Index()
         {
-            return View(await _context.OrderDetails.ToListAsync());
+            var applicationDbContext = _context.OrderDetails.Include(o => o.Orders).Include(o => o.Products);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: OrderDetail/Details/5
@@ -34,6 +35,8 @@ namespace MicroManager.Controllers
             }
 
             var orderDetail = await _context.OrderDetails
+                .Include(o => o.Orders)
+                .Include(o => o.Products)
                 .FirstOrDefaultAsync(m => m.OrderDetailId == id);
             if (orderDetail == null)
             {
@@ -46,6 +49,8 @@ namespace MicroManager.Controllers
         // GET: OrderDetail/Create
         public IActionResult Create()
         {
+            ViewData["Order_Id"] = new SelectList(_context.Orders, "OrderId", "OrderId");
+            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId");
             return View();
         }
 
@@ -54,7 +59,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderDetailId,ProductId,OrderId,Quantity,Price")] OrderDetail orderDetail)
+        public async Task<IActionResult> Create([Bind("OrderDetailId,Product_Id,Order_Id,Quantity,Price")] OrderDetail orderDetail)
         {
             if (ModelState.IsValid)
             {
@@ -63,6 +68,8 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Order_Id"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderDetail.Order_Id);
+            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId", orderDetail.Product_Id);
             return View(orderDetail);
         }
 
@@ -79,6 +86,8 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
+            ViewData["Order_Id"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderDetail.Order_Id);
+            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId", orderDetail.Product_Id);
             return View(orderDetail);
         }
 
@@ -87,7 +96,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("OrderDetailId,ProductId,OrderId,Quantity,Price")] OrderDetail orderDetail)
+        public async Task<IActionResult> Edit(Guid id, [Bind("OrderDetailId,Product_Id,Order_Id,Quantity,Price")] OrderDetail orderDetail)
         {
             if (id != orderDetail.OrderDetailId)
             {
@@ -114,6 +123,8 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Order_Id"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderDetail.Order_Id);
+            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId", orderDetail.Product_Id);
             return View(orderDetail);
         }
 
@@ -126,6 +137,8 @@ namespace MicroManager.Controllers
             }
 
             var orderDetail = await _context.OrderDetails
+                .Include(o => o.Orders)
+                .Include(o => o.Products)
                 .FirstOrDefaultAsync(m => m.OrderDetailId == id);
             if (orderDetail == null)
             {

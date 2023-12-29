@@ -49,8 +49,8 @@ namespace MicroManager.Controllers
         // GET: Cart/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId");
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
+            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId");
             return View();
         }
 
@@ -59,7 +59,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CartId,ProductId,CustomerId,DateCreated,Quantity,Price")] Cart cart)
+        public async Task<IActionResult> Create([Bind("CartId,Product_Id,Customer_Id,DateCreated,Quantity,Price")] Cart cart)
         {
             if (ModelState.IsValid)
             {
@@ -68,8 +68,8 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", cart.CustomerId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.ProductId);
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", cart.Customer_Id);
+            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.Product_Id);
             return View(cart);
         }
 
@@ -86,8 +86,8 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", cart.CustomerId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.ProductId);
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", cart.Customer_Id);
+            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.Product_Id);
             return View(cart);
         }
 
@@ -96,7 +96,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CartId,ProductId,CustomerId,DateCreated,Quantity,Price")] Cart cart)
+        public async Task<IActionResult> Edit(Guid id, [Bind("CartId,Product_Id,Customer_Id,DateCreated,Quantity,Price")] Cart cart)
         {
             if (id != cart.CartId)
             {
@@ -123,8 +123,8 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", cart.CustomerId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.ProductId);
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", cart.Customer_Id);
+            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId", cart.Product_Id);
             return View(cart);
         }
 

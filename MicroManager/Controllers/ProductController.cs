@@ -22,7 +22,7 @@ namespace MicroManager.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Seeds).Include(p => p.ProductSize);
+            var applicationDbContext = _context.Products.Include(p => p.InventoryCategory).Include(p => p.ProductSize).Include(p => p.Seeds);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,8 +35,9 @@ namespace MicroManager.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.Seeds)
+                .Include(p => p.InventoryCategory)
                 .Include(p => p.ProductSize)
+                .Include(p => p.Seeds)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
             {
@@ -49,8 +50,9 @@ namespace MicroManager.Controllers
         // GET: Product/Create
         public IActionResult Create()
         {
-            ViewData["SeedId"] = new SelectList(_context.Seeds, "SeedId", "Type");
-            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size");
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType");
+            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "ProductSizeId");
+            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "SeedId");
             return View();
         }
 
@@ -68,8 +70,9 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SeedId"] = new SelectList(_context.Seeds, "SeedId", "Type");
-            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size");
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", product.InventoryCategory_Id);
+            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "ProductSizeId", product.Product_ProductSize_Id);
+            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "SeedId", product.Seed_Id);
             return View(product);
         }
 
@@ -86,8 +89,9 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["SeedId"] = new SelectList(_context.Seeds, "SeedId", "Type", product.Seed_Id);
-            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.Product_ProductSize_Id);
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", product.InventoryCategory_Id);
+            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "ProductSizeId", product.Product_ProductSize_Id);
+            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "SeedId", product.Seed_Id);
             return View(product);
         }
 
@@ -96,7 +100,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, Product product)
+        public async Task<IActionResult> Edit(Guid id,  Product product)
         {
             if (id != product.ProductId)
             {
@@ -123,8 +127,9 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SeedId"] = new SelectList(_context.Seeds, "SeedId", "Type", product.Seed_Id);
-            ViewData["ProductSizeId"] = new SelectList(_context.Set<ProductSize>(), "ProductSizeId", "Size", product.Product_ProductSize_Id);
+            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", product.InventoryCategory_Id);
+            ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "ProductSizeId", product.Product_ProductSize_Id);
+            ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "SeedId", product.Seed_Id);
             return View(product);
         }
 
@@ -137,8 +142,9 @@ namespace MicroManager.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.Seeds)
+                .Include(p => p.InventoryCategory)
                 .Include(p => p.ProductSize)
+                .Include(p => p.Seeds)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
             {
