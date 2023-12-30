@@ -23,19 +23,19 @@ namespace MicroManager.Models
         [ForeignKey(nameof(Customer_Id))]
         public virtual Customer? Customer { get; set; }
 
-        public double Total
-        {
-            get
-            {
-                if (Quantity >= 0 && Price >= 0)
-                {
-                    return Quantity * Price;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
+        //public double Total
+        //{
+        //    get
+        //    {
+        //        if (Quantity >= 0 && Price >= 0)
+        //        {
+        //            return Quantity * Price;
+        //        }
+        //        else
+        //        {
+        //            return 0;
+        //        }
+        //    }
+        //}
     }
 }

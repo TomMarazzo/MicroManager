@@ -24,17 +24,15 @@
                         </li>
                         
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CustomerOrder" asp-action="Index">Customer Orders</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Crop" asp-action="CropIndex">Crop</a></li>
+                        
                        
-                        <li class="nav-item">
+                       @*  <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="OrderDetail" asp-action="Index">Order Details</a>
-                        </li>
+                        </li> *@
                        
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
-                        </li>
+                       
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="InventoryCategory" asp-action="Index">Inventory Category</a>
                         </li>
@@ -102,6 +100,10 @@
                                     </ul>
 
                             </ul>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Crop" asp-action="CropIndex">Crop</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a></li>
+
+                    </ul>
                         </div>
                 </div>
                 <partial name="_LoginPartial" /> @* ********DON'T TOUCH THIS**************' *@

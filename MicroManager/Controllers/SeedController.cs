@@ -57,7 +57,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SeedId,Supplier_Id,Date,Type,Qty,Qty_pack,Price,Tax")] Seed seed)
+        public async Task<IActionResult> Create( Seed seed)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("SeedId,Supplier_Id,Date,Type,Qty,Qty_pack,Price,Tax")] Seed seed)
+        public async Task<IActionResult> Edit(Guid id,  Seed seed)
         {
             if (id != seed.SeedId)
             {

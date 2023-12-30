@@ -8,7 +8,7 @@ namespace MicroManager.Models
     {
         [Key]
         public Guid ShelvingId { get; set; }//PK
-        public Guid Supplier_Id { get; set; } //FK
+        public Guid Supplier_Id { get; set; } //FK  
         [Display(Name = "Date Y-M-D")]
         public DateTime Date { get; set; }
 
@@ -40,9 +40,9 @@ namespace MicroManager.Models
             }
         }
 
+        //For Supplier Dropdown from Dbase
         [ForeignKey(nameof(Supplier_Id))]
         [ValidateNever]
-
         public virtual Supplier? Supplier { get; set; }
     }
 }

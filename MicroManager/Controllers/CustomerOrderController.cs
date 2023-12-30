@@ -10,23 +10,23 @@ using MicroManager.Models;
 
 namespace MicroManager.Controllers
 {
-    public class OrderDetailController : Controller
+    public class CustomerOrderController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public OrderDetailController(ApplicationDbContext context)
+        public CustomerOrderController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: OrderDetail
+        // GET: CustomerOrder
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.OrderDetails.Include(o => o.Orders).Include(o => o.Products);
+            var applicationDbContext = _context.CustomerOrders.Include(c => c.Customer).Include(c => c.Product);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: OrderDetail/Details/5
+        // GET: CustomerOrder/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -34,46 +34,46 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var orderDetail = await _context.OrderDetails
-                .Include(o => o.Orders)
-                .Include(o => o.Products)
-                .FirstOrDefaultAsync(m => m.OrderDetailId == id);
-            if (orderDetail == null)
+            var customerOrder = await _context.CustomerOrders
+                .Include(c => c.Customer)
+                .Include(c => c.Product)
+                .FirstOrDefaultAsync(m => m.CustomerOrderId == id);
+            if (customerOrder == null)
             {
                 return NotFound();
             }
 
-            return View(orderDetail);
+            return View(customerOrder);
         }
 
-        // GET: OrderDetail/Create
+        // GET: CustomerOrder/Create
         public IActionResult Create()
         {
-            ViewData["Order_Id"] = new SelectList(_context.Orders, "OrderId", "OrderId");
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CompanyName");
             ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId");
             return View();
         }
 
-        // POST: OrderDetail/Create
+        // POST: CustomerOrder/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderDetailId,Product_Id,Order_Id,Quantity,Price")] OrderDetail orderDetail)
+        public async Task<IActionResult> Create( CustomerOrder customerOrder)
         {
             if (ModelState.IsValid)
             {
-                orderDetail.OrderDetailId = Guid.NewGuid();
-                _context.Add(orderDetail);
+                customerOrder.CustomerOrderId = Guid.NewGuid();
+                _context.Add(customerOrder);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Order_Id"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderDetail.Order_Id);
-            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId", orderDetail.Product_Id);
-            return View(orderDetail);
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CompanyName", customerOrder.Customer_Id);
+            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductSize");
+            return View(customerOrder);
         }
 
-        // GET: OrderDetail/Edit/5
+        // GET: CustomerOrder/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -81,24 +81,24 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var orderDetail = await _context.OrderDetails.FindAsync(id);
-            if (orderDetail == null)
+            var customerOrder = await _context.CustomerOrders.FindAsync(id);
+            if (customerOrder == null)
             {
                 return NotFound();
             }
-            ViewData["Order_Id"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderDetail.Order_Id);
-            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId", orderDetail.Product_Id);
-            return View(orderDetail);
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CompanyName", customerOrder.Customer_Id);
+            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductSize", customerOrder.Product_Id);
+            return View(customerOrder);
         }
 
-        // POST: OrderDetail/Edit/5
+        // POST: CustomerOrder/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("OrderDetailId,Product_Id,Order_Id,Quantity,Price")] OrderDetail orderDetail)
+        public async Task<IActionResult> Edit(Guid id,  CustomerOrder customerOrder)
         {
-            if (id != orderDetail.OrderDetailId)
+            if (id != customerOrder.CustomerOrderId)
             {
                 return NotFound();
             }
@@ -107,12 +107,12 @@ namespace MicroManager.Controllers
             {
                 try
                 {
-                    _context.Update(orderDetail);
+                    _context.Update(customerOrder);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderDetailExists(orderDetail.OrderDetailId))
+                    if (!CustomerOrderExists(customerOrder.CustomerOrderId))
                     {
                         return NotFound();
                     }
@@ -123,12 +123,12 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Order_Id"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderDetail.Order_Id);
-            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId", orderDetail.Product_Id);
-            return View(orderDetail);
+            ViewData["Customer_Id"] = new SelectList(_context.Customers, "CustomerId", "CompanyName", customerOrder.Customer_Id);
+            ViewData["Product_Id"] = new SelectList(_context.Products, "ProductId", "ProductId", customerOrder.Product_Id);
+            return View(customerOrder);
         }
 
-        // GET: OrderDetail/Delete/5
+        // GET: CustomerOrder/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -136,36 +136,36 @@ namespace MicroManager.Controllers
                 return NotFound();
             }
 
-            var orderDetail = await _context.OrderDetails
-                .Include(o => o.Orders)
-                .Include(o => o.Products)
-                .FirstOrDefaultAsync(m => m.OrderDetailId == id);
-            if (orderDetail == null)
+            var customerOrder = await _context.CustomerOrders
+                .Include(c => c.Customer)
+                .Include(c => c.Product)
+                .FirstOrDefaultAsync(m => m.CustomerOrderId == id);
+            if (customerOrder == null)
             {
                 return NotFound();
             }
 
-            return View(orderDetail);
+            return View(customerOrder);
         }
 
-        // POST: OrderDetail/Delete/5
+        // POST: CustomerOrder/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var orderDetail = await _context.OrderDetails.FindAsync(id);
-            if (orderDetail != null)
+            var customerOrder = await _context.CustomerOrders.FindAsync(id);
+            if (customerOrder != null)
             {
-                _context.OrderDetails.Remove(orderDetail);
+                _context.CustomerOrders.Remove(customerOrder);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool OrderDetailExists(Guid id)
+        private bool CustomerOrderExists(Guid id)
         {
-            return _context.OrderDetails.Any(e => e.OrderDetailId == id);
+            return _context.CustomerOrders.Any(e => e.CustomerOrderId == id);
         }
     }
 }

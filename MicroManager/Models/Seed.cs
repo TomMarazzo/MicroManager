@@ -5,6 +5,7 @@ namespace MicroManager.Models
 {
     public class Seed
     {
+        //****PK and FKs********
         [Key]
         public Guid SeedId { get; set; } //PK
         public Guid Supplier_Id { get; set; } //FK
@@ -24,6 +25,12 @@ namespace MicroManager.Models
         public float Price { get; set; }
 
         public float Tax { get; set; }
+
+        [ForeignKey(nameof(Supplier_Id))]        
+        public virtual Supplier? Supplier { get; set; }
+
+        //**********Calculations*********
+
         [DisplayFormat(DataFormatString = "{0:c}")]
         public float Total
         {
@@ -45,8 +52,6 @@ namespace MicroManager.Models
             }
         }
 
-            [ForeignKey(nameof(Supplier_Id))]
-        //[ValidateNever]
-        public virtual Supplier? Supplier { get; set; }
+       
     }
 }

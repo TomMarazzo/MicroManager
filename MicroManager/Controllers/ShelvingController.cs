@@ -92,7 +92,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShelvingId,SupplierId,Date,Qty,Price,Tax,Row,Column")] Shelving shelving)
+        public async Task<IActionResult> Create( Shelving shelving)
         {
             if (ModelState.IsValid)
             {
@@ -127,7 +127,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ShelvingId,SupplierId,Date,Qty,Price,Tax,Row,Column")] Shelving shelving)
+        public async Task<IActionResult> Edit(Guid id,  Shelving shelving)
         {
             if (id != shelving.ShelvingId)
             {
