@@ -45,7 +45,12 @@
             @Html.DisplayNameFor(model => model.Product)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Product.ProductId)
+            @foreach (var product in Model.Product)
+            {
+                <div>
+                    @product.Seeds;
+                </div>
+            }
         </dd>
     </dl>
 </div>

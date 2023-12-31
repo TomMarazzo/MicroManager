@@ -20,12 +20,12 @@ namespace MicroManager.Data
 
             //Define Relationships and Keys
 
-            //Product and Category
-            modelBuilder.Entity<Product>()
-                    .HasOne(p => p.InventoryCategory)
-                    .WithMany(c => c.Products)
-                    .HasForeignKey(p => p.InventoryCategory_Id)
-                    .HasConstraintName("FK_Products_InventoryCategoryId");
+            ////Product and Category
+            //modelBuilder.Entity<Product>()
+            //        .HasOne(p => p.InventoryCategory)
+            //        .WithMany(c => c.Products)
+            //        .HasForeignKey(p => p.InventoryCategory_Id)
+            //        .HasConstraintName("FK_Products_InventoryCategoryId");
             ////Product and OrderDetail
             //modelBuilder.Entity<OrderDetail>()
             //       .HasOne(p => p.Products)
@@ -33,11 +33,11 @@ namespace MicroManager.Data
             //       .HasForeignKey(p => p.Product_Id)
             //       .HasConstraintName("FK_OrderDetails_ProductId");
             //Product and Cart
-            modelBuilder.Entity<Cart>()
-                   .HasOne(p => p.Product)
-                   .WithMany(c => c.Carts)
-                   .HasForeignKey(p => p.Product_Id)
-                   .HasConstraintName("FK_Carts_ProductId");
+            //modelBuilder.Entity<Cart>()
+            //       .HasOne(p => p.Product)
+            //       .WithMany(c => c.Carts)
+            //       .HasForeignKey(p => p.Product_Id)
+            //       .HasConstraintName("FK_Carts_ProductId");
             ////OrderDetail and Order
             //modelBuilder.Entity<OrderDetail>()
             //       .HasOne(p => p.CustomerOrders)
@@ -69,7 +69,8 @@ namespace MicroManager.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Role> Roles { get; set; }        
         public DbSet<InventoryCategory> InventoryCategories { get; set; }
-       
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+
         //public DbSet<OrderDetail> OrderDetails { get; set; }
         //public DbSet<CustomerOrder> Orders { get; set; }
 

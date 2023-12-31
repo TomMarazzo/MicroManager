@@ -8,9 +8,9 @@ namespace MicroManager.Models
     {
         [Key]
         public Guid CustomerOrderId { get; set; } //PK
-        public DateTime OrderDate { get; set; }
         public Guid Customer_Id { get; set; }//FK
         public Guid Product_Id { get; set; }//FK
+        public DateTime OrderDate { get; set; }
         
 
         [DisplayFormat(DataFormatString = "{0:c}")]
@@ -26,7 +26,7 @@ namespace MicroManager.Models
 
         [ForeignKey(nameof(Product_Id))]
         [ValidateNever]
-        public virtual Product? Product { get; set; }
+        public virtual List<Product>? Product { get; set; } //Customer has MANY products
 
         
         //Child reference 

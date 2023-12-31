@@ -28,6 +28,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); //I added this line becasue of the codeGPT tut for categories
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -22,8 +22,8 @@ namespace MicroManager.Controllers
         // GET: CustomerOrder
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.CustomerOrders.Include(c => c.Customer).Include(c => c.Product);
-            return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = await _context.CustomerOrders.Include(c => c.Customer).Include(c => c.Product).ToListAsync();
+            return View(applicationDbContext);
         }
 
         // GET: CustomerOrder/Details/5

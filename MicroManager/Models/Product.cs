@@ -34,6 +34,6 @@ namespace MicroManager.Models
         public virtual InventoryCategory? InventoryCategory { get; set; }
 
         //public virtual List<OrderDetail>? OrderDetails { get; set; }
-        public virtual List<Cart>? Carts { get; set; }
+        //public virtual List<Cart>? Carts { get; set; }
     }
 }
