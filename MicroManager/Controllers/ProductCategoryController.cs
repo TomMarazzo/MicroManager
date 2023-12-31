@@ -12,7 +12,7 @@ namespace MicroManager.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index()   //https://www.youtube.com/watch?v=2gvpldoygak This is the Tutorial I used to make this section of the App
         {
             IEnumerable<ProductCategory> ObjProductCategorList = _context.ProductCategories;
             return View(ObjProductCategorList);
@@ -22,11 +22,18 @@ namespace MicroManager.Controllers
 
         //GET
         public IActionResult Create()
-        {
-            
-            return View();
+        {            
+            return View();            
+        }
 
-            //https://www.youtube.com/watch?v=2gvpldoygak This is the Tutorial I used to make this section of the App
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(ProductCategory obj)
+        {
+            _context.ProductCategories.Add(obj);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

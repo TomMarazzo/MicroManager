@@ -12,7 +12,7 @@ namespace MicroManager.Models
         [Display(Name = "Inventory Category")]
         public Guid InventoryCategory_Id { get; set; } //FK
         [Display(Name = "Date Y-M-D")]
-        public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public string Type { get; set; }
 

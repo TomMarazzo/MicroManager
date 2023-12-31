@@ -1,0 +1,14 @@
+﻿@model IEnumerable<MicroManager.Models.ProductCategory>
+
+<h1>Input Customer Order</h1>
+
+<a asp-controller="CustomerOrder" asp-action="AddProductCategory" class="btn btn-outline-primary">Add a New Product Category</a>
+
+<ul>
+    @foreach (var c in Model)
+    {
+        <li>
+            <a asp-controller="CustomerOrder" asp-action="Browse" asp-route-productCategory="@c.ProductName">Product Name</a>
+        </li>
+    }
+</ul>

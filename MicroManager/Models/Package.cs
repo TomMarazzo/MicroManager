@@ -14,9 +14,9 @@ namespace MicroManager.Models
         [Display(Name = "Package Size")]
         public Guid Package_ProductSize_Id { get; set; } //FK
         [Display(Name = "Date Y-M-D")]
-        public DateTime Date { get; set; }
-       
-        
+        public DateTime Date { get; set; } = DateTime.Now;
+
+
         [ForeignKey(nameof(Package_ProductSize_Id))]
         public virtual ProductSize? ProductSize{ get; set; }
 

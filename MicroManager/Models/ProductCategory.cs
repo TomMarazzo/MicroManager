@@ -7,8 +7,8 @@ namespace MicroManager.Models
         [Key]
         public Guid ProductCategoryId { get; set; } //PK
         [Required]
-        public string ProductName { get; set; }
-        public int DisplayOrder { get; set; }
-        public DateTime CreateDateTime { get; set; }= DateTime.Now;
+        [Display(Name ="Product Name")]
+        public string ProductName { get; set; }        
+        
     }
 }

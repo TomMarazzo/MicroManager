@@ -11,7 +11,7 @@ namespace MicroManager.Models
         public Guid Product_Id { get; set; } //FK
         public Guid Customer_Id { get; set; } //FK
 
-        public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public int Quantity { get; set; }
 

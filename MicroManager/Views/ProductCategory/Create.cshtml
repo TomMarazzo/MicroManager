@@ -1,8 +1,23 @@
-﻿
+﻿@model ProductCategory
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Create Product Categories_codeGPT</h2>
+            <hr />
+        </div>
+        <div class="mb=3">
+            <label asp-for="ProductName"></label>
+            <input asp-for="ProductName" class="form-control" />
+        </div>
+        
+        <button type="submit" class="btn btn-outline-primary" style="width:150px">Create</button>
+        <a asp-controller="ProductCategory" asp-action="Index">Back to List</a>
+    </div>
+
+</form>
 

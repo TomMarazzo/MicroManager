@@ -18,29 +18,25 @@
     </div>
 
 
-<table class="table table-bordered table-stripped" style="width:100%">
-    <thead>
-        <tr>
-            <th>
-                Product Category
-            </th>
-            <th>
-                Display Order
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var obj in Model)
-        {
+    <table class="table table-bordered table-stripped" style="width:100%">
+        <thead>
             <tr>
-                <td width="50%">
-                    @obj.ProductName
-                </td>
-                <td width="30%">
-                    @obj.DisplayOrder
-                </td>
+                <th>
+                    Product Category
+                </th>
+
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td width="50%">
+                        @obj.ProductName
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

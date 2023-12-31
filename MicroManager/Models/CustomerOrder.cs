@@ -10,8 +10,8 @@ namespace MicroManager.Models
         public Guid CustomerOrderId { get; set; } //PK
         public Guid Customer_Id { get; set; }//FK
         public Guid Product_Id { get; set; }//FK
-        public DateTime OrderDate { get; set; }
-        
+        public DateTime OrderDate { get; set; } = DateTime.Now;
+
 
         [DisplayFormat(DataFormatString = "{0:c}")]
         public float Price { get; set; }

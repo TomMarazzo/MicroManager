@@ -14,7 +14,7 @@ namespace MicroManager.Models
         public Guid GrowMediaId { get; set; } //PK
         public Guid Supplier_Id { get; set; } //FK        
         
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
 
         [Display(Name = "Grow Media Types")]
         public string Type { get; set; }

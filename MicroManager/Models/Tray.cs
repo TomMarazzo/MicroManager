@@ -10,7 +10,7 @@ namespace MicroManager.Models
         [Display(Name = "Supplier")]
         public Guid Supplier_Id { get; set; } //FK
         [Display(Name = "Date Y-M-D")]
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
         public string Type { get; set; }
 
         [Display(Name = "Order Qty")]
