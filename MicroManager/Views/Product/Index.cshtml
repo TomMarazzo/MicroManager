@@ -8,23 +8,25 @@
 <h1>Product List</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+    <a asp-action="Create"class="btn btn-outline-primary">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.Seeds)
-            </th>
-            <th>
-                Product Size
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                Inventory Category
+                @Html.DisplayNameFor(model => model.Seeds)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryCategory)
             </th>
             <th></th>
         </tr>
@@ -33,17 +35,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Seeds.Type)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.ProductSize.Size)
-            </td>
-                
-            <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                    @Html.DisplayFor(modelItem => item.InventoryCategory.InventoryCategoryType)
+                    @Html.DisplayFor(modelItem => item.Seeds.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductSize.Size)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductCategory.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InventoryCategory.InventoryCategoryType)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |

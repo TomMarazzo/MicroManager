@@ -9,6 +9,9 @@ namespace MicroManager.Models
         [Required]
         [Display(Name ="Product Name")]
         public string ProductName { get; set; }        
+
+        //1 ProductCategory to Many Products
+        public virtual List<Product>? Products { get; set; }
         
     }
 }

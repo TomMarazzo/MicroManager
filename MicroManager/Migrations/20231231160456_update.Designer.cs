@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231231112252_productCategory")]
-    partial class productCategory
+    [Migration("20231231160456_update")]
+    partial class update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,23 +159,60 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("Customer_Id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float>("Price")
                         .HasColumnType("real");
-
-                    b.Property<Guid>("Product_Id")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float>("Tax")
                         .HasColumnType("real");
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CustomerOrderId");
 
@@ -349,6 +386,33 @@ namespace MicroManager.Migrations
                     b.ToTable("Lights");
                 });
 
+            modelBuilder.Entity("MicroManager.Models.OrderDetail", b =>
+                {
+                    b.Property<Guid>("OrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerOrder_Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("Product_Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.HasIndex("CustomerOrder_Id");
+
+                    b.HasIndex("Product_Id");
+
+                    b.ToTable("OrderDetails");
+                });
+
             modelBuilder.Entity("MicroManager.Models.Package", b =>
                 {
                     b.Property<Guid>("PackageId")
@@ -397,7 +461,7 @@ namespace MicroManager.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("Product_Id")
+                    b.Property<Guid>("ProductCategory_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("Product_ProductSize_Id")
@@ -410,7 +474,7 @@ namespace MicroManager.Migrations
 
                     b.HasIndex("InventoryCategory_Id");
 
-                    b.HasIndex("Product_Id");
+                    b.HasIndex("ProductCategory_Id");
 
                     b.HasIndex("Product_ProductSize_Id");
 
@@ -425,19 +489,13 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProductCategoryId");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategory");
                 });
 
             modelBuilder.Entity("MicroManager.Models.ProductSize", b =>
@@ -904,13 +962,13 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.CustomerOrder", b =>
                 {
-                    b.HasOne("MicroManager.Models.Customer", "Customer")
+                    b.HasOne("MicroManager.Models.Customer", "Customers")
                         .WithMany()
                         .HasForeignKey("Customer_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("MicroManager.Models.Employee", b =>
@@ -961,6 +1019,25 @@ namespace MicroManager.Migrations
                     b.Navigation("Supplier");
                 });
 
+            modelBuilder.Entity("MicroManager.Models.OrderDetail", b =>
+                {
+                    b.HasOne("MicroManager.Models.CustomerOrder", "CustomerOrders")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("CustomerOrder_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MicroManager.Models.Product", "Product")
+                        .WithMany("OrderDetail")
+                        .HasForeignKey("Product_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomerOrders");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("MicroManager.Models.Package", b =>
                 {
                     b.HasOne("MicroManager.Models.ProductSize", "ProductSize")
@@ -988,9 +1065,11 @@ namespace MicroManager.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MicroManager.Models.CustomerOrder", null)
-                        .WithMany("Product")
-                        .HasForeignKey("Product_Id");
+                    b.HasOne("MicroManager.Models.ProductCategory", "ProductCategory")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductCategory_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MicroManager.Models.ProductSize", "ProductSize")
                         .WithMany()
@@ -1005,6 +1084,8 @@ namespace MicroManager.Migrations
                         .IsRequired();
 
                     b.Navigation("InventoryCategory");
+
+                    b.Navigation("ProductCategory");
 
                     b.Navigation("ProductSize");
 
@@ -1097,7 +1178,7 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.CustomerOrder", b =>
                 {
-                    b.Navigation("Product");
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("MicroManager.Models.CustomerType", b =>
@@ -1106,6 +1187,16 @@ namespace MicroManager.Migrations
                 });
 
             modelBuilder.Entity("MicroManager.Models.InventoryCategory", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.Product", b =>
+                {
+                    b.Navigation("OrderDetail");
+                });
+
+            modelBuilder.Entity("MicroManager.Models.ProductCategory", b =>
                 {
                     b.Navigation("Products");
                 });

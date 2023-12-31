@@ -37,7 +37,8 @@ namespace MicroManager.Models
         [ForeignKey(nameof(ProductCategory_Id))]
         public virtual ProductCategory? ProductCategory { get; set; }
 
-        //public virtual List<OrderDetail>? OrderDetails { get; set; }
-        //public virtual List<Cart>? Carts { get; set; }
+        public virtual List<OrderDetail>? OrderDetail { get; set; }
+        public virtual List<Cart>? Carts { get; set; }
+
     }
 }

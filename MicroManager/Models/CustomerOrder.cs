@@ -8,10 +8,26 @@ namespace MicroManager.Models
     {
         [Key]
         public Guid CustomerOrderId { get; set; } //PK
-        public Guid Customer_Id { get; set; }//FK
-        public Guid Product_Id { get; set; }//FK
         public DateTime OrderDate { get; set; } = DateTime.Now;
+        public Guid Customer_Id { get; set; }//FK
 
+        [Display(Name = "Company Name")]
+        public string CompanyName { get; set; }
+
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string Region { get; set; }
+
+        [Display(Name = "Postal Code")]
+        public string PostalCode { get; set; }
+        public string Country { get; set; }
+
+        public string Phone { get; set; }
+        public string email { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:c}")]
         public float Price { get; set; }
@@ -22,16 +38,13 @@ namespace MicroManager.Models
 
         [ForeignKey(nameof(Customer_Id))]
         [ValidateNever]
-        public virtual Customer? Customer { get; set; }
+        public virtual Customer? Customers { get; set; }
 
-        [ForeignKey(nameof(Product_Id))]
-        [ValidateNever]
-        public virtual List<Product>? Product { get; set; } //Customer has MANY products
-
-        
         //Child reference 
+        public virtual List<OrderDetail>? OrderDetails { get; set; }
 
 
+        //Calculations 
         [DisplayFormat(DataFormatString = "{0:c}")]
         public float Total
         {
