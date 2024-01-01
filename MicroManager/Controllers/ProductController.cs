@@ -22,7 +22,7 @@ namespace MicroManager.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.InventoryCategory).Include(p => p.ProductCategory).Include(p => p.ProductSize).Include(p => p.Seeds);
+            var applicationDbContext = _context.Products.Include(p => p.ProductCategory).Include(p => p.ProductSize).Include(p => p.Seeds);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,7 +35,6 @@ namespace MicroManager.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.InventoryCategory)
                 .Include(p => p.ProductCategory)
                 .Include(p => p.ProductSize)
                 .Include(p => p.Seeds)
@@ -51,7 +50,6 @@ namespace MicroManager.Controllers
         // GET: Product/Create
         public IActionResult Create()
         {
-            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType");
             ViewData["ProductCategory_Id"] = new SelectList(_context.ProductCategory, "ProductCategoryId", "ProductName");
             ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size");
             ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "Type");
@@ -72,7 +70,6 @@ namespace MicroManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", product.InventoryCategory_Id);
             ViewData["ProductCategory_Id"] = new SelectList(_context.ProductCategory, "ProductCategoryId", "ProductName", product.ProductCategory_Id);
             ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size", product.Product_ProductSize_Id);
             ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "Type", product.Seed_Id);
@@ -92,7 +89,6 @@ namespace MicroManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", product.InventoryCategory_Id);
             ViewData["ProductCategory_Id"] = new SelectList(_context.ProductCategory, "ProductCategoryId", "ProductName", product.ProductCategory_Id);
             ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size", product.Product_ProductSize_Id);
             ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "Type", product.Seed_Id);
@@ -131,7 +127,6 @@ namespace MicroManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["InventoryCategory_Id"] = new SelectList(_context.InventoryCategories, "InventoryCategoryId", "InventoryCategoryType", product.InventoryCategory_Id);
             ViewData["ProductCategory_Id"] = new SelectList(_context.ProductCategory, "ProductCategoryId", "ProductName", product.ProductCategory_Id);
             ViewData["Product_ProductSize_Id"] = new SelectList(_context.ProductSizes, "ProductSizeId", "Size", product.Product_ProductSize_Id);
             ViewData["Seed_Id"] = new SelectList(_context.Seeds, "SeedId", "Type", product.Seed_Id);
@@ -147,7 +142,6 @@ namespace MicroManager.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.InventoryCategory)
                 .Include(p => p.ProductCategory)
                 .Include(p => p.ProductSize)
                 .Include(p => p.Seeds)

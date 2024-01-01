@@ -22,9 +22,9 @@ namespace MicroManager.Data
 
             ////Product and Category
             modelBuilder.Entity<Product>()
-                    .HasOne(p => p.InventoryCategory)
+                    .HasOne(p => p.ProductCategory)
                     .WithMany(c => c.Products)
-                    .HasForeignKey(p => p.InventoryCategory_Id)
+                    .HasForeignKey(p => p.ProductCategory_Id)
                     .HasConstraintName("FK_Products_InventoryCategoryId");
             //Product and OrderDetail
             modelBuilder.Entity<OrderDetail>()
