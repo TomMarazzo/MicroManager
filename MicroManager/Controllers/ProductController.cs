@@ -22,7 +22,7 @@ namespace MicroManager.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.ProductCategory).Include(p => p.ProductSize).Include(p => p.Seeds);
+            var applicationDbContext = _context.Products.Include(p => p.ProductCategory).Include(p => p.ProductSize).Include(p => p.Seeds).OrderBy(p => p.ProductCategory);
             return View(await applicationDbContext.ToListAsync());
         }
 

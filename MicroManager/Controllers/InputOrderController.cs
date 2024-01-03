@@ -23,7 +23,7 @@ namespace MicroManager.Controllers
 
         public IActionResult Index()
         {
-            //Get a list of Categories to display 
+            //Get a list of ProductCategories (ProductCategoryController) to display 
             var productCategories = _context.ProductCategory.OrderBy(c => c.ProductName).ToList();       
             
             return View(productCategories);
@@ -32,9 +32,11 @@ namespace MicroManager.Controllers
         //InpuOrder/Browse
         public IActionResult Browse(Guid id)
         {
-            //Quiry Products for the selected category
-            var products = _context.Products.Where(p => p.ProductId == id).OrderBy(p => p.Seed_Id).ToList();
-            return View();
+            //Query Products for the selected ProductCategory
+            var products = _context.Products.Where(p => p.ProductCategory_Id == id).OrderBy(p => p.Seed_Id).ToList();
+            //Get the name of the selected ProductCategory then Find() and filter by key fields
+            ViewBag.productCategories = _context.ProductCategory.Find(id).ProductName.ToString();
+            return View(products);
         }
     }
 }
