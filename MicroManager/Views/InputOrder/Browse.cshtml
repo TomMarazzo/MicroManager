@@ -1,12 +1,12 @@
 ﻿ @model IEnumerable<MicroManager.Models.Product>
 
-     <h1> Briwse View - Build the Customer's Order Here______</h1>
+<h1> Build the Customer's Order Here</h1>
 
 @if (ViewBag.ProductCategory != null)
 {
     <h2>@ViewBag.productCategories</h2>
 }
- 
+
 <section>
     <div class="row">
         @foreach (var p in Model)
@@ -14,7 +14,20 @@
             <div class="col-sm-6 col-lg-4 mb-3">
                 <div class="card mb-3 text-center h-100">
                     <div class="card-body">
-                        <a asp-controller="Product" asp-action="Details" asp-route-id="@p.ProductId">@p.Seeds.Type</a>
+                        <h5>  <a asp-controller="Product" asp-action="Details" asp-route-id="@p.ProductId">@p.Seeds.Type</a></h5>
+                        <h6>@String.Format("{0:c}", p.Price)</h6>
+
+                        @* Form to add Quantity for the shopping cart *@
+                        <form method="post" action="/InputOrder/AddToCart">
+                            @* Hidden Field for the selected ProductId *@
+                            <input type="hidden" id="ProductId" name="ProductId" value="@p.ProductId" />
+                            <div class="form-group">
+                                <label class="control-label" for="Quantity">Quantity: </label>
+                                <input name="Quantity" id="Quantity" required min="1" max="99999" type="number" class="input-small" />
+                            </div>
+                            <br />
+                            <button class="btn btn-outline-primary">Add To Order</button>
+                        </form>
                     </div>
                 </div>
             </div>
