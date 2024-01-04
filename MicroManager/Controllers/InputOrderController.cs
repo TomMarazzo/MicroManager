@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Castle.Components.DictionaryAdapter.Xml;
 
 
 namespace MicroManager.Controllers
@@ -24,8 +25,8 @@ namespace MicroManager.Controllers
         public IActionResult Index()
         {
             //Get a list of ProductCategories (ProductCategoryController) to display 
-            var productCategories = _context.ProductCategory.OrderBy(c => c.ProductName).ToList();       
-            
+            var productCategories = _context.ProductCategory.OrderBy(c => c.ProductName).ToList();
+
             return View(productCategories);
         }
 
@@ -37,6 +38,77 @@ namespace MicroManager.Controllers
             //Get the name of the selected ProductCategory then Find() and filter by key fields
             ViewBag.productCategories = _context.ProductCategory.Find(id).ProductName.ToString();
             return View(products);
+        }
+
+        public IActionResult AddToCart(Guid ProductId, int Quantity)
+        {
+            //Query the DB for the Product Price
+            var price = _context.Products.Find(ProductId).Price;
+            // Get the current Date & time using the built in .Net funation
+            var currentDateTime = DateTime.Now;
+
+            //CustomerId variable
+            var Customer_Id = GetCustomerId();
+
+            //Create and Save a new Cart Object
+            var cart = new Cart
+            {
+                Product_Id = ProductId,
+                Quantity = Quantity,
+                Price = (double)price,
+                DateCreated = currentDateTime,
+                Customer_Id = Customer_Id
+            };
+
+            _context.Carts.Add(cart);
+            _context.SaveChanges();
+            //Redircet to Cart View
+            return RedirectToAction("Cart");
+        }
+
+        private string GetCustomerId()
+        {
+            //Check the Session for Existing CustomerID
+            if (HttpContext.Session.GetString("CustomerId") == null)
+            {
+                //if we don't already have a CustomerId in the session, check if Customer is logged in
+                var CustomerId = "";
+
+                // if customer is logged in, use their email as the CustomerId
+                if (User.Identity.IsAuthenticated)
+                {
+                    CustomerId = User.Identity.Name; //use email address as the identifyer name
+                }
+                // if the customer is anonymous, use Guid to create a new identifier
+                else
+                {
+                    CustomerId = Guid.NewGuid().ToString();
+                }
+                //Now, storer the CustomerId in a Session variable
+                HttpContext.Session.SetString("CustomerId", CustomerId);
+            }
+            //return the Session Variable
+            return HttpContext.Session.GetString("CustomerId");
+        }
+
+        //InpuOrder/Cart
+        public IActionResult Cart()
+        {
+            //Fetch Current cart for Display
+            var CustomerId = "";
+            //In case User cpmes to Care Page before Adding Anything, Identify them first
+            if (HttpContext.Session.GetString("CustomerId") == null)
+            {
+                CustomerId = GetCustomerId();
+            }
+            else
+            {
+                CustomerId = HttpContext.Session.GetString("CustomerId");
+            }
+            //Query the DB for the Customer
+            var cartItems = _context.Carts;
+            //Pass Data to the View for display
+            return View(cartItems);
         }
     }
 }

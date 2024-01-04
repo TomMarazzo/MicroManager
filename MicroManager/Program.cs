@@ -1,6 +1,7 @@
 using MicroManager.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,10 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+//***********Enable Session Suppost for the Identities/Roles of the Cart*************
+builder.Services.AddSession();
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); //I added this line becasue of the codeGPT tut for categories
@@ -50,6 +55,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+//**********for the Cart. Enable Session support WHEN shopping BEFORE URL Mapping************
+app.UseSession();   
+
+
 
 app.MapControllerRoute(
     name: "default",
