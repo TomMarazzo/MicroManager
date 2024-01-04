@@ -40,7 +40,7 @@ namespace MicroManager.Controllers
             return View(products);
         }
 
-        public IActionResult AddToCart(Guid ProductId, int Quantity, Guid CustomerId)
+        public IActionResult Cart(Guid ProductId, int Quantity, Guid CustomerId)
         {
             //Query the DB for the Product Price
             var price = _context.Products.Find(ProductId).Price;
