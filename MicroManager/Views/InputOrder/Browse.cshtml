@@ -18,7 +18,7 @@
                         <h6>@String.Format("{0:c}", p.Price)</h6>
 
                         @* Form to add Quantity for the shopping cart *@
-                        <form method="post" action="/InputOrder/AddToCart">
+                        <form method="post" action="/InputOrder/Cart">
                             @* Hidden Field for the selected ProductId *@
                             <input type="hidden" id="ProductId" name="ProductId" value="@p.ProductId" />
                             <div class="form-group">

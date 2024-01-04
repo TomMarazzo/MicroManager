@@ -40,15 +40,19 @@ namespace MicroManager.Controllers
             return View(products);
         }
 
-        public IActionResult AddToCart(Guid ProductId, int Quantity)
+        public IActionResult AddToCart(Guid ProductId, int Quantity, Guid CustomerId)
         {
             //Query the DB for the Product Price
             var price = _context.Products.Find(ProductId).Price;
-            // Get the current Date & time using the built in .Net funation
+
+            //Query the DB for the Customer
+            //var customer = _context.Customers.Find(CustomerId).CompanyName; 
+
+            // Get the current Date & time using the built in .Net function
             var currentDateTime = DateTime.Now;
 
             //CustomerId variable
-            var Customer_Id = GetCustomerId();
+           // var CustomerId = GetCustomerId();
 
             //Create and Save a new Cart Object
             var cart = new Cart
@@ -57,7 +61,7 @@ namespace MicroManager.Controllers
                 Quantity = Quantity,
                 Price = (double)price,
                 DateCreated = currentDateTime,
-                Customer_Id = Customer_Id
+                Customer_Id = CustomerId
             };
 
             _context.Carts.Add(cart);
@@ -66,49 +70,49 @@ namespace MicroManager.Controllers
             return RedirectToAction("Cart");
         }
 
-        private string GetCustomerId()
-        {
-            //Check the Session for Existing CustomerID
-            if (HttpContext.Session.GetString("CustomerId") == null)
-            {
-                //if we don't already have a CustomerId in the session, check if Customer is logged in
-                var CustomerId = "";
+        //private string GetCustomerId()
+        //{
+        //    //Check the Session for Existing CustomerID
+        //    if (HttpContext.Session.GetString("CustomerId") == null)
+        //    {
+        //        //if we don't already have a CustomerId in the session, check if Customer is logged in
+        //        var CustomerId = "";
 
-                // if customer is logged in, use their email as the CustomerId
-                if (User.Identity.IsAuthenticated)
-                {
-                    CustomerId = User.Identity.Name; //use email address as the identifyer name
-                }
-                // if the customer is anonymous, use Guid to create a new identifier
-                else
-                {
-                    CustomerId = Guid.NewGuid().ToString();
-                }
-                //Now, storer the CustomerId in a Session variable
-                HttpContext.Session.SetString("CustomerId", CustomerId);
-            }
-            //return the Session Variable
-            return HttpContext.Session.GetString("CustomerId");
-        }
+        //        // if customer is logged in, use their email as the CustomerId
+        //        if (User.Identity.IsAuthenticated)
+        //        {
+        //            CustomerId = User.Identity.Name; //use email address as the identifyer name
+        //        }
+        //        // if the customer is anonymous, use Guid to create a new identifier
+        //        else
+        //        {
+        //            CustomerId = Guid.NewGuid().ToString();
+        //        }
+        //        //Now, storer the CustomerId in a Session variable
+        //        HttpContext.Session.SetString("CustomerId", Customer_Id);
+        //    }
+        //    //return the Session Variable
+        //    return HttpContext.Session.GetString("CustomerId");
+        //}
 
         //InpuOrder/Cart
-        public IActionResult Cart()
-        {
-            //Fetch Current cart for Display
-            var CustomerId = "";
-            //In case User cpmes to Care Page before Adding Anything, Identify them first
-            if (HttpContext.Session.GetString("CustomerId") == null)
-            {
-                CustomerId = GetCustomerId();
-            }
-            else
-            {
-                CustomerId = HttpContext.Session.GetString("CustomerId");
-            }
-            //Query the DB for the Customer
-            var cartItems = _context.Carts;
-            //Pass Data to the View for display
-            return View(cartItems);
-        }
+        //public IActionResult Cart()
+        //{
+        //    //Fetch Current cart for Display
+        //    var CustomerId = "";
+        //    //In case User cpmes to Care Page before Adding Anything, Identify them first
+        //    if (HttpContext.Session.GetString("CustomerId") == null)
+        //    {
+        //        CustomerId = GetCustomerId();
+        //    }
+        //    else
+        //    {
+        //        CustomerId = HttpContext.Session.GetString("CustomerId");
+        //    }
+        //    //Query the DB for the Customer
+        //    var cartItems = _context.Carts;
+        //    //Pass Data to the View for display
+        //    return View(cartItems);
+        //}
     }
 }
