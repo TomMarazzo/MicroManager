@@ -36,6 +36,9 @@ namespace MicroManager.Models
 
         public virtual List<OrderDetail>? OrderDetail { get; set; }
         public virtual List<Cart>? Carts { get; set; }
+
+        //Product Image
+        public string ? ImageUrl { get; set; }    
         
     }
 }

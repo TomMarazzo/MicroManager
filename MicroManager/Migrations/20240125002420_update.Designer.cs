@@ -4,6 +4,7 @@ using MicroManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240125002420_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,15 +34,11 @@ namespace MicroManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Customer_Id")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Employee_Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Employee_Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
@@ -54,8 +53,6 @@ namespace MicroManager.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("CartId");
-
-                    b.HasIndex("Customer_Id");
 
                     b.HasIndex("Employee_Id");
 
@@ -462,6 +459,7 @@ namespace MicroManager.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("InventoryCategoryId")
@@ -941,13 +939,7 @@ namespace MicroManager.Migrations
 
             modelBuilder.Entity("MicroManager.Models.Cart", b =>
                 {
-                    b.HasOne("MicroManager.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("Customer_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Employee")
+                    b.HasOne("MicroManager.Models.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("Employee_Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -959,8 +951,6 @@ namespace MicroManager.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Carts_ProductId");
-
-                    b.Navigation("Customer");
 
                     b.Navigation("Employee");
 

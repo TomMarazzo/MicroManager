@@ -61,8 +61,10 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Product product)
+        public async Task<IActionResult> Create(Product product)
         {
+            var seed = await _context.Seeds.FirstAsync(a => a.SeedId == product.Seed_Id);
+            product.Seeds = seed;
             if (ModelState.IsValid)
             {
                 product.ProductId = Guid.NewGuid();
@@ -100,7 +102,7 @@ namespace MicroManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id,  Product product)
+        public async Task<IActionResult> Edit(Guid id, Product product)
         {
             if (id != product.ProductId)
             {

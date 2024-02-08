@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Castle.Components.DictionaryAdapter.Xml;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace MicroManager.Controllers
@@ -17,9 +18,13 @@ namespace MicroManager.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public InputOrderController(ApplicationDbContext context)
+        //This is to ID who is logged into the system
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public InputOrderController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -40,8 +45,23 @@ namespace MicroManager.Controllers
             return View(products);
         }
 
-        public IActionResult AddToCart(Guid ProductId, int Quantity)
+        [HttpPost]
+        public async Task<IActionResult> AddToCart(Guid ProductId, int Quantity, Guid CustomerId)
         {
+            //Getting the UserId to see whos logged in
+            var user = await _userManager.GetUserAsync(User);
+            var customer = await _context.Customers.FirstAsync();
+            if(CustomerId == Guid.Empty)
+            {
+                CustomerId = customer.CustomerId;
+            }
+           string employeeId = string.Empty;
+            if (user != null) 
+            {
+                employeeId = user.Id;
+            }
+            
+
             // Query the DB for the Product Price
             var price = _context.Products.Find(ProductId)?.Price;
 
@@ -56,16 +76,18 @@ namespace MicroManager.Controllers
             var currentDateTime = DateTime.Now;
 
             // EmployeeId variable
-            var employeeId = GetEmployeeId();
+            //var employeeId = GetEmployeeId();
 
             // Create and Save a new Cart Object
             var cart = new Cart
             {
                 Product_Id = ProductId,
                 Quantity = Quantity,
-                Price = (double)price,
+                Tax = (float)1.13,
+                Price = (float)price,
                 DateCreated = currentDateTime,
-                Employee_Id = employeeId
+                Employee_Id = employeeId,
+                Customer_Id = CustomerId
             };
 
             _context.Carts.Add(cart);
@@ -75,42 +97,18 @@ namespace MicroManager.Controllers
             return RedirectToAction("Cart");
         }
 
-        private Guid GetEmployeeId()
-        {
-            // Check the Session for Existing EmployeeId
-            if (HttpContext.Session.GetString("EmployeeId") == null)
-            {
-                // If we don't already have an EmployeeId in the session, check if the Employee is logged in
-                var employeeId = "";
-
-                // If the customer is logged in, use their email as the EmployeeId
-                if (User.Identity.IsAuthenticated)
-                {
-                    employeeId = User.Identity.Name; // Use email address as the identifier name
-                }
-                // If the employee is anonymous, use Guid to create a new identifier
-                else
-                {
-                    Guid employeeGuid = Guid.NewGuid();
-                    employeeId = employeeGuid.ToString();
-                }
-
-                // Now, store the EmployeeId in a Session variable
-                HttpContext.Session.SetString("EmployeeId", employeeId);
-            }
-
-            // Return the Session Variable
-            return Guid.Parse(HttpContext.Session.GetString("EmployeeId"));
-        }
+        
 
         // InputOrder/Cart
-        public IActionResult Cart()
+        public async Task<IActionResult> Cart(Guid CustomerId)
         {
-            // Fetch Current cart for Display
-            var employeeId = GetEmployeeId(); // Get the Guid directly
-
+            var customer = await _context.Customers.FirstAsync();
+            if(CustomerId == Guid.Empty)
+            {
+                CustomerId = customer.CustomerId;
+            }
             // Query the DB for the Employee's cart items
-            var cartItems = _context.Carts.Where(c => c.Employee_Id == employeeId).ToList();
+            var cartItems = _context.Carts.Where(c => c.Customer_Id == CustomerId).ToList();
 
             // Pass Data to the View for display
             return View(cartItems);
